@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { 
-  Trees, 
-  Castle, 
+  Tree, 
+  Buildings, 
   ForkKnife, 
   Backpack, 
-  Bed, 
+  House, 
   Car, 
   MapPin, 
   Camera,
@@ -19,7 +19,7 @@ const categories = [
   {
     id: 'nature',
     slug: 'nature',
-    icon: Trees,
+    icon: Tree,
     name: { tr: 'Doğa', en: 'Nature' },
     description: { 
       tr: 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları',
@@ -34,7 +34,7 @@ const categories = [
   {
     id: 'culture',
     slug: 'culture',
-    icon: Castle,
+    icon: Buildings,
     name: { tr: 'Kültür', en: 'Culture' },
     description: { 
       tr: 'Çok kültürlü miras, tarihi köyler, geleneksel mimarisi ve kadim gelenekler',
@@ -79,7 +79,7 @@ const categories = [
   {
     id: 'accommodation',
     slug: 'accommodation',
-    icon: Bed,
+    icon: House,
     name: { tr: 'Konaklama', en: 'Accommodation' },
     description: { 
       tr: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri',
