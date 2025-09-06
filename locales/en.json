@@ -1,0 +1,72 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "discover": "Discover",
+    "explore": "Explore",
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "backToHome": "Back to Home"
+  },
+  "hero": {
+    "title": "Discover Kaçkar",
+    "subtitle": "Where Nature, Culture and Adventure Meet",
+    "description": "Discover the unique beauties, rich culture and exciting adventures of the Kaçkar Mountains."
+  },
+  "navigation": {
+    "natureAdventure": "Nature & Adventure",
+    "cultureLocalLife": "Culture & Local Life",
+    "gastronomy": "Gastronomy",
+    "musicDance": "Music & Dance",
+    "sustainableTourism": "Sustainable Tourism",
+    "healthWellness": "Health & Wellness",
+    "photographyArt": "Photography & Art",
+    "educationalResearch": "Educational & Research",
+    "eventsFestivals": "Events & Festivals"
+  },
+  "categories": {
+    "natureAdventure": {
+      "title": "Nature & Adventure",
+      "description": "Adventure-filled activities in harmony with nature in the Kaçkar Mountains"
+    },
+    "cultureLocalLife": {
+      "title": "Culture & Local Life",
+      "description": "Discover the rich heritage of Hemşin and Laz cultures"
+    },
+    "gastronomy": {
+      "title": "Gastronomy & Local Flavours",
+      "description": "The unique flavors and culinary culture of the region"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Get in Touch",
+    "description": "Have questions about Kaçkar? We'd be happy to help you.",
+    "form": {
+      "name": "Your Name",
+      "email": "Your Email",
+      "subject": "Subject",
+      "message": "Your Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Your message has been sent successfully!",
+      "error": "An error occurred while sending your message."
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "workingHours": "Working Hours"
+    }
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "content": "Content Management",
+    "categories": "Categories",
+    "users": "Users",
+    "settings": "Settings"
+  }
+}

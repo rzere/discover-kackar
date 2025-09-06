@@ -1,0 +1,72 @@
+{
+  "common": {
+    "home": "Anasayfa",
+    "about": "Hakkında",
+    "contact": "İletişim",
+    "discover": "Keşfet",
+    "explore": "Keşfet",
+    "readMore": "Devamını Oku",
+    "learnMore": "Daha Fazla Öğren",
+    "backToHome": "Ana Sayfaya Dön"
+  },
+  "hero": {
+    "title": "Kaçkar'ı Keşfedin",
+    "subtitle": "Doğa, Kültür ve Maceranın Buluştuğu Yer",
+    "description": "Kaçkar Dağları'nın eşsiz güzelliklerini, zengin kültürünü ve heyecan verici maceralarını keşfedin."
+  },
+  "navigation": {
+    "natureAdventure": "Doğa & Macera",
+    "cultureLocalLife": "Kültür & Yerel Hayat",
+    "gastronomy": "Gastronomi",
+    "musicDance": "Müzik & Dans",
+    "sustainableTourism": "Sürdürülebilir Turizm",
+    "healthWellness": "Sağlık & Wellness",
+    "photographyArt": "Fotoğraf & Sanat",
+    "educationalResearch": "Eğitim & Araştırma",
+    "eventsFestivals": "Etkinlik & Festivaller"
+  },
+  "categories": {
+    "natureAdventure": {
+      "title": "Doğa & Macera",
+      "description": "Kaçkar Dağları'nda doğa ile iç içe macera dolu aktiviteler"
+    },
+    "cultureLocalLife": {
+      "title": "Kültür & Yerel Hayat",
+      "description": "Hemşin ve Laz kültürlerinin zengin mirasını keşfedin"
+    },
+    "gastronomy": {
+      "title": "Gastronomi & Yerel Lezzetler",
+      "description": "Bölgenin eşsiz lezzetleri ve mutfak kültürü"
+    }
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Bize Ulaşın",
+    "description": "Kaçkar hakkında sorularınız mı var? Size yardımcı olmaktan memnuniyet duyarız.",
+    "form": {
+      "name": "Adınız",
+      "email": "E-posta Adresiniz",
+      "subject": "Konu",
+      "message": "Mesajınız",
+      "send": "Mesaj Gönder",
+      "sending": "Gönderiliyor...",
+      "success": "Mesajınız başarıyla gönderildi!",
+      "error": "Mesaj gönderilirken bir hata oluştu."
+    },
+    "info": {
+      "address": "Adres",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "workingHours": "Çalışma Saatleri"
+    }
+  },
+  "admin": {
+    "dashboard": "Yönetim Paneli",
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "content": "İçerik Yönetimi",
+    "categories": "Kategoriler",
+    "users": "Kullanıcılar",
+    "settings": "Ayarlar"
+  }
+}
