@@ -74,7 +74,7 @@ export default function Home({
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden text-white">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden text-white py-16 sm:py-20">
         {/* Dynamic Background Images */}
         <div className="absolute inset-0">
           {heroImages.map((image, index) => (
@@ -97,8 +97,8 @@ export default function Home({
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
           
-          {/* Animated geometric patterns */}
-          <div className="absolute inset-0 opacity-10">
+          {/* Animated geometric patterns - hidden on mobile for performance */}
+          <div className="absolute inset-0 opacity-10 hidden sm:block">
             <div className="absolute top-0 left-0 w-full h-full">
               <div className="absolute top-20 left-20 w-32 h-32 border border-white/20 rounded-full animate-pulse"></div>
               <div className="absolute top-40 right-32 w-24 h-24 border border-white/20 rounded-full animate-pulse delay-1000"></div>
@@ -108,29 +108,29 @@ export default function Home({
           </div>
         </div>
         
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          {/* Floating elements for visual interest */}
-          <div className="absolute -top-10 -left-10 w-20 h-20 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute -top-5 -right-10 w-16 h-16 bg-secondary/20 rounded-full blur-xl animate-pulse delay-1000"></div>
-          <div className="absolute -bottom-10 -left-20 w-24 h-24 bg-teal/20 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Floating elements for visual interest - hidden on mobile */}
+          <div className="absolute -top-10 -left-10 w-20 h-20 bg-primary/20 rounded-full blur-xl animate-pulse hidden sm:block"></div>
+          <div className="absolute -top-5 -right-10 w-16 h-16 bg-secondary/20 rounded-full blur-xl animate-pulse delay-1000 hidden sm:block"></div>
+          <div className="absolute -bottom-10 -left-20 w-24 h-24 bg-teal/20 rounded-full blur-xl animate-pulse delay-2000 hidden sm:block"></div>
           
-          <div className="mb-6 flex justify-center">
-            <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
-              <Mountains size={48} className="text-white" />
+          <div className="mb-4 sm:mb-6 flex justify-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+              <Mountains size={32} className="text-white sm:w-12 sm:h-12" />
             </div>
           </div>
           
-          <h1 className="text-6xl md:text-7xl font-serif font-bold mb-6 leading-tight bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 sm:mb-6 leading-tight bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent drop-shadow-2xl px-2">
             Discover Kaçkar
           </h1>
           
           {/* Glass Panel for Text Content */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
-            <p className="text-xl md:text-2xl mb-4 text-primary font-medium drop-shadow-lg">
+          <div className="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
+            <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-primary font-medium drop-shadow-lg">
               {isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}
             </p>
             
-            <p className="text-lg md:text-xl text-white leading-relaxed drop-shadow-md">
+            <p className="text-base sm:text-lg md:text-xl text-white leading-relaxed drop-shadow-md">
               {isEnglish 
                 ? "Explore the pristine wilderness, ancient cultures, and breathtaking landscapes of Turkey's hidden gem in the Black Sea region."
                 : "Karadeniz bölgesinin gizli hazinesi olan Kaçkar Dağları'nın el değmemiş doğasını, kadim kültürlerini ve nefes kesen manzaralarını keşfedin."
@@ -138,69 +138,69 @@ export default function Home({
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-8 sm:mb-12 px-4">
             <Link
               href={`/${params.locale}/category/nature`}
-              className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary to-secondary text-navy font-semibold rounded-full hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm"
+              className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary to-secondary text-navy font-semibold rounded-full hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm text-sm sm:text-base"
             >
               {isEnglish ? 'Explore Nature' : 'Doğayı Keşfet'}
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
             
             <Link
               href={`/${params.locale}/category/culture`}
-              className="group inline-flex items-center px-8 py-4 border-2 border-white/80 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/80 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
             >
               {isEnglish ? 'Discover Culture' : 'Kültürü Keşfet'}
-              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto px-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
               <div className="flex justify-center mb-2">
-                <Compass size={32} className="text-white" />
+                <Compass size={24} className="text-white sm:w-8 sm:h-8" />
               </div>
-              <div className="text-2xl font-bold text-white">3,937m</div>
-              <div className="text-sm text-gray-200">
+              <div className="text-xl sm:text-2xl font-bold text-white">3,937m</div>
+              <div className="text-xs sm:text-sm text-gray-200">
                 {isEnglish ? 'Highest Peak' : 'En Yüksek Zirve'}
               </div>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
               <div className="flex justify-center mb-2">
-                <Mountains size={32} className="text-white" />
+                <Mountains size={24} className="text-white sm:w-8 sm:h-8" />
               </div>
-              <div className="text-2xl font-bold text-white">50+</div>
-              <div className="text-sm text-gray-200">
+              <div className="text-xl sm:text-2xl font-bold text-white">50+</div>
+              <div className="text-xs sm:text-sm text-gray-200">
                 {isEnglish ? 'Alpine Lakes' : 'Buzul Gölü'}
               </div>
             </div>
             
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
               <div className="flex justify-center mb-2">
-                <Camera size={32} className="text-white" />
+                <Camera size={24} className="text-white sm:w-8 sm:h-8" />
               </div>
-              <div className="text-2xl font-bold text-white">100+</div>
-              <div className="text-sm text-gray-200">
+              <div className="text-xl sm:text-2xl font-bold text-white">100+</div>
+              <div className="text-xs sm:text-sm text-gray-200">
                 {isEnglish ? 'Photo Spots' : 'Fotoğraf Noktası'}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Image Indicators - Moved to bottom */}
-        <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-3">
+        {/* Image Indicators - Better positioned for mobile */}
+        <div className="absolute bottom-20 sm:bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3">
           {heroImages.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
-              className={`relative w-4 h-4 rounded-full transition-all duration-300 backdrop-blur-sm ${
+              className={`relative w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 backdrop-blur-sm ${
                 index === currentImageIndex 
                   ? 'bg-white/90 scale-125 shadow-lg' 
                   : 'bg-white/30 hover:bg-white/60 hover:scale-110'
@@ -215,9 +215,9 @@ export default function Home({
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-          <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center backdrop-blur-sm bg-white/10">
-            <div className="w-1 h-3 bg-gradient-to-b from-primary to-secondary rounded-full mt-2 animate-bounce"></div>
+        <div className="absolute bottom-6 sm:bottom-4 left-1/2 transform -translate-x-1/2">
+          <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/60 rounded-full flex justify-center backdrop-blur-sm bg-white/10">
+            <div className="w-1 h-2 sm:h-3 bg-gradient-to-b from-primary to-secondary rounded-full mt-1 sm:mt-2 animate-bounce"></div>
           </div>
         </div>
       </section>

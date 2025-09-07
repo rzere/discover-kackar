@@ -40,15 +40,26 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Large image files - use CDN or external storage in production
-/public/images/*.jpg
-/public/images/*.jpeg
-/public/images/*.png
-/public/images/*.avif
-/public/images/*.webp
-/public/images/*.mp4
+# Large image files - keeping essential images for production
+# /public/images/*.jpg
+# /public/images/*.jpeg
+# /public/images/*.png
+# /public/images/*.avif
+# /public/images/*.webp
+# /public/images/*.mp4
 
-# Keep only essential images
+# Keep essential images for production deployment
 !/public/images/placeholder.jpg
 !/public/images/logo.*
 !/public/images/favicon.*
+
+# Keep hero and category images for production
+!/public/images/Kackar_HiRes-nodumsports_moritzklee-DJI_*.jpg
+!/public/images/Kackar_HiRes-nodumsports_moritzklee-MK_*.jpg
+!/public/images/aa-*.jpg
+!/public/images/ayder_*.avif
+!/public/images/discover_*.avif
+
+# Docs
+DEPLYOMENT.md
+IMAGE_MANAGEMENT.md

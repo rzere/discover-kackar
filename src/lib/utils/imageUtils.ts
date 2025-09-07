@@ -1,16 +1,16 @@
 // Utility functions for handling images in the Discover Kaçkar website
 
 export function getImageUrl(imagePath: string): string {
-  // In development, serve from public/images
-  // In production, this would integrate with your asset CDN or storage
+  // Handle empty or invalid paths
   if (!imagePath) return '/images/placeholder.jpg';
   
+  // If it's already a full URL (CDN, external), return as-is
   if (imagePath.startsWith('http')) {
     return imagePath;
   }
   
-  // In development, use local images
-  // In production, you would use a CDN or external storage
+  // For local images, serve from public/images
+  // This works both in development and production when images are committed
   return `/images/${imagePath}`;
 }
 
