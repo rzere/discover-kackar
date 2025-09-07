@@ -15,6 +15,7 @@ import {
 } from '@phosphor-icons/react';
 import SimpleNavbar from '@/components/layout/SimpleNavbar';
 
+
 interface CategoryPageProps {
   params: {
     locale: string;
@@ -245,75 +246,64 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   
-  // Turkish translations for category names and descriptions
-  const turkishTranslations: Record<string, { name: string; description: string }> = {
-    'nature': {
-      name: 'Doğa',
-      description: 'Kaçkar Dağları\'nın el değmemiş doğası, buzul gölleri, endemik bitki örtüsü ve nefes kesen manzaraları'
-    },
-    'culture': {
-      name: 'Kültür',
-      description: 'Çok kültürlü miras, tarihi köyler, geleneksel mimari ve kadim gelenekler'
-    },
-    'gastronomy': {
-      name: 'Gastronomi',
-      description: 'Karadeniz mutfağının lezzetleri, yerel ürünler, geleneksel yemekler ve organik tatlar'
-    },
-    'adventure': {
-      name: 'Macera',
-      description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin aktiviteleri'
-    },
-    'accommodation': {
-      name: 'Konaklama',
-      description: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri'
-    },
-    'transportation': {
-      name: 'Ulaşım',
-      description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler'
-    }
-  };
 
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await fetch(`/api/public/categories?locale=en`); // Always fetch English categories
-        const result = await response.json();
+        // Try to fetch from the API
+        const response = await fetch(`/api/public/categories?locale=${locale}`);
         
         if (response.ok) {
+          const result = await response.json();
           console.log('Categories fetched:', result.data);
-          const foundCategory = result.data.find((cat: Category) => cat.slug === slug);
-          if (foundCategory) {
-            console.log('Category found:', foundCategory);
-            
-            // Apply Turkish translations if locale is 'tr'
-            if (locale === 'tr' && turkishTranslations[slug]) {
-              const translation = turkishTranslations[slug];
-              setCategory({
-                ...foundCategory,
-                name: translation.name,
-                description: translation.description,
-                locale: 'tr'
-              });
-            } else {
+          
+          if (result.data && Array.isArray(result.data)) {
+            const foundCategory = result.data.find((cat: Category) => cat.slug === slug);
+            if (foundCategory) {
+              console.log('Category found:', foundCategory);
               setCategory(foundCategory);
+              setLoading(false);
+              return;
             }
-          } else {
-            console.log('Category not found for slug:', slug);
-            notFound();
           }
+        }
+        
+        // If API fails or category not found, try fallback data
+        console.log('API failed or category not found, trying fallback data for slug:', slug);
+        
+        // Fallback to hardcoded data if API fails
+        const fallbackCategory = categories[slug as keyof typeof categories];
+        if (fallbackCategory) {
+          const categoryData: Category = {
+            id: slug,
+            slug: slug,
+            locale: locale,
+            name: fallbackCategory.name[locale as 'tr' | 'en'] || fallbackCategory.name.en,
+            description: fallbackCategory.description[locale as 'tr' | 'en'] || fallbackCategory.description.en,
+            content: undefined, // Fallback data doesn't have structured content
+            icon_name: 'Leaf', // Default icon
+            color_theme: 'from-green-500 to-emerald-600', // Default color
+            sort_order: 1, // Default sort order
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+          
+          setCategory(categoryData);
+          setLoading(false);
         } else {
-          console.error('Error fetching category:', result.error);
+          console.log('Category not found in fallback data for slug:', slug);
           notFound();
         }
       } catch (error) {
         console.error('Error fetching category:', error);
         notFound();
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchCategory();
+    if (slug && locale) {
+      fetchCategory();
+    }
   }, [slug, locale]);
   
   if (loading) {
