@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Test to see if CSS is loading */
 body {
   background-color: #ffffff !important;

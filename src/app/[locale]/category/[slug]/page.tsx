@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
 import { useImageSize } from '@/hooks/useResponsiveImage';
+import { useState, useEffect } from 'react';
 import { 
   Leaf, 
   Users, 
@@ -18,6 +19,20 @@ interface CategoryPageProps {
     locale: string;
     slug: string;
   };
+}
+
+interface Category {
+  id: string;
+  slug: string;
+  locale: string;
+  name: string;
+  description: string;
+  icon_name: string;
+  color_theme: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 const categories = {
@@ -221,8 +236,87 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const { locale, slug } = params;
   const isEnglish = locale === 'en';
   const imageSize = useImageSize();
+  const [category, setCategory] = useState<Category | null>(null);
+  const [loading, setLoading] = useState(true);
   
-  const category = categories[slug as keyof typeof categories];
+  // Turkish translations for category names and descriptions
+  const turkishTranslations: Record<string, { name: string; description: string }> = {
+    'nature': {
+      name: 'Doğa',
+      description: 'Kaçkar Dağları\'nın el değmemiş doğası, buzul gölleri, endemik bitki örtüsü ve nefes kesen manzaraları'
+    },
+    'culture': {
+      name: 'Kültür',
+      description: 'Çok kültürlü miras, tarihi köyler, geleneksel mimari ve kadim gelenekler'
+    },
+    'gastronomy': {
+      name: 'Gastronomi',
+      description: 'Karadeniz mutfağının lezzetleri, yerel ürünler, geleneksel yemekler ve organik tatlar'
+    },
+    'adventure': {
+      name: 'Macera',
+      description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin aktiviteleri'
+    },
+    'accommodation': {
+      name: 'Konaklama',
+      description: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri'
+    },
+    'transportation': {
+      name: 'Ulaşım',
+      description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler'
+    }
+  };
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await fetch(`/api/public/categories?locale=en`); // Always fetch English categories
+        const result = await response.json();
+        
+        if (response.ok) {
+          console.log('Categories fetched:', result.data);
+          const foundCategory = result.data.find((cat: Category) => cat.slug === slug);
+          if (foundCategory) {
+            console.log('Category found:', foundCategory);
+            
+            // Apply Turkish translations if locale is 'tr'
+            if (locale === 'tr' && turkishTranslations[slug]) {
+              const translation = turkishTranslations[slug];
+              setCategory({
+                ...foundCategory,
+                name: translation.name,
+                description: translation.description,
+                locale: 'tr'
+              });
+            } else {
+              setCategory(foundCategory);
+            }
+          } else {
+            console.log('Category not found for slug:', slug);
+            notFound();
+          }
+        } else {
+          console.error('Error fetching category:', result.error);
+          notFound();
+        }
+      } catch (error) {
+        console.error('Error fetching category:', error);
+        notFound();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategory();
+  }, [slug, locale]);
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
   
   if (!category) {
     notFound();
@@ -290,13 +384,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </div>
           
           <h1 className="text-5xl md:text-6xl font-serif font-bold mb-4 leading-tight bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent drop-shadow-2xl">
-            {category.name[locale as 'tr' | 'en']}
+            {category.name}
           </h1>
           
           {/* Glass Panel for Description */}
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-2xl max-w-3xl mx-auto">
             <p className="text-xl text-white leading-relaxed drop-shadow-md">
-              {category.description[locale as 'tr' | 'en']}
+              {category.description}
             </p>
           </div>
         </div>
@@ -318,21 +412,39 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           {/* Main Content */}
           <div className="prose prose-lg max-w-none">
             <p className="text-gray-700 leading-relaxed text-lg mb-8">
-              {category.content[locale as 'tr' | 'en']}
+              {category.description}
             </p>
 
-            {/* Highlights */}
+            {/* Category Info */}
             <div className="bg-gray-50 rounded-xl p-8 mb-12">
               <h3 className="text-2xl font-serif text-navy mb-6">
-                {isEnglish ? 'Highlights' : 'Öne Çıkanlar'}
+                {isEnglish ? 'Category Information' : 'Kategori Bilgileri'}
               </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                {category.highlights[locale as 'tr' | 'en'].map((highlight, index) => (
-                  <div key={index} className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                    <span className="text-gray-700">{highlight}</span>
-                  </div>
-                ))}
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  <span className="text-gray-700">
+                    <strong>{isEnglish ? 'Category:' : 'Kategori:'}</strong> {category.name}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  <span className="text-gray-700">
+                    <strong>{isEnglish ? 'Status:' : 'Durum:'}</strong> {category.is_active ? (isEnglish ? 'Active' : 'Aktif') : (isEnglish ? 'Inactive' : 'Pasif')}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  <span className="text-gray-700">
+                    <strong>{isEnglish ? 'Order:' : 'Sıra:'}</strong> {category.sort_order}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                  <span className="text-gray-700">
+                    <strong>{isEnglish ? 'Language:' : 'Dil:'}</strong> {category.locale.toUpperCase()}
+                  </span>
+                </div>
               </div>
             </div>
 

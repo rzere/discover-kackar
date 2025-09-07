@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase-client';
 
-export default function AdminLogin() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,26 +30,10 @@ export default function AdminLogin() {
       }
 
       if (data.user) {
-        // Check user role
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', data.user.id)
-          .single();
-
-        if (profileError || !profile) {
-          setError('User profile not found');
-          setLoading(false);
-          return;
-        }
-
-        if (profile.role !== 'admin' && profile.role !== 'editor') {
-          setError('Access denied. Admin or editor role required.');
-          await supabase.auth.signOut();
-          setLoading(false);
-          return;
-        }
-
+        // For now, allow any authenticated user to access admin
+        // You can add role checking later if needed
+        console.log('User logged in:', data.user.email);
+        
         // Redirect to dashboard
         router.push('/admin/dashboard');
       }

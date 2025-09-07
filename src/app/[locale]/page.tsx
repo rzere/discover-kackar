@@ -5,6 +5,7 @@ import ImageGallery from '@/components/sections/ImageGallery';
 import { getImageFromCategory, getImageUrl } from '@/lib/utils/imageUtils';
 import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
+// Using API routes instead of direct Supabase calls
 import { 
   Mountains, 
   Heart, 
@@ -21,6 +22,25 @@ import {
   Car
 } from '@phosphor-icons/react';
 
+interface PageData {
+  title: string;
+  meta_title: string;
+  meta_description: string;
+  h1: string;
+  content: any;
+}
+
+interface Category {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  icon_name: string;
+  color_theme: string;
+  sort_order: number;
+  is_active: boolean;
+}
+
 export default function Home({
   params
 }: {
@@ -28,7 +48,72 @@ export default function Home({
 }) {
   const isEnglish = params.locale === 'en';
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [pageData, setPageData] = useState<PageData | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const imageSize = useImageSize();
+
+  // Fetch page data and categories from API routes
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch home page data
+        const pageResponse = await fetch(`/api/public/pages?slug=home&locale=${params.locale}`);
+        const pageResult = await pageResponse.json();
+
+        if (pageResponse.ok && pageResult.data) {
+          console.log('Page data loaded:', pageResult.data);
+          setPageData(pageResult.data);
+        } else {
+          console.log('No page data found, using fallback');
+        }
+
+        // Fetch categories (always fetch English, then translate if needed)
+        const categoriesResponse = await fetch(`/api/public/categories?locale=en`);
+        const categoriesResult = await categoriesResponse.json();
+
+        if (categoriesResponse.ok) {
+          console.log('Categories loaded:', categoriesResult.data);
+          let categoriesData = categoriesResult.data || [];
+          
+          // Apply Turkish translations if needed
+          if (params.locale === 'tr') {
+            const turkishTranslations: Record<string, { name: string; description: string }> = {
+              'nature': { name: 'Doğa', description: 'Kaçkar Dağları\'nın el değmemiş doğası, buzul gölleri, endemik bitki örtüsü ve nefes kesen manzaraları' },
+              'culture': { name: 'Kültür', description: 'Çok kültürlü miras, tarihi köyler, geleneksel mimari ve kadim gelenekler' },
+              'gastronomy': { name: 'Gastronomi', description: 'Karadeniz mutfağının lezzetleri, yerel ürünler, geleneksel yemekler ve organik tatlar' },
+              'adventure': { name: 'Macera', description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin aktiviteleri' },
+              'accommodation': { name: 'Konaklama', description: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri' },
+              'transportation': { name: 'Ulaşım', description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler' }
+            };
+            
+            categoriesData = categoriesData.map((cat: Category) => {
+              if (turkishTranslations[cat.slug]) {
+                const translation = turkishTranslations[cat.slug];
+                return {
+                  ...cat,
+                  name: translation.name,
+                  description: translation.description,
+                  locale: 'tr'
+                };
+              }
+              return cat;
+            });
+          }
+          
+          setCategories(categoriesData);
+        } else {
+          console.error('Error fetching categories:', categoriesResult.error);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [params.locale]);
   
   // Get hero images
   const heroImages = [
@@ -47,6 +132,34 @@ export default function Home({
 
     return () => clearInterval(interval);
   }, [heroImages.length]);
+
+  // Fallback content if no data from Supabase
+  const fallbackContent = {
+    title: isEnglish ? 'Discover Kaçkar' : 'Kaçkar\'ı Keşfedin',
+    subtitle: isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti',
+    description: isEnglish 
+      ? 'Explore the pristine wilderness, ancient cultures, and breathtaking landscapes of Turkey\'s hidden gem in the Black Sea region.'
+      : 'Karadeniz bölgesinin gizli hazinesi olan Kaçkar Dağları\'nın el değmemiş doğasını, kadim kültürlerini ve nefes kesen manzaralarını keşfedin.',
+    cta_primary: isEnglish ? 'Explore Nature' : 'Doğayı Keşfet',
+    cta_secondary: isEnglish ? 'Discover Culture' : 'Kültürü Keşfet',
+    stats: [
+      { value: '3,937m', label: isEnglish ? 'Highest Peak' : 'En Yüksek Zirve' },
+      { value: '50+', label: isEnglish ? 'Alpine Lakes' : 'Alpin Göl' },
+      { value: '100+', label: isEnglish ? 'Photo Spots' : 'Fotoğraf Noktası' }
+    ]
+  };
+
+  // Use dynamic data or fallback
+  const content = pageData?.content || fallbackContent;
+  const pageTitle = pageData?.h1 || fallbackContent.title;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -123,20 +236,17 @@ export default function Home({
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 sm:mb-6 leading-tight bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent drop-shadow-2xl px-2">
-            Discover Kaçkar
+            {pageTitle}
           </h1>
           
           {/* Glass Panel for Text Content */}
           <div className="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-primary font-medium drop-shadow-lg">
-              {isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}
+              {content.subtitle}
             </p>
             
             <p className="text-base sm:text-lg md:text-xl text-white leading-relaxed drop-shadow-md">
-              {isEnglish 
-                ? "Explore the pristine wilderness, ancient cultures, and breathtaking landscapes of Turkey's hidden gem in the Black Sea region."
-                : "Karadeniz bölgesinin gizli hazinesi olan Kaçkar Dağları'nın el değmemiş doğasını, kadim kültürlerini ve nefes kesen manzaralarını keşfedin."
-              }
+              {content.description}
             </p>
           </div>
           
@@ -145,7 +255,7 @@ export default function Home({
               href={`/${params.locale}/category/nature`}
               className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary to-secondary text-navy font-semibold rounded-full hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm text-sm sm:text-base"
             >
-              {isEnglish ? 'Explore Nature' : 'Doğayı Keşfet'}
+              {content.cta_primary}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -155,7 +265,7 @@ export default function Home({
               href={`/${params.locale}/category/culture`}
               className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/80 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
             >
-              {isEnglish ? 'Discover Culture' : 'Kültürü Keşfet'}
+              {content.cta_secondary}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -164,35 +274,19 @@ export default function Home({
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto px-4">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
-              <div className="flex justify-center mb-2">
-                <Compass size={24} className="text-white sm:w-8 sm:h-8" />
+            {content.stats.map((stat, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
+                <div className="flex justify-center mb-2">
+                  {index === 0 && <Compass size={24} className="text-white sm:w-8 sm:h-8" />}
+                  {index === 1 && <Mountains size={24} className="text-white sm:w-8 sm:h-8" />}
+                  {index === 2 && <Camera size={24} className="text-white sm:w-8 sm:h-8" />}
+                </div>
+                <div className="text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
+                <div className="text-xs sm:text-sm text-gray-200">
+                  {stat.label}
+                </div>
               </div>
-              <div className="text-xl sm:text-2xl font-bold text-white">3,937m</div>
-              <div className="text-xs sm:text-sm text-gray-200">
-                {isEnglish ? 'Highest Peak' : 'En Yüksek Zirve'}
-              </div>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
-              <div className="flex justify-center mb-2">
-                <Mountains size={24} className="text-white sm:w-8 sm:h-8" />
-              </div>
-              <div className="text-xl sm:text-2xl font-bold text-white">50+</div>
-              <div className="text-xs sm:text-sm text-gray-200">
-                {isEnglish ? 'Alpine Lakes' : 'Buzul Gölü'}
-              </div>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
-              <div className="flex justify-center mb-2">
-                <Camera size={24} className="text-white sm:w-8 sm:h-8" />
-              </div>
-              <div className="text-xl sm:text-2xl font-bold text-white">100+</div>
-              <div className="text-xs sm:text-sm text-gray-200">
-                {isEnglish ? 'Photo Spots' : 'Fotoğraf Noktası'}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -241,42 +335,51 @@ export default function Home({
 
           {/* Category Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Nature Category */}
-            <Link href={`/${params.locale}/category/nature`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                  <Leaf size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Nature' : 'Doğa'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'Pristine nature of Kaçkar Mountains, glacial lakes, endemic flora and breathtaking landscapes'
-                      : 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları'
-                    }
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? '50+ Glacial Lakes' : '50+ Buzul Gölü'}
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <Link key={category.id} href={`/${params.locale}/category/${category.slug}`} className="group">
+                  <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                    <div className={`h-32 bg-gradient-to-br ${category.color_theme} flex items-center justify-center`}>
+                      <span className="text-white text-4xl">📁</span>
                     </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Endemic Plant Species' : 'Endemik Bitki Türleri'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? '3,937m Kaçkar Peak' : '3,937m Kaçkar Zirvesi'}
+                    <div className="p-6">
+                      <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                        {category.name}
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed">
+                        {category.description}
+                      </p>
+                      <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                        {isEnglish ? 'Explore →' : 'Keşfet →'}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                </Link>
+              ))
+            ) : (
+              // Fallback categories if no data from Supabase
+              <>
+                <Link href={`/${params.locale}/category/nature`} className="group">
+                  <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                    <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                      <Leaf size={48} className="text-white" />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                        {isEnglish ? 'Nature' : 'Doğa'}
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed">
+                        {isEnglish 
+                          ? 'Pristine nature of Kaçkar Mountains, glacial lakes, endemic flora and breathtaking landscapes'
+                          : 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları'
+                        }
+                      </p>
+                      <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                        {isEnglish ? 'Explore →' : 'Keşfet →'}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Link>
+                </Link>
 
             {/* Culture Category */}
             <Link href={`/${params.locale}/category/culture`} className="group">
@@ -462,6 +565,8 @@ export default function Home({
                 </div>
               </div>
             </Link>
+              </>
+            )}
           </div>
 
           {/* Call to Action */}

@@ -1,17 +1,9 @@
-'use client';
+import AdminLayout from '@/components/admin/AdminLayout';
 
-import { AuthProvider } from '@/lib/contexts/AuthContext';
-
-export default function AdminLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <AuthProvider>
-      <div className="admin-layout">
-        {children}
-      </div>
-    </AuthProvider>
-  );
+  return <AdminLayout>{children}</AdminLayout>;
 }
