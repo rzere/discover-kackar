@@ -300,7 +300,7 @@ export default function Home({
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto px-4">
-            {content.stats.map((stat: { value: string; label: string }, index) => (
+            {content.stats.map((stat: { value: string; label: string }, index: number) => (
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
               <div className="flex justify-center mb-2">
                   {index === 0 && <Compass size={24} className="text-white sm:w-8 sm:h-8" />}

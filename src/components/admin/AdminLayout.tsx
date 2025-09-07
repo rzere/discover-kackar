@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase-client';
-import { User, Database } from '@/lib/types/database';
+import { Database } from '@/lib/types/database';
+import { User } from '@supabase/supabase-js';
 import { 
   House, 
   FileText, 

@@ -13,6 +13,7 @@ import {
   House, 
   Car 
 } from '@phosphor-icons/react';
+import SimpleNavbar from '@/components/layout/SimpleNavbar';
 
 interface CategoryPageProps {
   params: {
@@ -27,6 +28,11 @@ interface Category {
   locale: string;
   name: string;
   description: string;
+  content?: {
+    header?: string;
+    bullets?: string[];
+    body?: string;
+  };
   icon_name: string;
   color_theme: string;
   sort_order: number;
@@ -327,30 +333,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Simple Navbar */}
-      <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href={`/${locale}`} className="text-2xl font-serif font-bold text-navy hover:text-primary transition-colors">
-              Discover Kaçkar
-            </Link>
-            <div className="flex space-x-4">
-              <Link
-                href="/tr"
-                className={`px-3 py-1 text-sm rounded ${locale === 'tr' ? 'bg-primary text-white' : 'text-gray-700 hover:text-primary'}`}
-              >
-                TR
-              </Link>
-              <Link
-                href="/en"
-                className={`px-3 py-1 text-sm rounded ${locale === 'en' ? 'bg-primary text-white' : 'text-gray-700 hover:text-primary'}`}
-              >
-                EN
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <SimpleNavbar locale={locale} />
 
       {/* Hero Section */}
       <section className="relative h-96 flex items-center justify-center overflow-hidden text-white">
