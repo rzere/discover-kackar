@@ -1,6 +1,6 @@
 // Utility functions for handling images in the Discover Kaçkar website
 
-export function getImageUrl(imagePath: string): string {
+export function getImageUrl(imagePath: string, size: 'mobile' | 'tablet' | 'desktop' = 'desktop'): string {
   // Handle empty or invalid paths
   if (!imagePath) return '/images/placeholder.jpg';
   
@@ -9,9 +9,31 @@ export function getImageUrl(imagePath: string): string {
     return imagePath;
   }
   
-  // For local images, serve from public/images
-  // This works both in development and production when images are committed
-  return `/images/${imagePath}`;
+  // For optimized images, use the responsive versions
+  const baseName = imagePath.replace(/\.(jpg|jpeg|png)$/i, '');
+  const optimizedPath = `/images/optimized/${baseName}_${size}.avif`;
+  
+  // Check if optimized version exists, fallback to original
+  return optimizedPath;
+}
+
+// Get responsive image URL based on screen size
+export function getResponsiveImageUrl(imagePath: string, width?: number): string {
+  if (!imagePath) return '/images/placeholder.jpg';
+  
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+  
+  // Determine size based on width or default to desktop
+  let size: 'mobile' | 'tablet' | 'desktop' = 'desktop';
+  if (width) {
+    if (width <= 640) size = 'mobile';
+    else if (width <= 1024) size = 'tablet';
+    else size = 'desktop';
+  }
+  
+  return getImageUrl(imagePath, size);
 }
 
 export function getOptimizedImageUrl(imagePath: string, width: number, height?: number): string {

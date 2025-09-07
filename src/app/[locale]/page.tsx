@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import ImageGallery from '@/components/sections/ImageGallery';
 import { getImageFromCategory, getImageUrl } from '@/lib/utils/imageUtils';
+import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
 import { 
   Mountains, 
@@ -27,6 +28,7 @@ export default function Home({
 }) {
   const isEnglish = params.locale === 'en';
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const imageSize = useImageSize();
   
   // Get hero images
   const heroImages = [
@@ -84,7 +86,7 @@ export default function Home({
                 index === currentImageIndex ? 'opacity-100' : 'opacity-0'
               }`}
               style={{
-                backgroundImage: `url(${getImageUrl(image)})`,
+                backgroundImage: `url(${getImageUrl(image, imageSize)})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'

@@ -3,6 +3,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
+import { useImageSize } from '@/hooks/useResponsiveImage';
 import { 
   Leaf, 
   Users, 
@@ -219,6 +220,7 @@ const categoryIconMap = {
 export default function CategoryPage({ params }: CategoryPageProps) {
   const { locale, slug } = params;
   const isEnglish = locale === 'en';
+  const imageSize = useImageSize();
   
   const category = categories[slug as keyof typeof categories];
   
@@ -262,7 +264,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url(${getImageUrl(backgroundImage)})`
+            backgroundImage: `url(${getImageUrl(backgroundImage, imageSize)})`
           }}
         />
         
