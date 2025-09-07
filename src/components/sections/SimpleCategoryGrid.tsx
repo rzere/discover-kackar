@@ -10,6 +10,7 @@ import {
   Camera,
   Heart
 } from '@phosphor-icons/react';
+import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
 
 interface SimpleCategoryGridProps {
   locale: string;
@@ -17,7 +18,7 @@ interface SimpleCategoryGridProps {
 
 const categories = [
   {
-    id: 'nature',
+    id: '1',
     slug: 'nature',
     icon: Tree,
     name: { tr: 'Doğa', en: 'Nature' },
@@ -28,11 +29,10 @@ const categories = [
     highlights: {
       tr: ['50+ Buzul Gölü', 'Endemik Bitki Türleri', '3,937m Kaçkar Zirvesi'],
       en: ['50+ Glacial Lakes', 'Endemic Plant Species', '3,937m Kaçkar Peak']
-    },
-    color: 'from-green-500 to-emerald-600'
+    }
   },
   {
-    id: 'culture',
+    id: '2',
     slug: 'culture',
     icon: Buildings,
     name: { tr: 'Kültür', en: 'Culture' },
@@ -43,11 +43,10 @@ const categories = [
     highlights: {
       tr: ['Tarihi Köyler', 'Geleneksel Mimarisi', 'Kültürel Festivaller'],
       en: ['Historic Villages', 'Traditional Architecture', 'Cultural Festivals']
-    },
-    color: 'from-amber-500 to-orange-600'
+    }
   },
   {
-    id: 'gastronomy',
+    id: '3',
     slug: 'gastronomy',
     icon: ForkKnife,
     name: { tr: 'Gastronomi', en: 'Gastronomy' },
@@ -58,11 +57,10 @@ const categories = [
     highlights: {
       tr: ['Karadeniz Mutfağı', 'Organik Ürünler', 'Geleneksel Tatlar'],
       en: ['Black Sea Cuisine', 'Organic Products', 'Traditional Flavors']
-    },
-    color: 'from-red-500 to-pink-600'
+    }
   },
   {
-    id: 'adventure',
+    id: '4',
     slug: 'adventure',
     icon: Backpack,
     name: { tr: 'Macera', en: 'Adventure' },
@@ -73,11 +71,10 @@ const categories = [
     highlights: {
       tr: ['Trekking Rotaları', 'Dağcılık', 'Yayla Turları'],
       en: ['Trekking Routes', 'Mountaineering', 'Highland Tours']
-    },
-    color: 'from-blue-500 to-indigo-600'
+    }
   },
   {
-    id: 'accommodation',
+    id: '5',
     slug: 'accommodation',
     icon: House,
     name: { tr: 'Konaklama', en: 'Accommodation' },
@@ -88,11 +85,10 @@ const categories = [
     highlights: {
       tr: ['Geleneksel Pansiyonlar', 'Yayla Evleri', 'Kamp Alanları'],
       en: ['Traditional Guesthouses', 'Highland Houses', 'Camping Sites']
-    },
-    color: 'from-purple-500 to-violet-600'
+    }
   },
   {
-    id: 'transportation',
+    id: '6',
     slug: 'transportation',
     icon: Car,
     name: { tr: 'Ulaşım', en: 'Transportation' },
@@ -103,8 +99,7 @@ const categories = [
     highlights: {
       tr: ['Havayolu Bağlantıları', 'Otobüs Seferleri', 'Yerel Transfer'],
       en: ['Flight Connections', 'Bus Services', 'Local Transfers']
-    },
-    color: 'from-gray-500 to-slate-600'
+    }
   }
 ];
 
@@ -139,18 +134,26 @@ export default function SimpleCategoryGrid({ locale }: SimpleCategoryGridProps) 
                 className="group"
               >
                 <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                  {/* Header with gradient background */}
-                  <div className={`h-32 bg-gradient-to-br ${category.color} flex items-center justify-center relative overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors"></div>
-                    <IconComponent size={48} className="text-white relative z-10 group-hover:scale-110 transition-transform duration-300" />
+                  {/* Header with category image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                      style={{
+                        backgroundImage: `url(${getImageUrl(getCategoryImage(category.id))})`
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    
+                    {/* Category Title Overlay */}
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="text-xl font-serif font-bold text-white drop-shadow-lg">
+                        {category.name[locale as 'tr' | 'en']}
+                      </h3>
+                    </div>
                   </div>
                   
                   {/* Content */}
                   <div className="p-6">
-                    <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                      {category.name[locale as 'tr' | 'en']}
-                    </h3>
-                    
                     <p className="text-gray-600 mb-4 leading-relaxed">
                       {category.description[locale as 'tr' | 'en']}
                     </p>
@@ -159,7 +162,7 @@ export default function SimpleCategoryGrid({ locale }: SimpleCategoryGridProps) 
                     <div className="space-y-2 mb-4">
                       {category.highlights[locale as 'tr' | 'en'].map((highlight, index) => (
                         <div key={index} className="flex items-center text-sm text-gray-500">
-                          <div className="w-2 h-2 bg-primary/60 rounded-full mr-3 flex-shrink-0"></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full mr-3 flex-shrink-0"></div>
                           {highlight}
                         </div>
                       ))}

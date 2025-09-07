@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Lato } from "next/font/google";
+import { Instrument_Serif, Lato, Open_Sans } from "next/font/google";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -12,6 +12,12 @@ const lato = Lato({
   variable: "--font-lato",
   subsets: ["latin"],
   weight: ["300", "400", "700", "900"],
+});
+
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +33,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body
-        className={`${instrumentSerif.variable} ${lato.variable} font-sans antialiased bg-white text-gray-900`}
+        className={`${instrumentSerif.variable} ${lato.variable} ${openSans.variable} font-sans antialiased bg-white text-gray-900`}
         suppressHydrationWarning
       >
         {children}

@@ -8,15 +8,15 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Test to see if CSS is loading */
+/* Minimal Dark Green Theme */
 body {
-  background-color: #ffffff !important;
-  color: #1f2937 !important;
-  font-family: var(--font-lato), sans-serif !important;
+  background-color: #fafafa !important; /* Off-white */
+  color: #1a1a1a !important; /* Dark blackish */
+  font-family: var(--font-open-sans), 'Open Sans', 'Lato', sans-serif !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #124170 !important;
+  color: #0E4542 !important; /* Dark green */
   font-weight: bold !important;
 }
 
@@ -25,19 +25,41 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .text-primary {
-  color: #67C090 !important;
+  color: #0E4542 !important; /* Dark green */
 }
 
 .text-navy {
-  color: #124170 !important;
+  color: #0E4542 !important; /* Dark green */
 }
 
 .bg-primary {
-  background-color: #67C090 !important;
+  background-color: #0E4542 !important; /* Dark green */
+  color: #fafafa !important; /* White text on dark green */
 }
 
 .bg-navy {
-  background-color: #124170 !important;
+  background-color: #0E4542 !important; /* Dark green */
+  color: #fafafa !important; /* White text on dark green */
+}
+
+/* Ensure white text on dark green backgrounds */
+.bg-gradient-to-r.from-\[#0E4542\].to-\[#0E4542\] {
+  color: #fafafa !important;
+}
+
+.bg-gradient-to-br.from-\[#0E4542\].to-\[#0E4542\] {
+  color: #fafafa !important;
+}
+
+/* Logo and text on dark backgrounds */
+.text-white {
+  color: #fafafa !important;
+}
+
+/* Buttons on dark green backgrounds */
+button.bg-primary,
+button.bg-navy {
+  color: #fafafa !important;
 }
 
 /* Button basic styling */

@@ -14,9 +14,32 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <h3 className="text-xl font-serif font-bold mb-4 text-primary">
-              Discover Kaçkar
-            </h3>
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="h-10 w-24 bg-white p-1 rounded flex items-center justify-center">
+                <img 
+                  src="/logos/logo-main.png" 
+                  alt="Discover Kaçkar" 
+                  className="h-8 w-auto"
+                  style={{ maxWidth: '100px' }}
+                  onError={(e) => {
+                    console.log('SimpleFooter logo failed to load, trying JPG version');
+                    e.currentTarget.src = '/logos/logo-main.jpg';
+                    e.currentTarget.onerror = () => {
+                      console.log('JPG also failed, trying UTMB logo');
+                      e.currentTarget.src = '/logos/logo-UTMB.png';
+                      e.currentTarget.onerror = () => {
+                        console.log('All logos failed, showing fallback text');
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement!.innerHTML = '<span class="text-xs text-gray-600 font-bold">LOGO</span>';
+                      };
+                    };
+                  }}
+                />
+              </div>
+              <h3 className="text-xl font-serif font-bold text-primary">
+                Discover Kaçkar
+              </h3>
+            </div>
             <p className="text-gray-300 mb-4">
               {isEnglish 
                 ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains."

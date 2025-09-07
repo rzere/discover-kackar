@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { List, X, Globe } from '@phosphor-icons/react';
 
 interface SimpleNavbarProps {
@@ -32,9 +33,28 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
           {/* Logo */}
           <Link 
             href={`/${locale}`} 
-            className="text-2xl font-serif font-bold text-navy hover:text-primary transition-colors"
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
           >
-            Discover Kaçkar
+            <div className="h-10 w-24 bg-white p-1 rounded shadow-sm border border-gray-200 flex items-center justify-center relative">
+              <Image 
+                src="/logos/logo-main.png" 
+                alt="Discover Kaçkar" 
+                width={80}
+                height={32}
+                className="h-8 w-auto"
+                style={{ maxWidth: '100px' }}
+                onLoad={() => console.log('SimpleNavbar logo loaded successfully!')}
+                onError={() => {
+                  console.log('SimpleNavbar logo failed to load, trying JPG version...');
+                  // Fallback handled by Next.js Image component
+                }}
+              />
+              {/* Debug indicator - remove this later */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
+            </div>
+            <span className="text-xl font-serif font-bold text-primary">
+              Discover Kaçkar
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

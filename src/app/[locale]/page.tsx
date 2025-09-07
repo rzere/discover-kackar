@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import ImageGallery from '@/components/sections/ImageGallery';
-import { getImageFromCategory, getImageUrl } from '@/lib/utils/imageUtils';
+import { getImageFromCategory, getImageUrl, getCategoryImage } from '@/lib/utils/imageUtils';
 import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
 // Using API routes instead of direct Supabase calls
@@ -19,7 +20,12 @@ import {
   GraduationCap,
   CalendarCheck,
   House,
-  Car
+  Car,
+  Envelope,
+  Phone,
+  FacebookLogo,
+  InstagramLogo,
+  TwitterLogo
 } from '@phosphor-icons/react';
 
 interface PageData {
@@ -167,8 +173,28 @@ export default function Home({
       <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href={`/${params.locale}`} className="text-2xl font-serif font-bold text-navy hover:text-primary transition-colors">
+            <Link href={`/${params.locale}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <div className="h-10 w-24 flex items-center justify-center">
+                <img 
+                  src="/logos/logo-main.png" 
+                  alt="Discover Kaçkar" 
+                  className="h-8 w-auto"
+                  style={{ maxWidth: '100px' }}
+                  onLoad={() => console.log('Page navbar logo loaded successfully!')}
+                  onError={(e) => {
+                    console.log('Page navbar logo failed to load, trying UTMB logo');
+                    e.currentTarget.src = '/logos/logo-UTMB.png';
+                    e.currentTarget.onerror = () => {
+                      console.log('All logos failed, showing fallback text');
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.innerHTML = '<span class="text-xs text-gray-600 font-bold">LOGO</span>';
+                    };
+                  }}
+                />
+              </div>
+              <span className="text-xl font-serif font-bold text-primary">
               Discover Kaçkar
+              </span>
             </Link>
             <div className="flex space-x-4">
               <Link
@@ -274,17 +300,17 @@ export default function Home({
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto px-4">
-            {content.stats.map((stat, index) => (
+            {content.stats.map((stat: { value: string; label: string }, index) => (
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
-                <div className="flex justify-center mb-2">
+              <div className="flex justify-center mb-2">
                   {index === 0 && <Compass size={24} className="text-white sm:w-8 sm:h-8" />}
                   {index === 1 && <Mountains size={24} className="text-white sm:w-8 sm:h-8" />}
                   {index === 2 && <Camera size={24} className="text-white sm:w-8 sm:h-8" />}
-                </div>
+              </div>
                 <div className="text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
                 <div className="text-xs sm:text-sm text-gray-200">
                   {stat.label}
-                </div>
+            </div>
               </div>
             ))}
           </div>
@@ -339,13 +365,24 @@ export default function Home({
               categories.map((category) => (
                 <Link key={category.id} href={`/${params.locale}/category/${category.slug}`} className="group">
                   <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                    <div className={`h-32 bg-gradient-to-br ${category.color_theme} flex items-center justify-center`}>
-                      <span className="text-white text-4xl">📁</span>
+                    {/* Header with category image */}
+                    <div className="relative h-48 overflow-hidden">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                        style={{
+                          backgroundImage: `url(${getImageUrl(getCategoryImage(category.slug))})`
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      
+                      {/* Category Title Overlay */}
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-xl font-serif font-bold text-white drop-shadow-lg">
+                          {category.name}
+                        </h3>
+                      </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                        {category.name}
-                      </h3>
                       <p className="text-gray-600 mb-4 leading-relaxed">
                         {category.description}
                       </p>
@@ -359,27 +396,27 @@ export default function Home({
             ) : (
               // Fallback categories if no data from Supabase
               <>
-                <Link href={`/${params.locale}/category/nature`} className="group">
-                  <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                    <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                      <Leaf size={48} className="text-white" />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                        {isEnglish ? 'Nature' : 'Doğa'}
-                      </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed">
-                        {isEnglish 
-                          ? 'Pristine nature of Kaçkar Mountains, glacial lakes, endemic flora and breathtaking landscapes'
-                          : 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları'
-                        }
-                      </p>
-                      <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                        {isEnglish ? 'Explore →' : 'Keşfet →'}
-                      </div>
-                    </div>
+            <Link href={`/${params.locale}/category/nature`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                  <Leaf size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Nature' : 'Doğa'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'Pristine nature of Kaçkar Mountains, glacial lakes, endemic flora and breathtaking landscapes'
+                      : 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları'
+                    }
+                  </p>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {isEnglish ? 'Explore →' : 'Keşfet →'}
                   </div>
-                </Link>
+                </div>
+              </div>
+            </Link>
 
             {/* Culture Category */}
             <Link href={`/${params.locale}/category/culture`} className="group">
@@ -611,20 +648,144 @@ export default function Home({
       {/* Image Gallery Section */}
       <ImageGallery />
 
-      {/* Simple Footer */}
-      <footer className="bg-navy text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
+      {/* Professional Footer */}
+      <footer className="bg-navy text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main Footer Content */}
+          <div className="py-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+              {/* Brand Section */}
+              <div className="lg:col-span-2">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="h-12 w-32 flex items-center justify-center">
+                    <img 
+                      src="/logos/logo-main.png" 
+                      alt="Discover Kaçkar" 
+                      className="h-10 w-auto"
+                      style={{ maxWidth: '120px' }}
+                      onError={(e) => {
+                        console.log('Footer logo failed to load, trying UTMB logo');
+                        e.currentTarget.src = '/logos/logo-UTMB.png';
+                        e.currentTarget.onerror = () => {
+                          console.log('All logos failed, showing fallback text');
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.parentElement!.innerHTML = '<span class="text-sm text-gray-600 font-bold">LOGO</span>';
+                        };
+                      }}
+                    />
+                  </div>
+                  <h3 className="text-2xl font-serif font-bold text-white">
             Discover Kaçkar
           </h3>
-          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                </div>
+                <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
             {isEnglish 
-              ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains."
-              : "Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin."
+                    ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains. Your gateway to Turkey's hidden mountain paradise."
+                    : "Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin. Türkiye'nin gizli dağ cennetine açılan kapınız."
             }
           </p>
-          <div className="text-gray-400 text-sm">
+                <div className="flex space-x-4">
+                  <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
+                    <FacebookLogo size={20} />
+                  </a>
+                  <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                    <InstagramLogo size={20} />
+                  </a>
+                  <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
+                    <TwitterLogo size={20} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Quick Links */}
+              <div>
+                <h4 className="text-lg font-semibold mb-6 text-white">
+                  {isEnglish ? 'Explore' : 'Keşfet'}
+                </h4>
+                <ul className="space-y-3">
+                  <li>
+                    <Link href={`/${params.locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Nature' : 'Doğa'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={`/${params.locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Culture' : 'Kültür'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={`/${params.locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Gastronomy' : 'Gastronomi'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={`/${params.locale}/category/adventure`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Adventure' : 'Macera'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={`/${params.locale}/category/accommodation`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Accommodation' : 'Konaklama'}
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Contact Info */}
+              <div>
+                <h4 className="text-lg font-semibold mb-6 text-white">
+                  {isEnglish ? 'Contact' : 'İletişim'}
+                </h4>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <MapPin size={18} className="text-white mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-gray-300 text-sm">
+                        {isEnglish ? 'Kaçkar Mountains, Rize/Artvin' : 'Kaçkar Dağları, Rize/Artvin'}
+                      </p>
+                      <p className="text-gray-300 text-sm">Türkiye</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Envelope size={18} className="text-white flex-shrink-0" />
+                    <a href="mailto:info@discoverkackar.com" className="text-gray-300 hover:text-white transition-colors text-sm">
+                      info@discoverkackar.com
+                    </a>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Phone size={18} className="text-white flex-shrink-0" />
+                    <a href="tel:+90464XXXXXXX" className="text-gray-300 hover:text-white transition-colors text-sm">
+                      +90 464 XXX XX XX
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-gray-700 py-8">
+            <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
+              <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
+                <p className="text-gray-300 text-sm">
             © {new Date().getFullYear()} Discover Kaçkar. {isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}
+                </p>
+                <div className="flex items-center space-x-4 text-xs text-gray-400">
+                  <span>{isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}</span>
+                </div>
+              </div>
+              <div className="flex space-x-6">
+                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
+                </Link>
+                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
+                </Link>
+                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {isEnglish ? 'Cookie Policy' : 'Çerez Politikası'}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>

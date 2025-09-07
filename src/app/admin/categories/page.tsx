@@ -11,6 +11,11 @@ interface Category {
   locale: string;
   name: string;
   description: string;
+  content?: {
+    header?: string;
+    bullets?: string[];
+    body?: string;
+  };
   icon_name: string;
   color_theme: string;
   sort_order: number;
@@ -228,6 +233,11 @@ function CategoryForm({ category, onSave, onCancel }: { category: Category | nul
     locale: category?.locale || 'en',
     name: category?.name || '',
     description: category?.description || '',
+    content: {
+      header: category?.content?.header || '',
+      bullets: category?.content?.bullets || [''],
+      body: category?.content?.body || ''
+    },
     icon_name: category?.icon_name || 'Folder',
     color_theme: category?.color_theme || 'from-blue-500 to-blue-600',
     sort_order: category?.sort_order || 1,
@@ -298,6 +308,92 @@ function CategoryForm({ category, onSave, onCancel }: { category: Category | nul
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             required
           />
+        </div>
+
+        {/* Content Section */}
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Page Content</h3>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Header Text</label>
+              <input
+                type="text"
+                value={formData.content.header}
+                onChange={(e) => setFormData({
+                  ...formData, 
+                  content: {...formData.content, header: e.target.value}
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Discover the Untamed Beauty of Kaçkar Mountains"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Bullet Points</label>
+              <div className="space-y-2">
+                {formData.content.bullets.map((bullet, index) => (
+                  <div key={index} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={bullet}
+                      onChange={(e) => {
+                        const newBullets = [...formData.content.bullets];
+                        newBullets[index] = e.target.value;
+                        setFormData({
+                          ...formData,
+                          content: {...formData.content, bullets: newBullets}
+                        });
+                      }}
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder={`Bullet point ${index + 1}`}
+                    />
+                    {formData.content.bullets.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newBullets = formData.content.bullets.filter((_, i) => i !== index);
+                          setFormData({
+                            ...formData,
+                            content: {...formData.content, bullets: newBullets}
+                          });
+                        }}
+                        className="px-3 py-2 text-red-600 hover:text-red-800"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({
+                      ...formData,
+                      content: {...formData.content, bullets: [...formData.content.bullets, '']}
+                    });
+                  }}
+                  className="text-primary hover:text-primary/80 text-sm"
+                >
+                  + Add Bullet Point
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Body Text</label>
+              <textarea
+                value={formData.content.body}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  content: {...formData.content, body: e.target.value}
+                })}
+                rows={4}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Detailed description of the category..."
+              />
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

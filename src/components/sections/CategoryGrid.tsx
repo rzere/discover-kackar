@@ -35,10 +35,10 @@ export default function CategoryGrid() {
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-slide-up">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-navy mb-4">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">
             {locale === 'tr' ? 'Keşfedilecek Alanlar' : 'Areas to Explore'}
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto">
             {locale === 'tr' 
               ? 'Kaçkar\'ın her köşesinde farklı bir deneyim sizi bekliyor'
               : 'A different experience awaits you in every corner of Kaçkar'
@@ -66,20 +66,16 @@ export default function CategoryGrid() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   
-                  {/* Category Icon Overlay */}
-                  <div className="absolute top-4 right-4">
-                    <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <IconComponent size={24} className="text-primary" />
-                    </div>
+                  {/* Category Title Overlay */}
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="text-xl font-serif font-bold text-white drop-shadow-lg">
+                      {category.name[locale]}
+                    </h3>
                   </div>
                 </div>
                 
                 <div className="p-8">
-                  <h3 className="text-xl font-serif font-bold text-navy mb-3 group-hover:text-primary transition-colors">
-                    {category.name[locale]}
-                  </h3>
-                  
-                  <p className="text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-gray-700 mb-4 line-clamp-3">
                     {category.description?.[locale] || 
                       (locale === 'tr' 
                         ? 'Bu kategoride size özel deneyimler ve keşifler sunuyoruz.'
@@ -93,7 +89,7 @@ export default function CategoryGrid() {
                       {category.subcategories.slice(0, 3).map((sub) => (
                         <span
                           key={sub.id}
-                          className="px-3 py-1 bg-secondary/50 text-teal text-xs rounded-full"
+                          className="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
                         >
                           {sub.name[locale]}
                         </span>

@@ -411,42 +411,45 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
           {/* Main Content */}
           <div className="prose prose-lg max-w-none">
-            <p className="text-gray-700 leading-relaxed text-lg mb-8">
-              {category.description}
-            </p>
+            {/* Header Text */}
+            {category.content?.header && (
+              <h2 className="text-3xl font-serif text-primary mb-8 text-center">
+                {category.content.header}
+              </h2>
+            )}
 
-            {/* Category Info */}
-            <div className="bg-gray-50 rounded-xl p-8 mb-12">
-              <h3 className="text-2xl font-serif text-navy mb-6">
-                {isEnglish ? 'Category Information' : 'Kategori Bilgileri'}
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  <span className="text-gray-700">
-                    <strong>{isEnglish ? 'Category:' : 'Kategori:'}</strong> {category.name}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  <span className="text-gray-700">
-                    <strong>{isEnglish ? 'Status:' : 'Durum:'}</strong> {category.is_active ? (isEnglish ? 'Active' : 'Aktif') : (isEnglish ? 'Inactive' : 'Pasif')}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  <span className="text-gray-700">
-                    <strong>{isEnglish ? 'Order:' : 'Sıra:'}</strong> {category.sort_order}
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                  <span className="text-gray-700">
-                    <strong>{isEnglish ? 'Language:' : 'Dil:'}</strong> {category.locale.toUpperCase()}
-                  </span>
+            {/* Bullets Section */}
+            {category.content?.bullets && category.content.bullets.length > 0 && (
+              <div className="bg-gray-50 rounded-xl p-8 mb-12">
+                <h3 className="text-2xl font-serif text-primary mb-6 text-center">
+                  {isEnglish ? 'Highlights' : 'Öne Çıkanlar'}
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {category.content.bullets.map((bullet: string, index: number) => (
+                    <div key={index} className="flex items-start">
+                      <div className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                      <span className="text-gray-700 leading-relaxed">{bullet}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Body Text */}
+            {category.content?.body && (
+              <div className="mb-12">
+                <p className="text-gray-700 leading-relaxed text-lg">
+                  {category.content.body}
+                </p>
+              </div>
+            )}
+
+            {/* Fallback Description if no content */}
+            {!category.content && (
+              <p className="text-gray-700 leading-relaxed text-lg mb-8">
+                {category.description}
+              </p>
+            )}
 
             {/* Call to Action */}
             <div className="text-center bg-white border-2 border-primary/20 rounded-xl p-8">

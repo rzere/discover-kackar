@@ -10,58 +10,86 @@ export default function Footer() {
 
   return (
     <footer className="bg-navy text-white mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <Link href={`/${locale}`} className="text-2xl font-serif font-bold text-white hover:text-primary transition-colors">
-              Discover Kaçkar
+            <Link href={`/${locale}`} className="flex items-center space-x-3 mb-6">
+              <div className="h-12 w-32 bg-white p-2 rounded flex items-center justify-center">
+                <img 
+                  src="/logos/logo-main.png" 
+                  alt="Discover Kaçkar" 
+                  className="h-10 w-auto"
+                  style={{ maxWidth: '120px' }}
+                  onError={(e) => {
+                    console.log('Footer logo failed to load, trying JPG version');
+                    e.currentTarget.src = '/logos/logo-main.jpg';
+                    e.currentTarget.onerror = () => {
+                      console.log('JPG also failed, trying UTMB logo');
+                      e.currentTarget.src = '/logos/logo-UTMB.png';
+                      e.currentTarget.onerror = () => {
+                        console.log('All logos failed, showing fallback text');
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement!.innerHTML = '<span class="text-sm text-gray-600 font-bold">LOGO</span>';
+                      };
+                    };
+                  }}
+                />
+              </div>
+              <span className="text-2xl font-serif font-bold text-white">
+                Discover Kaçkar
+              </span>
             </Link>
-            <p className="mt-4 text-gray-300 max-w-md">
+            <p className="text-gray-300 max-w-md leading-relaxed mb-6">
               {locale === 'tr' 
-                ? 'Kaçkar Dağları\'nın eşsiz güzelliklerini, zengin kültürünü ve heyecan verici maceralarını keşfedin.'
-                : 'Discover the unique beauties, rich culture and exciting adventures of the Kaçkar Mountains.'
+                ? 'Kaçkar Dağları\'nın eşsiz güzelliklerini, zengin kültürünü ve heyecan verici maceralarını keşfedin. Doğa, kültür ve macera dolu bir deneyim için bize katılın.'
+                : 'Discover the unique beauties, rich culture and exciting adventures of the Kaçkar Mountains. Join us for an experience filled with nature, culture and adventure.'
               }
             </p>
             
             {/* Social Links */}
-            <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-300 hover:text-primary transition-colors">
-                <FacebookLogo size={24} />
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <FacebookLogo size={20} />
               </a>
-              <a href="#" className="text-gray-300 hover:text-primary transition-colors">
-                <InstagramLogo size={24} />
+              <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <InstagramLogo size={20} />
               </a>
-              <a href="#" className="text-gray-300 hover:text-primary transition-colors">
-                <TwitterLogo size={24} />
+              <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+                <TwitterLogo size={20} />
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">
-              {locale === 'tr' ? 'Hızlı Bağlantılar' : 'Quick Links'}
+            <h3 className="text-lg font-semibold mb-6 text-white">
+              {locale === 'tr' ? 'Keşfet' : 'Explore'}
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li>
-                <Link href={`/${locale}/category/nature-adventure`} className="text-gray-300 hover:text-primary transition-colors">
-                  {locale === 'tr' ? 'Doğa & Macera' : 'Nature & Adventure'}
+                <Link href={`/${locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Doğa' : 'Nature'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/category/culture-local-life`} className="text-gray-300 hover:text-primary transition-colors">
-                  {locale === 'tr' ? 'Kültür & Yerel Hayat' : 'Culture & Local Life'}
+                <Link href={`/${locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Kültür' : 'Culture'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-primary transition-colors">
+                <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
                   {locale === 'tr' ? 'Gastronomi' : 'Gastronomy'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-primary transition-colors">
-                  {locale === 'tr' ? 'Sürdürülebilir Turizm' : 'Sustainable Tourism'}
+                <Link href={`/${locale}/category/adventure`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Macera' : 'Adventure'}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/category/accommodation`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Konaklama' : 'Accommodation'}
                 </Link>
               </li>
             </ul>
@@ -69,37 +97,55 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">
+            <h3 className="text-lg font-semibold mb-6 text-white">
               {locale === 'tr' ? 'İletişim' : 'Contact'}
             </h3>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <MapPin size={16} className="text-primary" />
-                <span className="text-gray-300 text-sm">Rize, Türkiye</span>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <MapPin size={18} className="text-white mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-gray-300 text-sm">
+                    {locale === 'tr' ? 'Kaçkar Dağları, Rize/Artvin' : 'Kaçkar Mountains, Rize/Artvin'}
+                  </p>
+                  <p className="text-gray-300 text-sm">Türkiye</p>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Envelope size={16} className="text-primary" />
-                <span className="text-gray-300 text-sm">info@discoverkackar.com</span>
+              <div className="flex items-center space-x-3">
+                <Envelope size={18} className="text-white flex-shrink-0" />
+                <a href="mailto:info@discoverkackar.com" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  info@discoverkackar.com
+                </a>
               </div>
-              <div className="flex items-center space-x-2">
-                <Phone size={16} className="text-primary" />
-                <span className="text-gray-300 text-sm">+90 464 XXX XXXX</span>
+              <div className="flex items-center space-x-3">
+                <Phone size={18} className="text-white flex-shrink-0" />
+                <a href="tel:+90464XXXXXXX" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  +90 464 XXX XX XX
+                </a>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-300 text-sm">
-              © 2024 Discover Kaçkar. {locale === 'tr' ? 'Tüm hakları saklıdır.' : 'All rights reserved.'}
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="#" className="text-gray-300 hover:text-primary transition-colors text-sm">
+        {/* Bottom Section */}
+        <div className="border-t border-gray-700 mt-12 pt-8">
+          <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
+              <p className="text-gray-300 text-sm">
+                © 2024 Discover Kaçkar. {locale === 'tr' ? 'Tüm hakları saklıdır.' : 'All rights reserved.'}
+              </p>
+              <div className="flex items-center space-x-4 text-xs text-gray-400">
+                <span>{locale === 'tr' ? 'Türkiye\'nin Gizli Dağ Cenneti' : 'Turkey\'s Hidden Mountain Paradise'}</span>
+              </div>
+            </div>
+            <div className="flex space-x-6">
+              <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
                 {locale === 'tr' ? 'Gizlilik Politikası' : 'Privacy Policy'}
               </Link>
-              <Link href="#" className="text-gray-300 hover:text-primary transition-colors text-sm">
+              <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
                 {locale === 'tr' ? 'Kullanım Şartları' : 'Terms of Service'}
+              </Link>
+              <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                {locale === 'tr' ? 'Çerez Politikası' : 'Cookie Policy'}
               </Link>
             </div>
           </div>
