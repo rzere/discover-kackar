@@ -250,7 +250,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        // Try to fetch from the API
         const response = await fetch(`/api/public/categories?locale=${locale}`);
         
         if (response.ok) {
@@ -268,33 +267,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           }
         }
         
-        // If API fails or category not found, try fallback data
-        console.log('API failed or category not found, trying fallback data for slug:', slug);
-        
-        // Fallback to hardcoded data if API fails
-        const fallbackCategory = categories[slug as keyof typeof categories];
-        if (fallbackCategory) {
-          const categoryData: Category = {
-            id: slug,
-            slug: slug,
-            locale: locale,
-            name: fallbackCategory.name[locale as 'tr' | 'en'] || fallbackCategory.name.en,
-            description: fallbackCategory.description[locale as 'tr' | 'en'] || fallbackCategory.description.en,
-            content: undefined, // Fallback data doesn't have structured content
-            icon_name: 'Leaf', // Default icon
-            color_theme: 'from-green-500 to-emerald-600', // Default color
-            sort_order: 1, // Default sort order
-            is_active: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          };
-          
-          setCategory(categoryData);
-          setLoading(false);
-        } else {
-          console.log('Category not found in fallback data for slug:', slug);
-          notFound();
-        }
+        console.log('Category not found for slug:', slug);
+        notFound();
       } catch (error) {
         console.error('Error fetching category:', error);
         notFound();
