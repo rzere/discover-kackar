@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     console.error('=== TEST UPLOAD ERROR ===', error);
     return NextResponse.json({ 
       error: 'Test upload failed',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

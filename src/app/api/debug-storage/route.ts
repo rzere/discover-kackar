@@ -47,7 +47,7 @@ export async function GET() {
     console.error('Debug storage error:', error);
     return NextResponse.json({ 
       error: 'Debug test failed',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

@@ -50,7 +50,7 @@ export async function GET() {
     console.error('Supabase test error:', error);
     return NextResponse.json({ 
       error: 'Supabase test failed',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

@@ -64,7 +64,7 @@ export async function GET() {
     console.error('Error in storage test:', error);
     return NextResponse.json({ 
       error: 'Internal server error',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
