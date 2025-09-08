@@ -40,7 +40,7 @@ export async function GET() {
     console.error('Error checking bucket:', error);
     return NextResponse.json({ 
       error: 'Failed to check bucket',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }

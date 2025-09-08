@@ -69,8 +69,8 @@ export default function Home({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch home page data
-        const pageResponse = await fetch(`/api/public/pages?slug=home&locale=${params.locale}`);
+        // Fetch home page data with cache-busting
+        const pageResponse = await fetch(`/api/public/pages?slug=home&locale=${params.locale}&t=${Date.now()}`);
         const pageResult = await pageResponse.json();
 
         if (pageResponse.ok && pageResult.data) {

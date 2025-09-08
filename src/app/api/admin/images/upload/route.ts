@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       console.error('Error uploading optimized images:', uploadErrors);
       return NextResponse.json({ 
         error: 'Failed to upload optimized images to storage', 
-        details: uploadErrors[0].error.message 
+        details: uploadErrors[0]?.error?.message || 'Unknown upload error'
       }, { status: 500 });
     }
     

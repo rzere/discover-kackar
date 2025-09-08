@@ -12,12 +12,15 @@ export async function GET(request: NextRequest) {
     }
 
     const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
+    console.log(`Fetching page: slug=${slug}, locale=${locale}`);
+    const { data: pages, error } = await supabaseAdmin
       .from('pages')
       .select('*')
       .eq('slug', slug)
-      .eq('locale', locale)
-      .single();
+      .eq('locale', locale);
+    
+    const data = pages && pages.length > 0 ? pages[0] : null;
+    console.log('Page data fetched:', data ? {id: data.id, title: data.title, h1: data.h1, updated_at: data.updated_at} : 'No data');
 
     if (error) {
       if (error.code === 'PGRST116') {
@@ -28,7 +31,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ data });
+    return NextResponse.json({ data }, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
   } catch (error) {
     console.error('Error in public pages API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

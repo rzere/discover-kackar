@@ -675,26 +675,40 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            required
-          />
-        </div>
+        {/* Hero Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="text-lg font-semibold text-blue-900 mb-3">🎯 Hero Section Content</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Hero Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Nature, Doğa, Culture, Kültür"
+                required
+              />
+              <p className="text-xs text-gray-500 mt-1">This appears as the main title in the hero section</p>
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-          <textarea
-            value={formData.description}
-            onChange={(e) => setFormData({...formData, description: e.target.value})}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            required
-          />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Hero Description <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Brief description that appears in the hero section"
+                required
+              />
+              <p className="text-xs text-gray-500 mt-1">This appears as the description in the hero section</p>
+            </div>
+          </div>
         </div>
 
         {/* Content Section */}
@@ -853,7 +867,7 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
           {/* Image Selection */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Image</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">🖼️ Hero Image</label>
               <div className="flex items-center space-x-4">
                 <button
                   type="button"

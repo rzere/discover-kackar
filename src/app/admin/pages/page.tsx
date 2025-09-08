@@ -383,6 +383,70 @@ function PageForm({ page, onSave, onCancel, onEditingPageChange }: { page: Page 
           />
         </div>
 
+        {/* Hero Section Content */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="text-lg font-semibold text-blue-900 mb-3">🎯 Main Hero Section Content</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Subtitle</label>
+              <input
+                type="text"
+                value={formData.content?.subtitle || ''}
+                onChange={(e) => setFormData({
+                  ...formData, 
+                  content: {...formData.content, subtitle: e.target.value}
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Turkey's Hidden Mountain Paradise"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Description</label>
+              <textarea
+                value={formData.content?.description || ''}
+                onChange={(e) => setFormData({
+                  ...formData, 
+                  content: {...formData.content, description: e.target.value}
+                })}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="Main description text in the hero section"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Primary CTA Button</label>
+                <input
+                  type="text"
+                  value={formData.content?.cta_primary || ''}
+                  onChange={(e) => setFormData({
+                    ...formData, 
+                    content: {...formData.content, cta_primary: e.target.value}
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., Explore Nature"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Secondary CTA Button</label>
+                <input
+                  type="text"
+                  value={formData.content?.cta_secondary || ''}
+                  onChange={(e) => setFormData({
+                    ...formData, 
+                    content: {...formData.content, cta_secondary: e.target.value}
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="e.g., Discover Culture"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
           <input
