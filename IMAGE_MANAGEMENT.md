@@ -1,4 +1,4 @@
-# 🖼️ Image Management Guide
+comm,t# 🖼️ Image Management Guide
 
 ## Problem Solved
 The repository was too large to push to GitHub due to 121+ high-resolution images (93 JPG, 15 PNG, 8 AVIF, 5 MP4). This guide explains how to manage images efficiently.

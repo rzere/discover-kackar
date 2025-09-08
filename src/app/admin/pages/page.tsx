@@ -75,14 +75,26 @@ export default function AdminPages() {
     try {
       let response;
       if (editingPage) {
-        // Update existing page
-        response = await fetch(`/api/admin/pages/${editingPage.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(pageData),
-        });
+        // Check if we're changing the locale - if so, we need to create a new record
+        if (editingPage.locale !== pageData.locale) {
+          // Create new page for the new locale
+          response = await fetch('/api/admin/pages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(pageData),
+          });
+        } else {
+          // Update existing page (same locale)
+          response = await fetch(`/api/admin/pages/${editingPage.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(pageData),
+          });
+        }
       } else {
         // Create new page
         response = await fetch('/api/admin/pages', {
@@ -154,6 +166,7 @@ export default function AdminPages() {
             setShowForm(false);
             setEditingPage(null);
           }}
+          onEditingPageChange={setEditingPage}
         />
       )}
 
@@ -223,7 +236,7 @@ export default function AdminPages() {
   );
 }
 
-function PageForm({ page, onSave, onCancel }: { page: Page | null, onSave: (data: Partial<Page>) => void, onCancel: () => void }) {
+function PageForm({ page, onSave, onCancel, onEditingPageChange }: { page: Page | null, onSave: (data: Partial<Page>) => void, onCancel: () => void, onEditingPageChange: (page: Page | null) => void }) {
   const [formData, setFormData] = useState({
     slug: page?.slug || '',
     locale: page?.locale || 'en',
@@ -234,6 +247,83 @@ function PageForm({ page, onSave, onCancel }: { page: Page | null, onSave: (data
     content: page?.content || {},
     status: page?.status || 'draft'
   });
+
+  const [loadingLocale, setLoadingLocale] = useState(false);
+
+  // Function to fetch page data for a specific locale
+  const fetchPageByLocale = async (slug: string, locale: string) => {
+    if (!slug) return null;
+    
+    try {
+      setLoadingLocale(true);
+      const response = await fetch(`/api/admin/pages/by-slug?slug=${encodeURIComponent(slug)}&locale=${encodeURIComponent(locale)}`);
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to fetch page');
+      }
+      
+      return result.data;
+    } catch (error) {
+      console.error('Error fetching page by locale:', error);
+      return null;
+    } finally {
+      setLoadingLocale(false);
+    }
+  };
+
+  // Handle locale change
+  const handleLocaleChange = async (newLocale: string) => {
+    const currentSlug = formData.slug;
+    
+    // If we have a slug, try to fetch existing data for the new locale
+    if (currentSlug) {
+      const existingPage = await fetchPageByLocale(currentSlug, newLocale);
+      
+      if (existingPage) {
+        // Load existing data for this locale and update editingPage state
+        const updatedPage = {
+          ...existingPage,
+          locale: newLocale
+        };
+        
+        setFormData({
+          ...formData,
+          locale: newLocale,
+          title: existingPage.title || '',
+          meta_title: existingPage.meta_title || '',
+          meta_description: existingPage.meta_description || '',
+          h1: existingPage.h1 || '',
+          content: existingPage.content || {},
+          status: existingPage.status || 'draft'
+        });
+        
+        // Update the editingPage state to reflect the current page being edited
+        onEditingPageChange(updatedPage);
+      } else {
+        // No existing data for this locale, clear the content fields but keep slug
+        setFormData({
+          ...formData,
+          locale: newLocale,
+          title: '',
+          meta_title: '',
+          meta_description: '',
+          h1: '',
+          content: {},
+          status: 'draft'
+        });
+        
+        // Clear editingPage since we're creating a new record for this locale
+        onEditingPageChange(null);
+      }
+    } else {
+      // No slug yet, just update the locale
+      setFormData({
+        ...formData,
+        locale: newLocale
+      });
+    }
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -256,11 +346,14 @@ function PageForm({ page, onSave, onCancel }: { page: Page | null, onSave: (data
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Locale</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Language {loadingLocale && <span className="text-sm text-gray-500">(Loading...)</span>}
+            </label>
             <select
               value={formData.locale}
-              onChange={(e) => setFormData({...formData, locale: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              onChange={(e) => handleLocaleChange(e.target.value)}
+              disabled={loadingLocale}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
             >
               <option value="en">English</option>
               <option value="tr">Turkish</option>

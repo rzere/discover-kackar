@@ -24,8 +24,15 @@ interface Category {
   updated_at: string;
 }
 
+interface GroupedCategory {
+  slug: string;
+  locales: {
+    [locale: string]: Category;
+  };
+}
+
 export default function AdminCategories() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<GroupedCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -47,7 +54,20 @@ export default function AdminCategories() {
       }
       
       console.log('Setting categories:', result.data);
-      setCategories(result.data || []);
+      
+      // Group categories by slug
+      const groupedCategories = (result.data || []).reduce((acc: any, category: Category) => {
+        if (!acc[category.slug]) {
+          acc[category.slug] = {
+            slug: category.slug,
+            locales: {}
+          };
+        }
+        acc[category.slug].locales[category.locale] = category;
+        return acc;
+      }, {});
+      
+      setCategories(Object.values(groupedCategories));
     } catch (error) {
       console.error('Error fetching categories:', error);
       alert('Error fetching categories: ' + error.message);
@@ -85,14 +105,26 @@ export default function AdminCategories() {
     try {
       let response;
       if (editingCategory) {
-        // Update existing category
-        response = await fetch(`/api/admin/categories/${editingCategory.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(categoryData),
-        });
+        // Check if we're changing the locale - if so, we need to create a new record
+        if (editingCategory.locale !== categoryData.locale) {
+          // Create new category for the new locale
+          response = await fetch('/api/admin/categories', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(categoryData),
+          });
+        } else {
+          // Update existing category (same locale)
+          response = await fetch(`/api/admin/categories/${editingCategory.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(categoryData),
+          });
+        }
       } else {
         // Create new category
         response = await fetch('/api/admin/categories', {
@@ -164,48 +196,72 @@ export default function AdminCategories() {
             setShowForm(false);
             setEditingCategory(null);
           }}
+          onEditingCategoryChange={setEditingCategory}
         />
       )}
 
       {categories.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <div key={category.id} className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${category.color_theme} flex items-center justify-center`}>
-                  <span className="text-white text-xl">📁</span>
+          {categories.map((groupedCategory) => {
+            const firstCategory = Object.values(groupedCategory.locales)[0];
+            const availableLocales = Object.keys(groupedCategory.locales);
+            
+            return (
+              <div key={groupedCategory.slug} className="bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${firstCategory.color_theme} flex items-center justify-center`}>
+                    <span className="text-white text-xl">📁</span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleEdit(firstCategory)}
+                      className="text-primary hover:text-primary/80"
+                    >
+                      <PencilSimple size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(firstCategory.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <Trash size={16} />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => handleEdit(category)}
-                    className="text-primary hover:text-primary/80"
-                  >
-                    <PencilSimple size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(category.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <Trash size={16} />
-                  </button>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{firstCategory.name}</h3>
+                <p className="text-gray-600 text-sm mb-4">{firstCategory.description}</p>
+                
+                {/* Language indicators */}
+                <div className="mb-4">
+                  <div className="flex gap-2">
+                    {availableLocales.map((locale) => (
+                      <span
+                        key={locale}
+                        className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                          locale === 'en' 
+                            ? 'bg-blue-100 text-blue-800' 
+                            : 'bg-green-100 text-green-800'
+                        }`}
+                      >
+                        {locale.toUpperCase()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    firstCategory.is_active 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {firstCategory.is_active ? 'Active' : 'Inactive'}
+                  </span>
+                  <span className="text-xs text-gray-500">Order: {firstCategory.sort_order}</span>
                 </div>
               </div>
-              
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{category.name}</h3>
-              <p className="text-gray-600 text-sm mb-4">{category.description}</p>
-              
-              <div className="flex justify-between items-center">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                  category.is_active 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-gray-100 text-gray-800'
-                }`}>
-                  {category.is_active ? 'Active' : 'Inactive'}
-                </span>
-                <span className="text-xs text-gray-500">Order: {category.sort_order}</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="text-center py-12">
@@ -227,7 +283,7 @@ export default function AdminCategories() {
   );
 }
 
-function CategoryForm({ category, onSave, onCancel }: { category: Category | null, onSave: (data: Partial<Category>) => void, onCancel: () => void }) {
+function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: { category: Category | null, onSave: (data: Partial<Category>) => void, onCancel: () => void, onEditingCategoryChange: (category: Category | null) => void }) {
   const [formData, setFormData] = useState({
     slug: category?.slug || '',
     locale: category?.locale || 'en',
@@ -243,6 +299,89 @@ function CategoryForm({ category, onSave, onCancel }: { category: Category | nul
     sort_order: category?.sort_order || 1,
     is_active: category?.is_active ?? true
   });
+
+  const [loadingLocale, setLoadingLocale] = useState(false);
+
+  // Function to fetch category data for a specific locale
+  const fetchCategoryByLocale = async (slug: string, locale: string) => {
+    if (!slug) return null;
+    
+    try {
+      setLoadingLocale(true);
+      const response = await fetch(`/api/admin/categories/by-slug?slug=${encodeURIComponent(slug)}&locale=${encodeURIComponent(locale)}`);
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to fetch category');
+      }
+      
+      return result.data;
+    } catch (error) {
+      console.error('Error fetching category by locale:', error);
+      return null;
+    } finally {
+      setLoadingLocale(false);
+    }
+  };
+
+  // Handle locale change
+  const handleLocaleChange = async (newLocale: string) => {
+    const currentSlug = formData.slug;
+    
+    // If we have a slug, try to fetch existing data for the new locale
+    if (currentSlug) {
+      const existingCategory = await fetchCategoryByLocale(currentSlug, newLocale);
+      
+      if (existingCategory) {
+        // Load existing data for this locale and update editingCategory state
+        const updatedCategory = {
+          ...existingCategory,
+          locale: newLocale
+        };
+        
+        setFormData({
+          ...formData,
+          locale: newLocale,
+          name: existingCategory.name || '',
+          description: existingCategory.description || '',
+          content: {
+            header: existingCategory.content?.header || '',
+            bullets: existingCategory.content?.bullets || [''],
+            body: existingCategory.content?.body || ''
+          },
+          icon_name: existingCategory.icon_name || 'Folder',
+          color_theme: existingCategory.color_theme || 'from-blue-500 to-blue-600',
+          sort_order: existingCategory.sort_order || 1,
+          is_active: existingCategory.is_active ?? true
+        });
+        
+        // Update the editingCategory state to reflect the current category being edited
+        onEditingCategoryChange(updatedCategory);
+      } else {
+        // No existing data for this locale, clear the content fields but keep slug and other settings
+        setFormData({
+          ...formData,
+          locale: newLocale,
+          name: '',
+          description: '',
+          content: {
+            header: '',
+            bullets: [''],
+            body: ''
+          }
+        });
+        
+        // Clear editingCategory since we're creating a new record for this locale
+        onEditingCategoryChange(null);
+      }
+    } else {
+      // No slug yet, just update the locale
+      setFormData({
+        ...formData,
+        locale: newLocale
+      });
+    }
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -276,11 +415,14 @@ function CategoryForm({ category, onSave, onCancel }: { category: Category | nul
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Locale</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Language {loadingLocale && <span className="text-sm text-gray-500">(Loading...)</span>}
+            </label>
             <select
               value={formData.locale}
-              onChange={(e) => setFormData({...formData, locale: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+              onChange={(e) => handleLocaleChange(e.target.value)}
+              disabled={loadingLocale}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
             >
               <option value="en">English</option>
               <option value="tr">Turkish</option>

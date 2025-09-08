@@ -10,10 +10,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing locale parameter' }, { status: 400 });
     }
 
-    // Use admin client directly to bypass RLS
-    const supabaseAdmin = getSupabaseAdmin();
-    
-    const { data, error } = await supabaseAdmin
+    // Use regular supabase client (not admin) to respect RLS policies
+    const { data, error } = await supabase
       .from('categories')
       .select('*')
       .eq('locale', locale)
