@@ -15,6 +15,28 @@ interface Image {
   alt_text: string;
   category: string;
   is_optimized: boolean;
+  optimization_data?: {
+    original: {
+      size: number;
+      path: string;
+      filename: string;
+    };
+    mobile: {
+      size: number;
+      path: string;
+      filename: string;
+    };
+    tablet: {
+      size: number;
+      path: string;
+      filename: string;
+    };
+    desktop: {
+      size: number;
+      path: string;
+      filename: string;
+    };
+  };
   created_at: string;
   updated_at: string;
 }
@@ -140,6 +162,27 @@ export default function AdminImages() {
     );
   }
 
+  // Calculate optimization statistics
+  const optimizationStats = images.reduce((stats, image) => {
+    if (image.is_optimized && image.optimization_data) {
+      stats.totalOriginalSize += image.optimization_data.original.size;
+      stats.totalOptimizedSize += image.optimization_data.mobile.size;
+      stats.optimizedCount++;
+    } else {
+      stats.unoptimizedCount++;
+    }
+    return stats;
+  }, {
+    totalOriginalSize: 0,
+    totalOptimizedSize: 0,
+    optimizedCount: 0,
+    unoptimizedCount: 0
+  });
+
+  const compressionRatio = optimizationStats.totalOriginalSize > 0 
+    ? Math.round((1 - optimizationStats.totalOptimizedSize / optimizationStats.totalOriginalSize) * 100)
+    : 0;
+
   return (
     <div className="p-6">
       <div className="mb-8 flex justify-between items-center">
@@ -166,6 +209,38 @@ export default function AdminImages() {
           </button>
         </div>
       </div>
+
+      {/* Optimization Statistics */}
+      {images.length > 0 && (
+        <div className="mb-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4 border border-green-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">📊 Optimization Statistics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{optimizationStats.optimizedCount}</div>
+              <div className="text-sm text-gray-600">Optimized Images</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-yellow-600">{optimizationStats.unoptimizedCount}</div>
+              <div className="text-sm text-gray-600">Original Images</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{formatFileSize(optimizationStats.totalOriginalSize)}</div>
+              <div className="text-sm text-gray-600">Original Size</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{compressionRatio}%</div>
+              <div className="text-sm text-gray-600">Space Saved</div>
+            </div>
+          </div>
+          {optimizationStats.optimizedCount > 0 && (
+            <div className="mt-3 text-center">
+              <span className="text-sm text-gray-600">
+                Optimized images are <span className="font-semibold text-green-600">{compressionRatio}% smaller</span> than originals!
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
       {uploading && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
@@ -207,9 +282,36 @@ export default function AdminImages() {
               <h3 className="font-medium text-gray-900 truncate mb-1">
                 {image.original_filename}
               </h3>
-              <p className="text-sm text-gray-500 mb-2">
-                {formatFileSize(image.file_size)}
-              </p>
+              {image.is_optimized && image.optimization_data ? (
+                <div className="text-sm text-gray-500 mb-2">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-gray-400">Original:</span>
+                    <span className="text-xs font-medium">{formatFileSize(image.optimization_data.original.size)}</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-gray-400">Mobile:</span>
+                    <span className="text-xs font-medium text-green-600">{formatFileSize(image.optimization_data.mobile.size)}</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-gray-400">Tablet:</span>
+                    <span className="text-xs font-medium text-green-600">{formatFileSize(image.optimization_data.tablet.size)}</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-gray-400">Desktop:</span>
+                    <span className="text-xs font-medium text-green-600">{formatFileSize(image.optimization_data.desktop.size)}</span>
+                  </div>
+                  <div className="flex justify-between items-center mt-2 pt-1 border-t border-gray-200">
+                    <span className="text-xs text-gray-400">Compression:</span>
+                    <span className="text-xs font-bold text-green-600">
+                      {Math.round((1 - image.optimization_data.mobile.size / image.optimization_data.original.size) * 100)}%
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 mb-2">
+                  {formatFileSize(image.file_size)}
+                </p>
+              )}
               <div className="flex items-center justify-between">
                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                   image.is_optimized 

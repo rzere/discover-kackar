@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-client';
 
 export async function GET() {
   try {
-    const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from('images')
       .select('*')
       .order('created_at', { ascending: false });

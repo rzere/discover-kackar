@@ -15,7 +15,10 @@ export async function GET(request: NextRequest) {
     
     const { data, error } = await supabaseAdmin
       .from('categories')
-      .select('*')
+      .select(`
+        *,
+        hero_image:images!categories_hero_image_id_fkey(*)
+      `)
       .eq('slug', slug)
       .eq('locale', locale)
       .single();

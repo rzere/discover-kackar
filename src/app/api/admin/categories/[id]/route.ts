@@ -10,7 +10,10 @@ export async function GET(
     
     const { data, error } = await supabaseAdmin
       .from('categories')
-      .select('*')
+      .select(`
+        *,
+        hero_image:images!categories_hero_image_id_fkey(*)
+      `)
       .eq('id', params.id)
       .single();
 

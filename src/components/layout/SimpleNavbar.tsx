@@ -27,7 +27,7 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
 
   return (
-    <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-secondary/20">
+    <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -35,7 +35,7 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
             href={`/${locale}`} 
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
           >
-            <div className="h-10 w-24 bg-white p-1 rounded shadow-sm border border-gray-200 flex items-center justify-center relative">
+            <div className="h-10 w-24 bg-white p-1 rounded shadow-sm flex items-center justify-center relative">
               <Image 
                 src="/logos/logo-main.png" 
                 alt="Discover Kaçkar" 
@@ -85,7 +85,7 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
               </button>
               
               {isLangMenuOpen && (
-                <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg border border-gray-200">
+                <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg">
                   <Link
                     href="/tr"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary"
@@ -118,7 +118,7 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
+          <div className="md:hidden py-4">
             {categories.map((category) => (
               <Link
                 key={category.id}
@@ -130,7 +130,7 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
               </Link>
             ))}
             
-            <div className="flex items-center justify-between px-4 py-2 mt-4 border-t border-gray-200">
+            <div className="flex items-center justify-between px-4 py-2 mt-4">
               <span className="text-gray-700 font-medium">
                 {isEnglish ? 'Language' : 'Dil'}
               </span>

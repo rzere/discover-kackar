@@ -3,7 +3,16 @@
 
 import { useState, useEffect } from 'react';
 // Using API routes instead of direct Supabase calls
-import { Plus, PencilSimple, Trash, Eye } from '@phosphor-icons/react';
+import { Plus, PencilSimple, Trash, Eye, Upload, X, Image, Check } from '@phosphor-icons/react';
+
+// Helper function to format file sizes
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
 
 interface Category {
   id: string;
@@ -20,6 +29,28 @@ interface Category {
   color_theme: string;
   sort_order: number;
   is_active: boolean;
+  hero_image_id?: string;
+  hero_image?: Image;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Image {
+  id: string;
+  filename: string;
+  original_filename: string;
+  file_path: string;
+  file_size: number;
+  mime_type: string;
+  width?: number;
+  height?: number;
+  category: string;
+  alt_text?: string;
+  caption?: string;
+  tags?: string[];
+  is_optimized: boolean;
+  optimization_data?: any;
+  uploaded_by: string;
   created_at: string;
   updated_at: string;
 }
@@ -103,6 +134,12 @@ export default function AdminCategories() {
 
   const handleSave = async (categoryData: Partial<Category>) => {
     try {
+      // Clean up the data before sending - convert empty string to null for UUID fields
+      const cleanedData = {
+        ...categoryData,
+        hero_image_id: categoryData.hero_image_id === '' ? null : categoryData.hero_image_id
+      };
+
       let response;
       if (editingCategory) {
         // Check if we're changing the locale - if so, we need to create a new record
@@ -113,7 +150,7 @@ export default function AdminCategories() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(categoryData),
+            body: JSON.stringify(cleanedData),
           });
         } else {
           // Update existing category (same locale)
@@ -122,7 +159,7 @@ export default function AdminCategories() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(categoryData),
+            body: JSON.stringify(cleanedData),
           });
         }
       } else {
@@ -132,7 +169,7 @@ export default function AdminCategories() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(categoryData),
+          body: JSON.stringify(cleanedData),
         });
       }
 
@@ -140,6 +177,35 @@ export default function AdminCategories() {
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to save category');
+      }
+
+      // If we uploaded an image, sync it across all locales of the same category
+      if (cleanedData.hero_image_id && cleanedData.slug) {
+        try {
+          // Find all categories with the same slug but different locales
+          const allCategories = await fetch('/api/admin/categories').then(res => res.json());
+          if (allCategories.data) {
+            const sameSlugCategories = allCategories.data.filter((cat: any) => 
+              cat.slug === cleanedData.slug && cat.id !== result.data.id
+            );
+            
+            // Update all other locales to use the same image
+            for (const category of sameSlugCategories) {
+              await fetch(`/api/admin/categories/${category.id}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  hero_image_id: cleanedData.hero_image_id
+                }),
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Error syncing image across locales:', error);
+          // Don't fail the main operation if sync fails
+        }
       }
 
       setShowForm(false);
@@ -209,8 +275,23 @@ export default function AdminCategories() {
             return (
               <div key={groupedCategory.slug} className="bg-white rounded-lg shadow p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${firstCategory.color_theme} flex items-center justify-center`}>
-                    <span className="text-white text-xl">📁</span>
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${firstCategory.color_theme} flex items-center justify-center`}>
+                      <span className="text-white text-xl">📁</span>
+                    </div>
+                    {firstCategory.hero_image && (
+                      <div className="w-12 h-12 rounded-lg overflow-hidden border">
+                        <img
+                          src={firstCategory.hero_image.file_path}
+                          alt={firstCategory.hero_image.alt_text || 'Category hero'}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // Fallback to placeholder if image fails to load
+                            e.currentTarget.src = '/images/placeholder.jpg';
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <div className="flex space-x-2">
                     <button
@@ -297,10 +378,166 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
     icon_name: category?.icon_name || 'Folder',
     color_theme: category?.color_theme || 'from-blue-500 to-blue-600',
     sort_order: category?.sort_order || 1,
-    is_active: category?.is_active ?? true
+    is_active: category?.is_active ?? true,
+    hero_image_id: category?.hero_image_id || null
   });
 
   const [loadingLocale, setLoadingLocale] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [currentImage, setCurrentImage] = useState<Image | null>(null);
+  const [availableImages, setAvailableImages] = useState<Image[]>([]);
+  const [showImagePicker, setShowImagePicker] = useState(false);
+  const [loadingImages, setLoadingImages] = useState(false);
+
+  // Function to fetch current image data
+  const fetchCurrentImage = async (imageId: string) => {
+    if (!imageId) return;
+    
+    try {
+      const response = await fetch(`/api/admin/images/${imageId}`);
+      const result = await response.json();
+      
+      if (response.ok && result.data) {
+        setCurrentImage(result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  };
+
+  // Function to fetch available images
+  const fetchAvailableImages = async () => {
+    setLoadingImages(true);
+    try {
+      const response = await fetch('/api/admin/images');
+      if (response.ok) {
+        const result = await response.json();
+        setAvailableImages(result.data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching available images:', error);
+    } finally {
+      setLoadingImages(false);
+    }
+  };
+
+  // Function to select an existing image
+  const handleSelectExistingImage = (image: Image) => {
+    setFormData({...formData, hero_image_id: image.id});
+    setCurrentImage(image);
+    setShowImagePicker(false);
+    setSelectedImage(null);
+    setImagePreview(null);
+  };
+
+  // Function to handle image selection
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+  };
+
+  // Function to upload image
+  const handleImageUpload = async () => {
+    if (!selectedImage) return;
+
+    console.log('Starting image upload...');
+    console.log('Selected image:', selectedImage.name, selectedImage.size, selectedImage.type);
+
+    setUploadingImage(true);
+    setUploadProgress(0);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedImage);
+      formData.append('category', 'category');
+      formData.append('alt_text', `Hero image for ${formData.name || 'category'}`);
+      formData.append('caption', `Category banner for ${formData.name || 'category'}`);
+
+      console.log('Sending upload request to /api/admin/images/upload');
+      console.log('FormData contents:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await fetch('/api/admin/images/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log('Upload response status:', response.status);
+      console.log('Upload response headers:', Object.fromEntries(response.headers.entries()));
+
+      const result = await response.json();
+      console.log('Upload response body:', result);
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to upload image');
+      }
+
+      // Update form data with new image ID
+      setFormData(prev => ({
+        ...prev,
+        hero_image_id: result.image.id
+      }));
+
+      setCurrentImage(result.image);
+      setSelectedImage(null);
+      setImagePreview(null);
+      setUploadProgress(100);
+
+      // Clean up preview URL
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+
+      console.log('Image upload completed successfully');
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error uploading image: ' + error.message);
+    } finally {
+      setUploadingImage(false);
+      setUploadProgress(0);
+    }
+  };
+
+  // Function to remove current image
+  const handleRemoveImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      hero_image_id: null
+    }));
+    setCurrentImage(null);
+    setSelectedImage(null);
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+      setImagePreview(null);
+    }
+  };
+
+  // Load current image when component mounts or hero_image_id changes
+  useEffect(() => {
+    if (formData.hero_image_id && formData.hero_image_id !== null) {
+      // If we already have the hero_image data from the category, use it
+      if (category?.hero_image) {
+        setCurrentImage(category.hero_image);
+      } else {
+        // Otherwise fetch it
+        fetchCurrentImage(formData.hero_image_id);
+      }
+    } else {
+      setCurrentImage(null);
+    }
+  }, [formData.hero_image_id, category?.hero_image]);
 
   // Function to fetch category data for a specific locale
   const fetchCategoryByLocale = async (slug: string, locale: string) => {
@@ -352,8 +589,16 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
           icon_name: existingCategory.icon_name || 'Folder',
           color_theme: existingCategory.color_theme || 'from-blue-500 to-blue-600',
           sort_order: existingCategory.sort_order || 1,
-          is_active: existingCategory.is_active ?? true
+          is_active: existingCategory.is_active ?? true,
+          hero_image_id: existingCategory.hero_image_id || null
         });
+        
+        // Set the current image if it exists
+        if (existingCategory.hero_image) {
+          setCurrentImage(existingCategory.hero_image);
+        } else {
+          setCurrentImage(null);
+        }
         
         // Update the editingCategory state to reflect the current category being edited
         onEditingCategoryChange(updatedCategory);
@@ -575,6 +820,175 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
               />
             ))}
           </div>
+        </div>
+
+        {/* Hero Image Upload Section */}
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Hero Image</h3>
+          
+          {/* Current Image Display */}
+          {currentImage && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Current Image</label>
+              <div className="relative inline-block">
+                <img
+                  src={currentImage.file_path}
+                  alt={currentImage.alt_text || 'Category hero image'}
+                  className="w-32 h-20 object-cover rounded-lg border"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                {currentImage.original_filename} ({(currentImage.file_size / 1024 / 1024).toFixed(1)}MB)
+              </p>
+            </div>
+          )}
+
+          {/* Image Selection */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Image</label>
+              <div className="flex items-center space-x-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowImagePicker(!showImagePicker);
+                    if (!showImagePicker && availableImages.length === 0) {
+                      fetchAvailableImages();
+                    }
+                  }}
+                  className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  <Image size={16} className="mr-2" />
+                  {showImagePicker ? 'Hide Gallery' : 'Choose from Gallery'}
+                </button>
+                
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="hidden"
+                  id="image-upload"
+                  disabled={uploadingImage}
+                />
+                <label
+                  htmlFor="image-upload"
+                  className={`flex items-center px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 ${
+                    uploadingImage ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  <Upload size={16} className="mr-2" />
+                  Upload New Image
+                </label>
+                
+                {selectedImage && (
+                  <button
+                    type="button"
+                    onClick={handleImageUpload}
+                    disabled={uploadingImage}
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 disabled:opacity-50"
+                  >
+                    {uploadingImage ? 'Uploading...' : 'Upload'}
+                  </button>
+                )}
+              </div>
+              
+              {selectedImage && (
+                <div className="mt-2">
+                  <p className="text-sm text-gray-600">
+                    Selected: {selectedImage.name} ({(selectedImage.size / 1024 / 1024).toFixed(1)}MB)
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Image Preview */}
+            {imagePreview && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-32 h-20 object-cover rounded-lg border"
+                />
+              </div>
+            )}
+
+            {/* Upload Progress */}
+            {uploadingImage && (
+              <div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  ></div>
+                </div>
+                <p className="text-sm text-gray-600 mt-1">Uploading and optimizing image...</p>
+              </div>
+            )}
+
+            <div className="text-xs text-gray-500">
+              <p>• Supported formats: JPEG, PNG, WebP, AVIF</p>
+              <p>• Maximum file size: 50MB</p>
+              <p>• Images will be automatically optimized for mobile, tablet, and desktop</p>
+            </div>
+          </div>
+
+          {/* Image Picker Gallery */}
+          {showImagePicker && (
+            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <h4 className="text-sm font-medium text-gray-700 mb-3">Choose from Existing Images</h4>
+              {loadingImages ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  <span className="ml-2 text-gray-600">Loading images...</span>
+                </div>
+              ) : availableImages.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-64 overflow-y-auto">
+                  {availableImages.map((image) => (
+                    <div
+                      key={image.id}
+                      onClick={() => handleSelectExistingImage(image)}
+                      className={`relative cursor-pointer rounded-lg border-2 transition-all ${
+                        formData.hero_image_id === image.id
+                          ? 'border-primary ring-2 ring-primary/20'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <img
+                        src={image.file_path}
+                        alt={image.alt_text || image.original_filename}
+                        className="w-full h-20 object-cover rounded-lg"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs p-1 rounded-b-lg">
+                        <div className="truncate">{image.original_filename}</div>
+                        <div className="text-gray-300">
+                          {image.is_optimized ? 'Optimized' : 'Original'} • {formatFileSize(image.file_size)}
+                        </div>
+                      </div>
+                      {formData.hero_image_id === image.id && (
+                        <div className="absolute top-1 right-1 bg-primary text-white rounded-full p-1">
+                          <Check size={12} />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <Image size={32} className="mx-auto mb-2 opacity-50" />
+                  <p>No images available</p>
+                  <p className="text-sm">Upload some images first</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div>

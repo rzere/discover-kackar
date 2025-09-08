@@ -6,7 +6,10 @@ export async function GET() {
     const supabaseAdmin = getSupabaseAdmin();
     const { data, error } = await supabaseAdmin
       .from('categories')
-      .select('*')
+      .select(`
+        *,
+        hero_image:images!categories_hero_image_id_fkey(*)
+      `)
       .order('sort_order', { ascending: true });
 
     if (error) {

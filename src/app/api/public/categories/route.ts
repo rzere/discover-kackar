@@ -13,7 +13,10 @@ export async function GET(request: NextRequest) {
     // Use regular supabase client (not admin) to respect RLS policies
     const { data, error } = await supabase
       .from('categories')
-      .select('*')
+      .select(`
+        *,
+        hero_image:images!categories_hero_image_id_fkey(*)
+      `)
       .eq('locale', locale)
       .eq('is_active', true)
       .order('sort_order', { ascending: true });

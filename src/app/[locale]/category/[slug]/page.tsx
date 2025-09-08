@@ -40,6 +40,12 @@ interface Category {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  hero_image_id?: string;
+  hero_image?: {
+    id: string;
+    file_path: string;
+    alt_text?: string;
+  };
 }
 
 const categories = {
@@ -292,7 +298,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const backgroundImage = categoryImageMap[slug as keyof typeof categoryImageMap];
+  const backgroundImage = category?.hero_image?.file_path || categoryImageMap[slug as keyof typeof categoryImageMap];
   const IconComponent = categoryIconMap[slug as keyof typeof categoryIconMap];
 
   return (
@@ -305,7 +311,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url(${getImageUrl(backgroundImage, imageSize)})`
+            backgroundImage: `url(${category?.hero_image?.file_path ? backgroundImage : getImageUrl(backgroundImage, imageSize)})`
           }}
         />
         

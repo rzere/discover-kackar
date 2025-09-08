@@ -45,6 +45,12 @@ interface Category {
   color_theme: string;
   sort_order: number;
   is_active: boolean;
+  hero_image_id?: string;
+  hero_image?: {
+    id: string;
+    file_path: string;
+    alt_text?: string;
+  };
 }
 
 export default function Home({
@@ -170,7 +176,7 @@ export default function Home({
   return (
     <div className="min-h-screen bg-white">
       {/* Simple Navbar */}
-      <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200">
+      <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href={`/${params.locale}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
@@ -370,7 +376,7 @@ export default function Home({
                       <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
                         style={{
-                          backgroundImage: `url(${getImageUrl(getCategoryImage(category.slug))})`
+                          backgroundImage: `url(${category.hero_image?.file_path || getImageUrl(getCategoryImage(category.slug))})`
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
