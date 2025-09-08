@@ -379,16 +379,13 @@ export default function Home({
                           backgroundImage: `url(${category.hero_image?.file_path || getImageUrl(getCategoryImage(category.slug))})`
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      
-                      {/* Category Title Overlay */}
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-xl font-serif font-bold text-white drop-shadow-lg">
-                          {category.name}
-                        </h3>
-                      </div>
                     </div>
+                    
+                    {/* Category Title Below Image */}
                     <div className="p-6">
+                      <h3 className="text-xl font-serif font-bold text-navy mb-3">
+                        {category.name}
+                      </h3>
                       <p className="text-gray-600 mb-4 leading-relaxed">
                         {category.description}
                       </p>
