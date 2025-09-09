@@ -4,7 +4,7 @@ import { getSupabaseAdmin } from '@/lib/supabase';
 export async function GET() {
   try {
     const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from('subcategories')
       .select(`
         *,
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     // Extract image metadata from body
     const { image_alt_text, image_caption, ...subcategoryData } = body;
     
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from('subcategories')
       .insert([subcategoryData])
       .select(`

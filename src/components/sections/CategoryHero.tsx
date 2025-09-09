@@ -26,12 +26,12 @@ export default function CategoryHero({ category, locale }: CategoryHeroProps) {
 
         <div className="max-w-4xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6">
-            {category.name[locale]}
+            {(category.name as any)[locale]}
           </h1>
           
           {category.description && (
             <p className="text-xl md:text-2xl text-white/90 mb-8">
-              {category.description[locale]}
+              {(category.description as any)[locale]}
             </p>
           )}
 

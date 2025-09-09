@@ -77,7 +77,7 @@ export default function AdminSubcategories() {
     
     while (true) {
       // Check if slug exists for this category
-      const { data: existing } = await supabase
+      const { data: existing } = await (supabase as any)
         .from('subcategories')
         .select('id')
         .eq('category_id', categoryId)
@@ -112,7 +112,7 @@ export default function AdminSubcategories() {
       setSubcategories(result.data || []);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
-      alert('Error fetching subcategories: ' + error.message);
+      alert('Error fetching subcategories: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -143,7 +143,7 @@ export default function AdminSubcategories() {
       body_text: subcategory.body_text?.en || '',
       sort_order: subcategory.sort_order,
       is_active: subcategory.is_active,
-      image_id: subcategory.image_id,
+      image_id: subcategory.image_id || null,
       image_alt_text: subcategory.image?.alt_text || '',
       image_caption: subcategory.image?.caption || ''
     });
@@ -186,7 +186,7 @@ export default function AdminSubcategories() {
     }));
     
     // Auto-generate slug if creating new subcategory and slug is empty
-    if (!editingSubcategory && !prev.slug && newTitle) {
+    if (!editingSubcategory && !formData.slug && newTitle) {
       const baseSlug = newTitle
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')
@@ -237,7 +237,7 @@ export default function AdminSubcategories() {
       fetchSubcategories();
     } catch (error) {
       console.error('Error deleting subcategory:', error);
-      alert('Error deleting subcategory: ' + error.message);
+      alert('Error deleting subcategory: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -250,11 +250,13 @@ export default function AdminSubcategories() {
       if (editingSubcategory) {
         // When editing, preserve existing data and update current language
         titleData = {
-          ...editingSubcategory.title,
+          en: (editingSubcategory.title as any)?.en || '',
+          tr: (editingSubcategory.title as any)?.tr || '',
           [currentLanguage]: subcategoryData.title
         };
         bodyTextData = {
-          ...editingSubcategory.body_text,
+          en: (editingSubcategory.body_text as any)?.en || '',
+          tr: (editingSubcategory.body_text as any)?.tr || '',
           [currentLanguage]: subcategoryData.body_text
         };
       } else {
@@ -331,7 +333,7 @@ export default function AdminSubcategories() {
       fetchSubcategories();
     } catch (error) {
       console.error('Error saving subcategory:', error);
-      alert('Error saving subcategory: ' + error.message);
+      alert('Error saving subcategory: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -500,7 +502,9 @@ function SubcategoryForm({
     body_text: subcategory?.body_text?.en || '',
     image_id: subcategory?.image_id || null,
     sort_order: subcategory?.sort_order || 1,
-    is_active: subcategory?.is_active ?? true
+    is_active: subcategory?.is_active ?? true,
+    image_alt_text: subcategory?.image?.alt_text || '',
+    image_caption: subcategory?.image?.caption || ''
   });
 
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -557,21 +561,44 @@ function SubcategoryForm({
     }
   };
 
+  // Function to handle title change and auto-generate slug
+  const handleTitleChange = (newTitle: string) => {
+    setFormData(prev => ({
+      ...prev,
+      title: newTitle
+    }));
+    
+    // Auto-generate slug if creating new subcategory and slug is empty
+    if (!subcategory && !formData.slug && newTitle) {
+      const baseSlug = newTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+      
+      setFormData(prev => ({
+        ...prev,
+        slug: baseSlug
+      }));
+    }
+  };
+
   // Function to upload image
   const handleImageUpload = async () => {
     if (!selectedImage) return;
 
     setUploadingImage(true);
     try {
-      const formData = new FormData();
-      formData.append('file', selectedImage);
-      formData.append('category', 'subcategory');
-      formData.append('alt_text', formData.image_alt_text || formData.title || 'Subcategory image');
-      formData.append('caption', formData.image_caption || '');
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', selectedImage);
+      uploadFormData.append('category', 'subcategory');
+      uploadFormData.append('alt_text', formData.image_alt_text || formData.title || 'Subcategory image');
+      uploadFormData.append('caption', formData.image_caption || '');
 
       const response = await fetch('/api/admin/images/upload', {
         method: 'POST',
-        body: formData,
+        body: uploadFormData,
       });
 
       const result = await response.json();
@@ -599,7 +626,7 @@ function SubcategoryForm({
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image: ' + error.message);
+      alert('Error uploading image: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setUploadingImage(false);
     }
@@ -621,7 +648,11 @@ function SubcategoryForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    onSave({
+      ...formData,
+      title: { en: formData.title, tr: formData.title },
+      body_text: { en: formData.body_text, tr: formData.body_text }
+    } as any);
   };
 
   return (

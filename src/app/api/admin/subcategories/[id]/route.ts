@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const supabaseAdmin = getSupabaseAdmin();
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from('subcategories')
       .select(`
         *,
@@ -41,7 +41,7 @@ export async function PUT(
     const { image_alt_text, image_caption, ...subcategoryData } = body;
     
     // Update subcategory
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from('subcategories')
       .update(subcategoryData)
       .eq('id', params.id)
@@ -81,7 +81,7 @@ export async function DELETE(
   try {
     const supabaseAdmin = getSupabaseAdmin();
     
-    const { error } = await supabaseAdmin
+    const { error } = await (supabaseAdmin as any)
       .from('subcategories')
       .delete()
       .eq('id', params.id);

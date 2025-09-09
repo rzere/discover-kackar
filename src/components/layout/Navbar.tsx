@@ -66,7 +66,7 @@ export default function Navbar() {
                 href={`/${locale}/category/${category.slug}`}
                 className="text-primary hover:text-dark transition-colors font-medium text-sm"
               >
-                {category.name[locale as 'tr' | 'en']}
+                {(category.name as any)[locale as 'tr' | 'en']}
               </Link>
             ))}
             
@@ -121,7 +121,7 @@ export default function Navbar() {
                   className="block py-2 text-navy hover:text-primary transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {category.name[locale as 'tr' | 'en']}
+                  {(category.name as any)[locale as 'tr' | 'en']}
                 </Link>
               ))}
               

@@ -28,6 +28,10 @@ import SimpleNavbar from '@/components/layout/SimpleNavbar';
 
 // Function to properly convert text to uppercase based on locale
 const toLocaleUppercase = (text: string, locale: string): string => {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+  
   if (locale === 'tr') {
     // Turkish uppercase conversion
     return text
@@ -503,10 +507,18 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                         {/* Content */}
                         <div className="w-full lg:flex-1 lg:px-4">
                           <h3 className="text-xl sm:text-2xl font-bold text-navy mb-4 tracking-wide">
-                            {toLocaleUppercase(isEnglish ? subcategory.title.en : subcategory.title.tr, locale)}
+                            {toLocaleUppercase(
+                              isEnglish 
+                                ? (typeof subcategory.title === 'string' ? subcategory.title : (subcategory.title as any)?.en || '')
+                                : (typeof subcategory.title === 'string' ? subcategory.title : (subcategory.title as any)?.tr || ''), 
+                              locale
+                            )}
                           </h3>
                           <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                            {isEnglish ? subcategory.body_text?.en : subcategory.body_text?.tr}
+                            {isEnglish 
+                              ? (typeof subcategory.body_text === 'string' ? subcategory.body_text : (subcategory.body_text as any)?.en || '')
+                              : (typeof subcategory.body_text === 'string' ? subcategory.body_text : (subcategory.body_text as any)?.tr || '')
+                            }
                           </p>
                         </div>
                       </div>

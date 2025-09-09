@@ -45,12 +45,12 @@ export default function SubcategoryGrid({ subcategories, locale }: SubcategoryGr
               </div>
 
               <h3 className="text-xl font-serif font-bold text-navy mb-3 group-hover:text-primary transition-colors">
-                {subcategory.name[locale]}
+                {(subcategory.title as any)[locale]}
               </h3>
 
-              {subcategory.description && (
+              {subcategory.body_text && (
                 <p className="text-gray-600 text-sm line-clamp-3">
-                  {subcategory.description[locale]}
+                  {(subcategory.body_text as any)[locale]}
                 </p>
               )}
 

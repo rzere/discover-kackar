@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing locale parameter' }, { status: 400 });
     }
 
-    let query = supabase
+    let query = (supabase as any)
       .from('subcategories')
       .select(`
         *,

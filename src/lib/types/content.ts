@@ -26,8 +26,14 @@ export interface Category {
   id: string;
   slug: string;
   locale: string;
-  name: string;
-  description: string;
+  name: {
+    tr: string;
+    en: string;
+  };
+  description: {
+    tr: string;
+    en: string;
+  };
   content?: {
     header?: string;
     bullets?: string[];
