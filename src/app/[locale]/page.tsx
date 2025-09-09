@@ -69,13 +69,23 @@ export default function Home({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch home page data with cache-busting
-        const pageResponse = await fetch(`/api/public/pages?slug=home&locale=${params.locale}&t=${Date.now()}`);
+        // Fetch home page data from admin API
+        const pageResponse = await fetch(`/api/admin/pages?t=${Date.now()}`);
         const pageResult = await pageResponse.json();
 
         if (pageResponse.ok && pageResult.data) {
-          console.log('Page data loaded:', pageResult.data);
-          setPageData(pageResult.data);
+          console.log('All pages loaded:', pageResult.data);
+          // Find the home page for the current locale
+          const homePage = pageResult.data.find((page: any) => 
+            page.slug === 'home' && page.locale === params.locale
+          );
+          
+          if (homePage) {
+            console.log('Home page found:', homePage);
+            setPageData(homePage);
+          } else {
+            console.log('No home page found for locale:', params.locale);
+          }
         } else {
           console.log('No page data found, using fallback');
         }
@@ -280,11 +290,14 @@ export default function Home({
           {/* Glass Panel for Text Content */}
           <div className="relative z-20 bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-primary font-medium drop-shadow-lg">
-              {content.subtitle}
+              {content.subtitle || (isEnglish ? "Turkey's Hidden Mountain Paradise" : "Türkiye'nin Gizli Dağ Cenneti")}
             </p>
             
             <p className="text-base sm:text-lg md:text-xl text-white leading-relaxed drop-shadow-md">
-              {content.description}
+              {content.description || (isEnglish 
+                ? "Explore the pristine wilderness, ancient cultures, and breathtaking landscapes of Turkey's hidden gem in the Black Sea region."
+                : "Karadeniz bölgesinin gizli hazinesi olan Kaçkar Dağları'nın el değmemiş doğasını, kadim kültürlerini ve nefes kesen manzaralarını keşfedin."
+              )}
             </p>
           </div>
           
@@ -293,7 +306,7 @@ export default function Home({
               href={`/${params.locale}/category/nature`}
               className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm text-sm sm:text-base"
             >
-              {content.cta_primary}
+{content.cta_primary || (isEnglish ? "Explore Nature" : "Doğayı Keşfet")}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -303,7 +316,7 @@ export default function Home({
               href={`/${params.locale}/category/culture`}
               className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-white/80 text-white font-semibold rounded-full hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base"
             >
-              {content.cta_secondary}
+{content.cta_secondary || (isEnglish ? "Discover Culture" : "Kültürü Keşfet")}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -312,7 +325,7 @@ export default function Home({
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto px-4">
-            {content.stats.map((stat: { value: string; label: string }, index: number) => (
+            {(content.stats || fallbackContent.stats).map((stat: { value: string; label: string }, index: number) => (
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 text-center border border-white/20">
               <div className="flex justify-center mb-2">
                   {index === 0 && <Compass size={24} className="text-white sm:w-8 sm:h-8" />}

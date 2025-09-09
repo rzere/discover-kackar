@@ -445,6 +445,58 @@ function PageForm({ page, onSave, onCancel, onEditingPageChange }: { page: Page 
               </div>
             </div>
           </div>
+
+          {/* Hero Stats Section */}
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <h3 className="text-lg font-semibold text-green-900 mb-3">📊 Hero Section Stats</h3>
+            <div className="space-y-4">
+              {[0, 1, 2].map((index) => (
+                <div key={index} className="bg-white border border-green-200 rounded-lg p-4">
+                  <h4 className="text-md font-medium text-green-800 mb-3">
+                    Stat {index + 1} {index === 0 ? '(Compass Icon)' : index === 1 ? '(Mountains Icon)' : '(Camera Icon)'}
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                      <input
+                        type="text"
+                        value={formData.content?.stats?.[index]?.value || ''}
+                        onChange={(e) => {
+                          const newStats = [...(formData.content?.stats || [])];
+                          if (!newStats[index]) newStats[index] = { value: '', label: '' };
+                          newStats[index].value = e.target.value;
+                          setFormData({
+                            ...formData, 
+                            content: {...formData.content, stats: newStats}
+                          });
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder={index === 0 ? "3,937m" : index === 1 ? "50+" : "100+"}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Label</label>
+                      <input
+                        type="text"
+                        value={formData.content?.stats?.[index]?.label || ''}
+                        onChange={(e) => {
+                          const newStats = [...(formData.content?.stats || [])];
+                          if (!newStats[index]) newStats[index] = { value: '', label: '' };
+                          newStats[index].label = e.target.value;
+                          setFormData({
+                            ...formData, 
+                            content: {...formData.content, stats: newStats}
+                          });
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder={index === 0 ? "Highest Peak" : index === 1 ? "Alpine Lakes" : "Photo Spots"}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div>
