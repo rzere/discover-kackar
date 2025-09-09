@@ -34,7 +34,9 @@ export default function ImageGallery() {
         const result = await response.json();
         
         if (response.ok && result.data) {
-          setImages(result.data);
+          // Deduplicate images by grouping by base name and selecting the largest version
+          const deduplicatedImages = deduplicateImages(result.data);
+          setImages(deduplicatedImages);
         } else {
           console.error('Error fetching images:', result.error);
         }
@@ -47,6 +49,44 @@ export default function ImageGallery() {
     
     fetchImages();
   }, []);
+
+  // Function to deduplicate images by base name and select the largest version
+  const deduplicateImages = (imageList: Image[]) => {
+    const imageGroups: { [key: string]: Image[] } = {};
+    
+    // Group images by their base name (without size suffix)
+    imageList.forEach(image => {
+      // Extract base name by removing size suffixes like _mobile, _tablet, _desktop
+      const baseName = image.original_filename
+        .replace(/_(mobile|tablet|desktop)\.(jpg|jpeg|png|webp|avif)$/i, '')
+        .replace(/\.(jpg|jpeg|png|webp|avif)$/i, '');
+      
+      if (!imageGroups[baseName]) {
+        imageGroups[baseName] = [];
+      }
+      imageGroups[baseName].push(image);
+    });
+    
+    // For each group, select the image with the largest file size
+    const deduplicatedImages: Image[] = [];
+    Object.values(imageGroups).forEach(group => {
+      if (group.length === 1) {
+        // Only one image in group, use it
+        deduplicatedImages.push(group[0]);
+      } else {
+        // Multiple images, select the one with largest file size
+        const largestImage = group.reduce((prev, current) => 
+          current.file_size > prev.file_size ? current : prev
+        );
+        deduplicatedImages.push(largestImage);
+      }
+    });
+    
+    // Sort by creation date (newest first)
+    return deduplicatedImages.sort((a, b) => 
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  };
   
   // Show only first 12 images initially, or all if showAll is true
   const displayedImages = showAll ? images : images.slice(0, 12);
