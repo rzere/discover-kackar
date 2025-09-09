@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Lato, Open_Sans } from "next/font/google";
+import { IM_Fell_English, Lato, Open_Sans } from "next/font/google";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const imFellEnglish = IM_Fell_English({
+  variable: "--font-im-fell-english",
   subsets: ["latin"],
   weight: ["400"],
 });
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body
-        className={`${instrumentSerif.variable} ${lato.variable} ${openSans.variable} font-sans antialiased bg-white text-gray-900`}
+        className={`${imFellEnglish.variable} ${lato.variable} ${openSans.variable} font-sans antialiased bg-white text-gray-900`}
         suppressHydrationWarning
       >
         {children}

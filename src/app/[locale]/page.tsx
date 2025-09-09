@@ -226,9 +226,6 @@ export default function Home({
                   }}
                 />
               </div>
-              <span className="text-xl font-serif font-bold text-primary">
-              Discover Kaçkar
-              </span>
             </Link>
             <div className="flex space-x-4">
               <Link
@@ -295,13 +292,13 @@ export default function Home({
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 sm:mb-6 leading-tight bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent drop-shadow-2xl px-2">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 sm:mb-6 leading-tight text-white drop-shadow-2xl px-2">
             {pageTitle}
           </h1>
           
           {/* Glass Panel for Text Content */}
           <div className="relative z-20 bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
-            <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-primary font-medium drop-shadow-lg">
+            <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white font-medium drop-shadow-lg">
               {content.subtitle || (isEnglish ? "Turkey's Hidden Mountain Paradise" : "Türkiye'nin Gizli Dağ Cenneti")}
             </p>
             

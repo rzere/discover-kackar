@@ -52,9 +52,6 @@ export default function Navbar() {
                 {/* Debug indicator - remove this later */}
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
               </div>
-              <span className="text-xl font-serif font-bold text-primary">
-                Discover Kaçkar
-              </span>
             </div>
           </Link>
 

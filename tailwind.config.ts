@@ -50,7 +50,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        'serif': ['Instrument Serif', 'serif'],
+        'serif': ['Merriweather', 'serif'],
         'sans': ['Open Sans', 'Lato', 'sans-serif'],
       },
       fontSize: {
