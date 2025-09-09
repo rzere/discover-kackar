@@ -80,7 +80,7 @@ export default function ImageGallery() {
           <div className="text-center mt-12">
             <button 
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center px-8 py-4 bg-primary text-navy font-semibold rounded-full hover:bg-primary/90 transition-colors shadow-lg"
+              className="inline-flex items-center px-8 py-4 bg-white text-navy font-semibold rounded-full hover:bg-gray-50 transition-colors shadow-lg border-2 border-primary"
             >
               {showAll 
                 ? (locale === 'tr' ? 'Daha Az Göster' : 'Show Less')
