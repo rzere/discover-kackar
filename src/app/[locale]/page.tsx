@@ -675,16 +675,16 @@ export default function Home({
       <footer className="bg-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Main Footer Content */}
-          <div className="py-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="py-8 sm:py-12 lg:py-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
               {/* Brand Section */}
               <div className="lg:col-span-2">
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="h-12 w-32 flex items-center justify-center">
+                <div className="flex items-center space-x-3 mb-4 sm:mb-6">
+                  <div className="h-10 sm:h-12 w-24 sm:w-32 flex items-center justify-center">
                     <img 
                       src="/logos/logo-main.png" 
                       alt="Discover Kaçkar" 
-                      className="h-10 w-auto"
+                      className="h-8 sm:h-10 w-auto"
                       style={{ maxWidth: '120px' }}
                       onError={(e) => {
                         console.log('Footer logo failed to load, trying UTMB logo');
@@ -697,35 +697,35 @@ export default function Home({
                       }}
                     />
                   </div>
-                  <h3 className="text-2xl font-serif font-bold text-white">
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
                     {footerData?.company_name || 'Discover Kaçkar'}
                   </h3>
                 </div>
-                <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
+                <p className="text-gray-300 mb-4 sm:mb-6 max-w-md leading-relaxed text-sm sm:text-base">
                   {footerData?.company_description || (isEnglish 
                     ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains. Your gateway to Turkey's hidden mountain paradise."
                     : "Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin. Türkiye'nin gizli dağ cennetine açılan kapınız."
                   )}
                 </p>
-                <div className="flex space-x-4">
+                <div className="flex space-x-3 sm:space-x-4">
                   {footerData?.social_links?.facebook && (
-                    <a href={footerData.social_links.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
-                      <FacebookLogo size={20} />
+                    <a href={footerData.social_links.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Facebook">
+                      <FacebookLogo size={18} className="sm:w-5 sm:h-5" />
                     </a>
                   )}
                   {footerData?.social_links?.instagram && (
-                    <a href={footerData.social_links.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
-                      <InstagramLogo size={20} />
+                    <a href={footerData.social_links.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                      <InstagramLogo size={18} className="sm:w-5 sm:h-5" />
                     </a>
                   )}
                   {footerData?.social_links?.twitter && (
-                    <a href={footerData.social_links.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
-                      <TwitterLogo size={20} />
+                    <a href={footerData.social_links.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Twitter">
+                      <TwitterLogo size={18} className="sm:w-5 sm:h-5" />
                     </a>
                   )}
                   {footerData?.social_links?.youtube && (
-                    <a href={footerData.social_links.youtube} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="YouTube">
-                      <TwitterLogo size={20} />
+                    <a href={footerData.social_links.youtube} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="YouTube">
+                      <TwitterLogo size={18} className="sm:w-5 sm:h-5" />
                     </a>
                   )}
                 </div>
@@ -733,10 +733,10 @@ export default function Home({
 
               {/* Quick Links */}
               <div>
-                <h4 className="text-lg font-semibold mb-6 text-white">
+                <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-white">
                   {isEnglish ? 'Explore' : 'Keşfet'}
                 </h4>
-                <ul className="space-y-3">
+                <ul className="space-y-2 sm:space-y-3">
                   {footerData?.quick_links && footerData.quick_links.length > 0 ? (
                     footerData.quick_links.map((link: any, index: number) => (
                       <li key={index}>
@@ -779,10 +779,10 @@ export default function Home({
 
               {/* Contact Info */}
               <div>
-                <h4 className="text-lg font-semibold mb-6 text-white">
+                <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-white">
                   {isEnglish ? 'Contact' : 'İletişim'}
                 </h4>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {footerData?.address && (
                     <div className="flex items-start space-x-3">
                       <MapPin size={18} className="text-white mt-0.5 flex-shrink-0" />
@@ -840,32 +840,32 @@ export default function Home({
           </div>
 
           {/* Bottom Section */}
-          <div className="border-t border-gray-700 py-8">
-            <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
-              <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
-                <p className="text-gray-300 text-sm">
+          <div className="border-t border-gray-700 py-4 sm:py-6 lg:py-8">
+            <div className="flex flex-col lg:flex-row justify-between items-center space-y-3 sm:space-y-4 lg:space-y-0">
+              <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-4 lg:space-x-6 text-center sm:text-left">
+                <p className="text-gray-300 text-xs sm:text-sm">
                   {footerData?.copyright_text || `© ${new Date().getFullYear()} Discover Kaçkar. ${isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}`}
                 </p>
-                <div className="flex items-center space-x-4 text-xs text-gray-400">
+                <div className="flex items-center space-x-2 sm:space-x-4 text-xs text-gray-400">
                   <span>{isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}</span>
                 </div>
               </div>
-              <div className="flex space-x-6">
+              <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
                 {footerData?.legal_links && footerData.legal_links.length > 0 ? (
                   footerData.legal_links.map((link: any, index: number) => (
-                    <Link key={index} href={link.url} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    <Link key={index} href={link.url} className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
                       {link.title}
                     </Link>
                   ))
                 ) : (
                   <>
-                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
                       {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
                     </Link>
-                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
                       {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
                     </Link>
-                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
                       {isEnglish ? 'Cookie Policy' : 'Çerez Politikası'}
                     </Link>
                   </>
