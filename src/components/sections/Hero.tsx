@@ -96,7 +96,7 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link 
               href={`/${locale}/category/nature-adventure`}
-              className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary to-secondary text-navy font-semibold rounded-full hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm"
+              className="group inline-flex items-center px-8 py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm"
             >
               {locale === 'tr' ? 'Macerayı Keşfet' : 'Explore Adventures'}
               <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -116,30 +116,19 @@ export default function Hero() {
       </div>
 
       {/* Image Indicators */}
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-3">
+      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {heroImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`relative w-4 h-4 rounded-full transition-all duration-300 backdrop-blur-sm ${
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
               index === currentImageIndex 
-                ? 'bg-white/90 scale-125 shadow-lg' 
-                : 'bg-white/30 hover:bg-white/60 hover:scale-110'
+                ? 'bg-white' 
+                : 'bg-white/40 hover:bg-white/60'
             }`}
             aria-label={`Go to image ${index + 1}`}
-          >
-            {index === currentImageIndex && (
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-secondary animate-pulse"></div>
-            )}
-          </button>
+          />
         ))}
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center backdrop-blur-sm bg-white/10">
-          <div className="w-1 h-3 bg-gradient-to-b from-primary to-secondary rounded-full mt-2 animate-bounce"></div>
-        </div>
       </div>
     </section>
   );

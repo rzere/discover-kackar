@@ -11,16 +11,65 @@ import {
   ForkKnife, 
   Mountains, 
   House, 
-  Car 
+  Car,
+  MusicNote,
+  Heart,
+  Camera,
+  GraduationCap,
+  CalendarCheck,
+  FacebookLogo,
+  InstagramLogo,
+  TwitterLogo,
+  MapPin,
+  Envelope,
+  Phone
 } from '@phosphor-icons/react';
 import SimpleNavbar from '@/components/layout/SimpleNavbar';
 
+// Function to properly convert text to uppercase based on locale
+const toLocaleUppercase = (text: string, locale: string): string => {
+  if (locale === 'tr') {
+    // Turkish uppercase conversion
+    return text
+      .replace(/i/g, 'İ')
+      .replace(/ı/g, 'I')
+      .replace(/ğ/g, 'Ğ')
+      .replace(/ü/g, 'Ü')
+      .replace(/ş/g, 'Ş')
+      .replace(/ö/g, 'Ö')
+      .replace(/ç/g, 'Ç')
+      .toUpperCase();
+  } else {
+    // Standard uppercase for English and other languages
+    return text.toUpperCase();
+  }
+};
 
 interface CategoryPageProps {
   params: {
     locale: string;
     slug: string;
   };
+}
+
+interface Subcategory {
+  id: string;
+  category_id: string;
+  slug: string;
+  locale: string;
+  title: string;
+  body_text?: string;
+  image_id?: string;
+  image?: {
+    id: string;
+    file_path: string;
+    alt_text?: string;
+    caption?: string;
+  };
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Category {
@@ -46,6 +95,7 @@ interface Category {
     file_path: string;
     alt_text?: string;
   };
+  subcategories?: Subcategory[];
 }
 
 const categories = {
@@ -232,7 +282,13 @@ const categoryImageMap = {
   gastronomy: 'aa-01_edited.jpg',
   adventure: 'Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg',
   accommodation: 'Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg',
-  transportation: 'Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg'
+  transportation: 'Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg',
+  'music-dance': 'Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg',
+  'sustainable-tourism': 'Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg',
+  'health-wellness': 'Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg',
+  'photography-art': 'Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg',
+  'educational-research': 'Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg',
+  'events-festivals': 'Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg'
 };
 
 // Category to icon mapping
@@ -242,7 +298,13 @@ const categoryIconMap = {
   gastronomy: ForkKnife,
   adventure: Mountains,
   accommodation: House,
-  transportation: Car
+  transportation: Car,
+  'music-dance': MusicNote,
+  'sustainable-tourism': Leaf,
+  'health-wellness': Heart,
+  'photography-art': Camera,
+  'educational-research': GraduationCap,
+  'events-festivals': CalendarCheck
 };
 
 export default function CategoryPage({ params }: CategoryPageProps) {
@@ -256,24 +318,22 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await fetch(`/api/public/categories?locale=${locale}`);
+        setLoading(true);
+        const response = await fetch(`/api/public/categories/${slug}?locale=${locale}&t=${Date.now()}`);
         
         if (response.ok) {
           const result = await response.json();
-          console.log('Categories fetched:', result.data);
+          console.log('Category fetched:', result.data);
+          console.log('Subcategories:', result.data?.subcategories);
           
-          if (result.data && Array.isArray(result.data)) {
-            const foundCategory = result.data.find((cat: Category) => cat.slug === slug);
-            if (foundCategory) {
-              console.log('Category found:', foundCategory);
-              setCategory(foundCategory);
-              setLoading(false);
-              return;
-            }
+          if (result.data) {
+            setCategory(result.data);
+            setLoading(false);
+            return;
           }
         }
         
-        console.log('Category not found for slug:', slug);
+        console.log('Category not found for slug:', slug, 'locale:', locale);
         notFound();
       } catch (error) {
         console.error('Error fetching category:', error);
@@ -302,7 +362,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const IconComponent = categoryIconMap[slug as keyof typeof categoryIconMap];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" key={`${locale}-${slug}`}>
       <SimpleNavbar locale={locale} />
 
       {/* Hero Section */}
@@ -404,6 +464,58 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               </p>
             )}
 
+            {/* Subcategories Section */}
+            {category.subcategories && category.subcategories.length > 0 && (
+              <div className="mb-12">
+                <h2 className="text-3xl font-serif text-primary mb-8 text-center">
+                  {isEnglish ? 'Explore More' : 'Daha Fazla Keşfet'}
+                </h2>
+                <div className="space-y-16">
+                  {category.subcategories.map((subcategory, index) => {
+                    const isEven = index % 2 === 0;
+                    return (
+                      <div key={subcategory.id} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 items-center`}>
+                        {/* Image */}
+                        <div className="w-full lg:flex-1">
+                          {subcategory.image ? (
+                            <div className="relative overflow-hidden rounded-2xl shadow-xl">
+                              <img
+                                src={subcategory.image.file_path}
+                                alt={subcategory.image.alt_text || subcategory.title}
+                                className="w-full h-64 sm:h-80 lg:h-96 xl:h-[28rem] object-cover transition-transform duration-300 hover:scale-105"
+                              />
+                              {subcategory.image.caption && (
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                  <p className="text-white text-sm">{subcategory.image.caption}</p>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="w-full h-64 sm:h-80 lg:h-96 xl:h-[28rem] bg-gradient-to-br from-primary/20 to-teal/20 rounded-2xl flex items-center justify-center">
+                              <div className="text-center text-gray-500">
+                                <div className="text-4xl mb-2">📸</div>
+                                <p className="text-sm">Image coming soon</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="w-full lg:flex-1 lg:px-4">
+                          <h3 className="text-xl sm:text-2xl font-bold text-navy mb-4 tracking-wide">
+                            {toLocaleUppercase(isEnglish ? subcategory.title.en : subcategory.title.tr, locale)}
+                          </h3>
+                          <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
+                            {isEnglish ? subcategory.body_text?.en : subcategory.body_text?.tr}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Call to Action */}
             <div className="text-center bg-white border-2 border-primary/20 rounded-xl p-8">
               <h3 className="text-2xl font-serif text-navy mb-4">
@@ -434,20 +546,139 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </section>
 
-      {/* Simple Footer */}
-      <footer className="bg-navy text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h3 className="text-2xl font-serif font-bold mb-4 text-primary">
-            Discover Kaçkar
-          </h3>
-          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-            {isEnglish 
-              ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains."
-              : "Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin."
-            }
-          </p>
-          <div className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Discover Kaçkar. {isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}
+      {/* Full Footer */}
+      <footer className="bg-navy text-white mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            {/* Brand */}
+            <div className="col-span-1 md:col-span-2">
+              <Link href={`/${locale}`} className="flex items-center space-x-3 mb-6">
+                <div className="h-12 w-32 bg-white p-2 rounded flex items-center justify-center">
+                  <img 
+                    src="/logos/logo-main.png" 
+                    alt="Discover Kaçkar" 
+                    className="h-10 w-auto"
+                    style={{ maxWidth: '120px' }}
+                    onError={(e) => {
+                      console.log('Footer logo failed to load, trying JPG version');
+                      e.currentTarget.src = '/logos/logo-main.jpg';
+                      e.currentTarget.onerror = () => {
+                        console.log('JPG also failed, trying UTMB logo');
+                        e.currentTarget.src = '/logos/logo-UTMB.png';
+                        e.currentTarget.onerror = () => {
+                          console.log('All logos failed, showing fallback text');
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.parentElement!.innerHTML = '<span class="text-sm text-gray-600 font-bold">LOGO</span>';
+                        };
+                      };
+                    }}
+                  />
+                </div>
+                <span className="text-2xl font-serif font-bold text-white">
+                  Discover Kaçkar
+                </span>
+              </Link>
+              <p className="text-gray-300 max-w-md leading-relaxed mb-6">
+                {isEnglish 
+                  ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains in Turkey's Black Sea region."
+                  : "Türkiye'nin Karadeniz bölgesindeki Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin."
+                }
+              </p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
+                  <FacebookLogo size={20} />
+                </a>
+                <a href="https://www.instagram.com/discoverkackar" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                  <InstagramLogo size={20} />
+                </a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
+                  <TwitterLogo size={20} />
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-lg font-semibold mb-6 text-white">
+                {isEnglish ? 'Explore' : 'Keşfet'}
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <Link href={`/${locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    {isEnglish ? 'Nature & Adventure' : 'Doğa & Macera'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    {isEnglish ? 'Culture & Local Life' : 'Kültür & Yerel Hayat'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    {isEnglish ? 'Gastronomy & Local Flavours' : 'Gastronomi & Yerel Lezzetler'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    {isEnglish ? 'Music & Dance' : 'Müzik & Dans'}
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`/${locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                    {isEnglish ? 'Sustainable Tourism' : 'Sürdürülebilir Turizm'}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h4 className="text-lg font-semibold mb-6 text-white">
+                {isEnglish ? 'Contact' : 'İletişim'}
+              </h4>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <MapPin size={20} className="text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-gray-300 text-sm">
+                      {isEnglish 
+                        ? 'Kaçkar Mountains, Black Sea Region, Turkey'
+                        : 'Kaçkar Dağları, Karadeniz Bölgesi, Türkiye'
+                      }
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Envelope size={20} className="text-primary flex-shrink-0" />
+                  <a href="mailto:info@discoverkackar.com" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    info@discoverkackar.com
+                  </a>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Phone size={20} className="text-primary flex-shrink-0" />
+                  <a href="tel:+905551234567" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    +90 555 123 45 67
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-700 mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-400 text-sm mb-4 md:mb-0">
+                © {new Date().getFullYear()} Discover Kaçkar. {isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}
+              </p>
+              <div className="flex space-x-6">
+                <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-white transition-colors text-sm">
+                  {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
+                </Link>
+                <Link href={`/${locale}/terms`} className="text-gray-400 hover:text-white transition-colors text-sm">
+                  {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>

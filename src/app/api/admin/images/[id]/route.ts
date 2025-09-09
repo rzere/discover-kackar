@@ -1,51 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase';
 
-export async function GET(
+export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
+    const body = await request.json();
     const supabaseAdmin = getSupabaseAdmin();
     
     const { data, error } = await supabaseAdmin
       .from('images')
-      .select('*')
+      .update({
+        alt_text: body.alt_text,
+        caption: body.caption,
+        updated_at: new Date().toISOString()
+      })
       .eq('id', params.id)
+      .select('*')
       .single();
 
     if (error) {
-      console.error('Error fetching image:', error);
+      console.error('Error updating image:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ data });
   } catch (error) {
-    console.error('Error in images GET API:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const supabaseAdmin = getSupabaseAdmin();
-    
-    const { error } = await supabaseAdmin
-      .from('images')
-      .delete()
-      .eq('id', params.id);
-
-    if (error) {
-      console.error('Error deleting image:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error in images DELETE API:', error);
+    console.error('Error in image update API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

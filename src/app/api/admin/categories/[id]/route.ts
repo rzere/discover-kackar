@@ -37,15 +37,30 @@ export async function PUT(
     const body = await request.json();
     const supabaseAdmin = getSupabaseAdmin();
     
+    // Extract image metadata from body
+    const { image_alt_text, image_caption, ...categoryData } = body;
+    
     const { data, error } = await supabaseAdmin
       .from('categories')
-      .update(body)
+      .update(categoryData)
       .eq('id', params.id)
       .select();
 
     if (error) {
       console.error('Error updating category:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    // Update image metadata if provided
+    if (categoryData.hero_image_id && (image_alt_text !== undefined || image_caption !== undefined)) {
+      await supabaseAdmin
+        .from('images')
+        .update({
+          alt_text: image_alt_text || null,
+          caption: image_caption || null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', categoryData.hero_image_id);
     }
 
     return NextResponse.json({ data: data[0] });

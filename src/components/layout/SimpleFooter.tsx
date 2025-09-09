@@ -48,7 +48,9 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
             </p>
             <div className="flex space-x-4">
               <FacebookLogo size={24} className="text-gray-400 hover:text-primary cursor-pointer transition-colors" />
-              <InstagramLogo size={24} className="text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+              <a href="https://www.instagram.com/discoverkackar" target="_blank" rel="noopener noreferrer">
+                <InstagramLogo size={24} className="text-gray-400 hover:text-primary cursor-pointer transition-colors" />
+              </a>
               <TwitterLogo size={24} className="text-gray-400 hover:text-primary cursor-pointer transition-colors" />
             </div>
           </div>
@@ -61,22 +63,22 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
             <ul className="space-y-2">
               <li>
                 <Link href={`/${locale}/category/nature`} className="text-gray-300 hover:text-primary transition-colors">
-                  {isEnglish ? 'Nature' : 'Doğa'}
+                  {isEnglish ? 'Nature & Adventure' : 'Doğa & Macera'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/culture`} className="text-gray-300 hover:text-primary transition-colors">
-                  {isEnglish ? 'Culture' : 'Kültür'}
+                  {isEnglish ? 'Culture & Local Life' : 'Kültür & Yerel Hayat'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-primary transition-colors">
-                  {isEnglish ? 'Gastronomy' : 'Gastronomi'}
+                  {isEnglish ? 'Gastronomy & Local Flavours' : 'Gastronomi & Yerel Lezzetler'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/category/adventure`} className="text-gray-300 hover:text-primary transition-colors">
-                  {isEnglish ? 'Adventure' : 'Macera'}
+                <Link href={`/${locale}/category/music-dance`} className="text-gray-300 hover:text-primary transition-colors">
+                  {isEnglish ? 'Music & Dance' : 'Müzik & Dans'}
                 </Link>
               </li>
             </ul>

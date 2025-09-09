@@ -91,12 +91,18 @@ export default function Home({
           // Apply Turkish translations if needed
           if (params.locale === 'tr') {
             const turkishTranslations: Record<string, { name: string; description: string }> = {
-              'nature': { name: 'Doğa', description: 'Kaçkar Dağları\'nın el değmemiş doğası, buzul gölleri, endemik bitki örtüsü ve nefes kesen manzaraları' },
-              'culture': { name: 'Kültür', description: 'Çok kültürlü miras, tarihi köyler, geleneksel mimari ve kadim gelenekler' },
-              'gastronomy': { name: 'Gastronomi', description: 'Karadeniz mutfağının lezzetleri, yerel ürünler, geleneksel yemekler ve organik tatlar' },
-              'adventure': { name: 'Macera', description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin aktiviteleri' },
+              'nature': { name: 'Doğa & Macera', description: 'Kaçkar\'ın vadilerinden zirvelerine uzanan patikalarda doğanın saf gücünü keşfedin.' },
+              'culture': { name: 'Kültür & Yerel Hayat', description: 'Yaylaların, konakların ve köklü geleneklerin içten hikâyesine tanık olun.' },
+              'gastronomy': { name: 'Gastronomi & Yerel Lezzetler', description: 'Coğrafi işaretli ürünler ve unutulmaz lezzetlerle Kaçkar\'ın tadına varın.' },
+              'adventure': { name: 'Macera', description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin dolu aktiviteler' },
               'accommodation': { name: 'Konaklama', description: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri' },
-              'transportation': { name: 'Ulaşım', description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler' }
+              'transportation': { name: 'Ulaşım', description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler' },
+              'music-dance': { name: 'Müzik & Dans', description: 'Tulumun sesi ve horonun ritmiyle Karadeniz\'in ruhunu hissedin.' },
+              'sustainable-tourism': { name: 'Sürdürülebilir Turizm', description: 'Doğaya saygılı, yerel halka faydalı bir keşif yolculuğu.' },
+              'health-wellness': { name: 'Sağlık & Wellness', description: 'Yaylaların temiz havasında ruhunuzu ve bedeninizi yenileyin.' },
+              'photography-art': { name: 'Fotoğraf & Sanat', description: 'Mevsimlerin ışığıyla şekillenen eşsiz manzaraları yakalayın.' },
+              'educational-research': { name: 'Eğitim & Araştırma Turizmi', description: 'Endemik bitkilerden buzul göllerine uzanan canlı bir laboratuvar.' },
+              'events-festivals': { name: 'Etkinlik & Festivaller', description: 'Yayla şenliklerinden çay hasadına, coşkulu kutlamalara katılın.' }
             };
             
             categoriesData = categoriesData.map((cat: Category) => {
@@ -285,7 +291,7 @@ export default function Home({
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-8 sm:mb-12 px-4">
             <Link
               href={`/${params.locale}/category/nature`}
-              className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary to-secondary text-navy font-semibold rounded-full hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm text-sm sm:text-base"
+              className="group inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 backdrop-blur-sm text-sm sm:text-base"
             >
               {content.cta_primary}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,31 +328,20 @@ export default function Home({
           </div>
         </div>
 
-        {/* Image Indicators - Better positioned for mobile */}
-        <div className="absolute bottom-20 sm:bottom-16 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3">
+        {/* Image Indicators - Small white dots */}
+        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {heroImages.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
-              className={`relative w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 backdrop-blur-sm ${
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentImageIndex 
-                  ? 'bg-white/90 scale-125 shadow-lg' 
-                  : 'bg-white/30 hover:bg-white/60 hover:scale-110'
+                  ? 'bg-white' 
+                  : 'bg-white/40 hover:bg-white/60'
               }`}
               aria-label={`Go to image ${index + 1}`}
-            >
-              {index === currentImageIndex && (
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-secondary animate-pulse"></div>
-              )}
-            </button>
+            />
           ))}
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-6 sm:bottom-4 left-1/2 transform -translate-x-1/2">
-          <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/60 rounded-full flex justify-center backdrop-blur-sm bg-white/10">
-            <div className="w-1 h-2 sm:h-3 bg-gradient-to-b from-primary to-secondary rounded-full mt-1 sm:mt-2 animate-bounce"></div>
-          </div>
         </div>
       </section>
 
@@ -691,7 +686,7 @@ export default function Home({
                   <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
                     <FacebookLogo size={20} />
                   </a>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                  <a href="https://www.instagram.com/discoverkackar" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
                     <InstagramLogo size={20} />
                   </a>
                   <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
@@ -708,27 +703,27 @@ export default function Home({
                 <ul className="space-y-3">
                   <li>
                     <Link href={`/${params.locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Nature' : 'Doğa'}
+                      {isEnglish ? 'Nature & Adventure' : 'Doğa & Macera'}
                     </Link>
                   </li>
                   <li>
                     <Link href={`/${params.locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Culture' : 'Kültür'}
+                      {isEnglish ? 'Culture & Local Life' : 'Kültür & Yerel Hayat'}
                     </Link>
                   </li>
                   <li>
                     <Link href={`/${params.locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Gastronomy' : 'Gastronomi'}
+                      {isEnglish ? 'Gastronomy & Local Flavours' : 'Gastronomi & Yerel Lezzetler'}
                     </Link>
                   </li>
                   <li>
-                    <Link href={`/${params.locale}/category/adventure`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Adventure' : 'Macera'}
+                    <Link href={`/${params.locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Music & Dance' : 'Müzik & Dans'}
                     </Link>
                   </li>
                   <li>
-                    <Link href={`/${params.locale}/category/accommodation`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Accommodation' : 'Konaklama'}
+                    <Link href={`/${params.locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Sustainable Tourism' : 'Sürdürülebilir Turizm'}
                     </Link>
                   </li>
                 </ul>

@@ -7,7 +7,7 @@ export const categories: Category[] = [
       tr: 'Doğa & Macera',
       en: 'Nature & Adventure'
     },
-    slug: 'nature-adventure',
+    slug: 'nature',
     order: 1,
     published: true,
     subcategories: [
@@ -67,7 +67,7 @@ export const categories: Category[] = [
       tr: 'Kültür & Yerel Hayat',
       en: 'Culture & Local Life'
     },
-    slug: 'culture-local-life',
+    slug: 'culture',
     order: 2,
     published: true,
     subcategories: [

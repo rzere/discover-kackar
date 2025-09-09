@@ -18,6 +18,13 @@ export default function Navbar() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
 
+  // Create language switcher URLs that preserve the current path
+  const getLanguageUrl = (targetLocale: string) => {
+    // Remove the current locale from the pathname and add the target locale
+    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, '');
+    return `/${targetLocale}${pathWithoutLocale}`;
+  };
+
   return (
     <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-secondary/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,14 +83,14 @@ export default function Navbar() {
               {isLangMenuOpen && (
                 <div className="absolute right-0 mt-2 w-20 bg-white rounded-md shadow-lg py-1 z-50">
                   <Link
-                    href="/tr"
+                    href={getLanguageUrl('tr')}
                     className="block px-3 py-2 text-sm text-navy hover:bg-secondary/50 hover:text-primary"
                     onClick={() => setIsLangMenuOpen(false)}
                   >
                     TR
                   </Link>
                   <Link
-                    href="/en"
+                    href={getLanguageUrl('en')}
                     className="block px-3 py-2 text-sm text-navy hover:bg-secondary/50 hover:text-primary"
                     onClick={() => setIsLangMenuOpen(false)}
                   >
@@ -120,14 +127,14 @@ export default function Navbar() {
               
               <div className="flex space-x-2 pt-2">
                 <Link
-                  href="/tr"
+                  href={getLanguageUrl('tr')}
                   className="px-3 py-1 text-sm bg-secondary text-navy rounded"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   TR
                 </Link>
                 <Link
-                  href="/en"
+                  href={getLanguageUrl('en')}
                   className="px-3 py-1 text-sm bg-secondary text-navy rounded"
                   onClick={() => setIsMenuOpen(false)}
                 >

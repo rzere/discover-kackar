@@ -84,6 +84,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: 'Dashboard', href: '/admin/dashboard', icon: House },
     { name: 'Pages', href: '/admin/pages', icon: FileText },
     { name: 'Categories', href: '/admin/categories', icon: Users },
+    { name: 'Subcategories', href: '/admin/subcategories', icon: Users },
     { name: 'Images', href: '/admin/images', icon: Image },
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Settings', href: '/admin/settings', icon: Gear },

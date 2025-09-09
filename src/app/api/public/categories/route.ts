@@ -10,8 +10,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing locale parameter' }, { status: 400 });
     }
 
-    // Use regular supabase client (not admin) to respect RLS policies
-    const { data, error } = await supabase
+    // Get categories for the requested locale
+    let { data, error } = await supabase
       .from('categories')
       .select(`
         *,
@@ -20,6 +20,42 @@ export async function GET(request: NextRequest) {
       .eq('locale', locale)
       .eq('is_active', true)
       .order('sort_order', { ascending: true });
+
+    // ALWAYS get subcategories from English version (shared across all languages)
+    if (data && data.length > 0) {
+      for (let category of data) {
+        const { data: enCategory } = await supabase
+          .from('categories')
+          .select(`
+            subcategories(*)
+          `)
+          .eq('slug', category.slug)
+          .eq('locale', 'en')
+          .eq('is_active', true)
+          .single();
+        
+        if (enCategory && enCategory.subcategories && Array.isArray(enCategory.subcategories)) {
+          // Fetch images for the subcategories
+          const imageIds = enCategory.subcategories.map((sub: any) => sub.image_id).filter(Boolean);
+          if (imageIds.length > 0) {
+            const { data: images } = await supabase
+              .from('images')
+              .select('*')
+              .in('id', imageIds);
+            
+            // Map images to subcategories
+            (category as any).subcategories = enCategory.subcategories.map((sub: any) => ({
+              ...sub,
+              image: images?.find((img: any) => img.id === sub.image_id) || null
+            }));
+          } else {
+            (category as any).subcategories = enCategory.subcategories;
+          }
+        } else {
+          (category as any).subcategories = [];
+        }
+      }
+    }
 
     if (error) {
       console.error('Error fetching categories:', error);

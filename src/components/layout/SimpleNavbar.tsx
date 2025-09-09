@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { List, X, Globe } from '@phosphor-icons/react';
 
 interface SimpleNavbarProps {
@@ -10,21 +11,29 @@ interface SimpleNavbarProps {
 }
 
 const categories = [
-  { id: 'nature', slug: 'nature', name: { tr: 'Doğa', en: 'Nature' } },
-  { id: 'culture', slug: 'culture', name: { tr: 'Kültür', en: 'Culture' } },
-  { id: 'gastronomy', slug: 'gastronomy', name: { tr: 'Gastronomi', en: 'Gastronomy' } },
-  { id: 'adventure', slug: 'adventure', name: { tr: 'Macera', en: 'Adventure' } },
-  { id: 'accommodation', slug: 'accommodation', name: { tr: 'Konaklama', en: 'Accommodation' } },
-  { id: 'transportation', slug: 'transportation', name: { tr: 'Ulaşım', en: 'Transportation' } }
+  { id: 'nature', slug: 'nature', name: { tr: 'Doğa & Macera', en: 'Nature & Adventure' } },
+  { id: 'culture', slug: 'culture', name: { tr: 'Kültür & Yerel Hayat', en: 'Culture & Local Life' } },
+  { id: 'gastronomy', slug: 'gastronomy', name: { tr: 'Gastronomi & Yerel Lezzetler', en: 'Gastronomy & Local Flavours' } },
+  { id: 'music-dance', slug: 'music-dance', name: { tr: 'Müzik & Dans', en: 'Music & Dance' } },
+  { id: 'sustainable-tourism', slug: 'sustainable-tourism', name: { tr: 'Sürdürülebilir Turizm', en: 'Sustainable Tourism' } },
+  { id: 'health-wellness', slug: 'health-wellness', name: { tr: 'Sağlık & Wellness', en: 'Health & Wellness' } }
 ];
 
 export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const pathname = usePathname();
   const isEnglish = locale === 'en';
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
+
+  // Create language switcher URLs that preserve the current path
+  const getLanguageUrl = (targetLocale: string) => {
+    // Remove the current locale from the pathname and add the target locale
+    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, '');
+    return `/${targetLocale}${pathWithoutLocale}`;
+  };
 
   return (
     <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
@@ -35,7 +44,7 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
             href={`/${locale}`} 
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
           >
-            <div className="h-10 w-24 bg-white p-1 rounded shadow-sm flex items-center justify-center relative">
+            <div className="h-10 w-24 bg-white p-1 rounded flex items-center justify-center relative">
               <Image 
                 src="/logos/logo-main.png" 
                 alt="Discover Kaçkar" 
@@ -87,14 +96,14 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
               {isLangMenuOpen && (
                 <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg">
                   <Link
-                    href="/tr"
+                    href={getLanguageUrl('tr')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary"
                     onClick={() => setIsLangMenuOpen(false)}
                   >
                     TR
                   </Link>
                   <Link
-                    href="/en"
+                    href={getLanguageUrl('en')}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary"
                     onClick={() => setIsLangMenuOpen(false)}
                   >
@@ -136,14 +145,14 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
               </span>
               <div className="flex space-x-2">
                 <Link
-                  href="/tr"
+                  href={getLanguageUrl('tr')}
                   className={`px-3 py-1 text-sm rounded ${locale === 'tr' ? 'bg-primary text-white' : 'text-gray-700 hover:text-primary'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   TR
                 </Link>
                 <Link
-                  href="/en"
+                  href={getLanguageUrl('en')}
                   className={`px-3 py-1 text-sm rounded ${locale === 'en' ? 'bg-primary text-white' : 'text-gray-700 hover:text-primary'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >

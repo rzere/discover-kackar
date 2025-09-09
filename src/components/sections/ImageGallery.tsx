@@ -9,12 +9,13 @@ export default function ImageGallery() {
   const locale = useLocale() as 'tr' | 'en';
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
   
   // Get gallery images
   const galleryImages = getImagesByCategory('gallery');
   
-  // Show only first 12 images for better performance
-  const displayedImages = galleryImages.slice(0, 12);
+  // Show only first 12 images initially, or all if showAll is true
+  const displayedImages = showAll ? galleryImages : galleryImages.slice(0, 12);
 
   const openModal = (image: string, index: number) => {
     setSelectedImage(image);
@@ -74,15 +75,23 @@ export default function ImageGallery() {
           ))}
         </div>
 
-        {/* View More Button */}
-        <div className="text-center mt-12">
-          <button className="inline-flex items-center px-8 py-4 bg-primary text-navy font-semibold rounded-full hover:bg-primary/90 transition-colors shadow-lg">
-            {locale === 'tr' ? 'Daha Fazla Görüntüle' : 'View More Images'}
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+        {/* View More/Less Button */}
+        {galleryImages.length > 12 && (
+          <div className="text-center mt-12">
+            <button 
+              onClick={() => setShowAll(!showAll)}
+              className="inline-flex items-center px-8 py-4 bg-primary text-navy font-semibold rounded-full hover:bg-primary/90 transition-colors shadow-lg"
+            >
+              {showAll 
+                ? (locale === 'tr' ? 'Daha Az Göster' : 'Show Less')
+                : (locale === 'tr' ? 'Daha Fazla Görüntüle' : 'View More Images')
+              }
+              <svg className={`w-5 h-5 ml-2 transition-transform ${showAll ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Modal */}

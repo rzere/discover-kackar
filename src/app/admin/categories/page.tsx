@@ -137,7 +137,9 @@ export default function AdminCategories() {
       // Clean up the data before sending - convert empty string to null for UUID fields
       const cleanedData = {
         ...categoryData,
-        hero_image_id: categoryData.hero_image_id === '' ? null : categoryData.hero_image_id
+        hero_image_id: categoryData.hero_image_id === '' ? null : categoryData.hero_image_id,
+        image_alt_text: categoryData.image_alt_text,
+        image_caption: categoryData.image_caption
       };
 
       let response;
@@ -379,7 +381,9 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
     color_theme: category?.color_theme || 'from-blue-500 to-blue-600',
     sort_order: category?.sort_order || 1,
     is_active: category?.is_active ?? true,
-    hero_image_id: category?.hero_image_id || null
+    hero_image_id: category?.hero_image_id || null,
+    image_alt_text: category?.hero_image?.alt_text || '',
+    image_caption: category?.hero_image?.caption || ''
   });
 
   const [loadingLocale, setLoadingLocale] = useState(false);
@@ -459,8 +463,8 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
       const formData = new FormData();
       formData.append('file', selectedImage);
       formData.append('category', 'category');
-      formData.append('alt_text', `Hero image for ${formData.name || 'category'}`);
-      formData.append('caption', `Category banner for ${formData.name || 'category'}`);
+      formData.append('alt_text', formData.image_alt_text || formData.name || 'Category hero image');
+      formData.append('caption', formData.image_caption || '');
 
       console.log('Sending upload request to /api/admin/images/upload');
       console.log('FormData contents:');
@@ -486,7 +490,9 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
       // Update form data with new image ID
       setFormData(prev => ({
         ...prev,
-        hero_image_id: result.image.id
+        hero_image_id: result.image.id,
+        image_alt_text: result.image.alt_text || '',
+        image_caption: result.image.caption || ''
       }));
 
       setCurrentImage(result.image);
@@ -861,6 +867,38 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
               <p className="text-xs text-gray-500 mt-1">
                 {currentImage.original_filename} ({(currentImage.file_size / 1024 / 1024).toFixed(1)}MB)
               </p>
+            </div>
+          )}
+
+          {/* Image Alt Text and Caption - Only show when image is uploaded */}
+          {currentImage && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Image Alt Text
+                </label>
+                <input
+                  type="text"
+                  value={formData.image_alt_text}
+                  onChange={(e) => setFormData({...formData, image_alt_text: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Describe the image for accessibility"
+                />
+                <p className="text-xs text-gray-500 mt-1">Used for screen readers and accessibility</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Image Caption
+                </label>
+                <input
+                  type="text"
+                  value={formData.image_caption}
+                  onChange={(e) => setFormData({...formData, image_caption: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Optional caption text (leave empty for no caption)"
+                />
+                <p className="text-xs text-gray-500 mt-1">Leave empty to hide caption on the website</p>
+              </div>
             </div>
           )}
 

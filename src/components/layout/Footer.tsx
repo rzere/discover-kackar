@@ -52,7 +52,7 @@ export default function Footer() {
               <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
                 <FacebookLogo size={20} />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
+              <a href="https://www.instagram.com/discoverkackar" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
                 <InstagramLogo size={20} />
               </a>
               <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
@@ -69,27 +69,27 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href={`/${locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Doğa' : 'Nature'}
+                  {locale === 'tr' ? 'Doğa & Macera' : 'Nature & Adventure'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Kültür' : 'Culture'}
+                  {locale === 'tr' ? 'Kültür & Yerel Hayat' : 'Culture & Local Life'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Gastronomi' : 'Gastronomy'}
+                  {locale === 'tr' ? 'Gastronomi & Yerel Lezzetler' : 'Gastronomy & Local Flavours'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/category/adventure`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Macera' : 'Adventure'}
+                <Link href={`/${locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Müzik & Dans' : 'Music & Dance'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/category/accommodation`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Konaklama' : 'Accommodation'}
+                <Link href={`/${locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Sürdürülebilir Turizm' : 'Sustainable Tourism'}
                 </Link>
               </li>
             </ul>
