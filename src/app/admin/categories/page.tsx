@@ -86,7 +86,7 @@ export default function AdminCategories() {
       
       console.log('Setting categories:', result.data);
       
-      // Group categories by slug
+      // Group categories by slug and prioritize English
       const groupedCategories = (result.data || []).reduce((acc: any, category: Category) => {
         if (!acc[category.slug]) {
           acc[category.slug] = {
@@ -98,7 +98,26 @@ export default function AdminCategories() {
         return acc;
       }, {});
       
-      setCategories(Object.values(groupedCategories));
+      // Sort to ensure English comes first in each group
+      const sortedCategories = Object.values(groupedCategories).map((group: any) => {
+        const sortedLocales: any = {};
+        // Add English first if it exists
+        if (group.locales.en) {
+          sortedLocales.en = group.locales.en;
+        }
+        // Add other locales
+        Object.keys(group.locales).forEach(locale => {
+          if (locale !== 'en') {
+            sortedLocales[locale] = group.locales[locale];
+          }
+        });
+        return {
+          ...group,
+          locales: sortedLocales
+        };
+      });
+      
+      setCategories(sortedCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);
       alert('Error fetching categories: ' + error.message);
@@ -271,21 +290,22 @@ export default function AdminCategories() {
       {categories.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((groupedCategory) => {
-            const firstCategory = Object.values(groupedCategory.locales)[0];
+            // Prioritize English version for display
+            const displayCategory = groupedCategory.locales.en || Object.values(groupedCategory.locales)[0];
             const availableLocales = Object.keys(groupedCategory.locales);
             
             return (
               <div key={groupedCategory.slug} className="bg-white rounded-lg shadow p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${firstCategory.color_theme} flex items-center justify-center`}>
+                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${displayCategory.color_theme} flex items-center justify-center`}>
                       <span className="text-white text-xl">📁</span>
                     </div>
-                    {firstCategory.hero_image && (
+                    {displayCategory.hero_image && (
                       <div className="w-12 h-12 rounded-lg overflow-hidden border">
                         <img
-                          src={firstCategory.hero_image.file_path}
-                          alt={firstCategory.hero_image.alt_text || 'Category hero'}
+                          src={displayCategory.hero_image.file_path}
+                          alt={displayCategory.hero_image.alt_text || 'Category hero'}
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             // Fallback to placeholder if image fails to load
@@ -297,13 +317,13 @@ export default function AdminCategories() {
                   </div>
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => handleEdit(firstCategory)}
+                      onClick={() => handleEdit(displayCategory)}
                       className="text-primary hover:text-primary/80"
                     >
                       <PencilSimple size={16} />
                     </button>
                     <button
-                      onClick={() => handleDelete(firstCategory.id)}
+                      onClick={() => handleDelete(displayCategory.id)}
                       className="text-red-600 hover:text-red-800"
                     >
                       <Trash size={16} />
@@ -311,8 +331,8 @@ export default function AdminCategories() {
                   </div>
                 </div>
                 
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{firstCategory.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{firstCategory.description}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{displayCategory.name}</h3>
+                <p className="text-gray-600 text-sm mb-4">{displayCategory.description}</p>
                 
                 {/* Language indicators */}
                 <div className="mb-4">
@@ -334,13 +354,13 @@ export default function AdminCategories() {
                 
                 <div className="flex justify-between items-center">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    firstCategory.is_active 
+                    displayCategory.is_active 
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-gray-100 text-gray-800'
                   }`}>
-                    {firstCategory.is_active ? 'Active' : 'Inactive'}
+                    {displayCategory.is_active ? 'Active' : 'Inactive'}
                   </span>
-                  <span className="text-xs text-gray-500">Order: {firstCategory.sort_order}</span>
+                  <span className="text-xs text-gray-500">Order: {displayCategory.sort_order}</span>
                 </div>
               </div>
             );

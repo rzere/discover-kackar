@@ -262,7 +262,7 @@ export default function AdminImages() {
           <div key={image.id} className="bg-white rounded-lg shadow overflow-hidden">
             <div className="aspect-square bg-gray-100 relative">
               <img
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/${image.file_path}`}
+                src={image.file_path}
                 alt={image.alt_text}
                 className="w-full h-full object-cover"
                 onError={(e) => {
