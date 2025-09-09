@@ -3,10 +3,52 @@
 import { useState, useEffect } from 'react';
 import { Plus, PencilSimple, Trash, Eye, Upload, X, Image, Check } from '@phosphor-icons/react';
 import { Subcategory } from '@/lib/types/content';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase-client';
+
+// Helper function to safely render text (prevents object rendering)
+const safeRenderText = (value: any, locale: string = 'en'): string => {
+  if (value === null || value === undefined) {
+    return '';
+  }
+  
+  if (typeof value === 'string') {
+    return value;
+  }
+  
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+  
+  if (typeof value === 'object') {
+    // Try to get the locale-specific version first
+    if (value[locale]) {
+      return String(value[locale]);
+    }
+    // Fallback to English
+    if (value.en) {
+      return String(value.en);
+    }
+    // Fallback to Turkish
+    if (value.tr) {
+      return String(value.tr);
+    }
+    // If it's an array, join it
+    if (Array.isArray(value)) {
+      return value.join(', ');
+    }
+    // Last resort: stringify the object
+    return JSON.stringify(value);
+  }
+  
+  return String(value || '');
+};
 
 // Function to properly convert text to uppercase based on locale
 const toLocaleUppercase = (text: string, locale: string = 'en'): string => {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+  
   if (locale === 'tr') {
     // Turkish uppercase conversion
     return text
@@ -108,7 +150,6 @@ export default function AdminSubcategories() {
         throw new Error(result.error || 'Failed to fetch subcategories');
       }
       
-      console.log('Subcategories fetched:', result.data);
       setSubcategories(result.data || []);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -139,8 +180,8 @@ export default function AdminSubcategories() {
     setFormData({
       category_id: subcategory.category_id,
       slug: subcategory.slug,
-      title: subcategory.title.en, // Start with English
-      body_text: subcategory.body_text?.en || '',
+      title: safeRenderText(subcategory.title), // Start with English
+      body_text: safeRenderText(subcategory.body_text),
       sort_order: subcategory.sort_order,
       is_active: subcategory.is_active,
       image_id: subcategory.image_id || null,
@@ -172,8 +213,8 @@ export default function AdminSubcategories() {
       // Update form with new language data
       setFormData({
         ...formData,
-        title: currentData.title[newLanguage] || '',
-        body_text: currentData.body_text?.[newLanguage] || ''
+        title: safeRenderText(currentData.title),
+        body_text: safeRenderText(currentData.body_text)
       });
     }
     setCurrentLanguage(newLanguage);
@@ -387,7 +428,9 @@ export default function AdminSubcategories() {
 
       {subcategories.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subcategories.map((subcategory) => (
+          {subcategories.map((subcategory) => {
+            try {
+              return (
             <div key={subcategory.id} className="bg-white rounded-lg shadow p-6">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center space-x-3">
@@ -421,18 +464,18 @@ export default function AdminSubcategories() {
               </div>
               
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {toLocaleUppercase(subcategory.title.en, 'en')}
+                {toLocaleUppercase(safeRenderText(subcategory.title), 'en')}
               </h3>
               <p className="text-gray-600 text-sm mb-2 line-clamp-3">
-                {subcategory.body_text?.en}
+                {safeRenderText(subcategory.body_text)}
               </p>
               
               <div className="mb-2">
                 <div className="text-sm">
-                  <span className="font-medium text-blue-600">EN:</span> {subcategory.title.en}
+                  <span className="font-medium text-blue-600">EN:</span> {safeRenderText(subcategory.title)}
                 </div>
                 <div className="text-sm">
-                  <span className="font-medium text-green-600">TR:</span> {subcategory.title.tr}
+                  <span className="font-medium text-green-600">TR:</span> {safeRenderText(subcategory.title)}
                 </div>
               </div>
               
@@ -442,7 +485,7 @@ export default function AdminSubcategories() {
                 </span>
                 {subcategory.category && (
                   <span className="ml-2 px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full">
-                    {subcategory.category.name}
+                    {safeRenderText(subcategory.category.name)}
                   </span>
                 )}
               </div>
@@ -458,7 +501,17 @@ export default function AdminSubcategories() {
                 <span className="text-xs text-gray-500">Order: {subcategory.sort_order}</span>
               </div>
             </div>
-          ))}
+              );
+            } catch (error) {
+              console.error('Error rendering subcategory:', subcategory, error);
+              return (
+                <div key={subcategory.id} className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <p className="text-red-600">Error rendering subcategory: {subcategory.id}</p>
+                  <p className="text-sm text-red-500">{error instanceof Error ? error.message : 'Unknown error'}</p>
+                </div>
+              );
+            }
+          })}
         </div>
       ) : (
         <div className="text-center py-12">
@@ -498,8 +551,8 @@ function SubcategoryForm({
   const [formData, setFormData] = useState({
     category_id: subcategory?.category_id || '',
     slug: subcategory?.slug || '',
-    title: subcategory?.title?.en || '',
-    body_text: subcategory?.body_text?.en || '',
+    title: safeRenderText(subcategory?.title),
+    body_text: safeRenderText(subcategory?.body_text),
     image_id: subcategory?.image_id || null,
     sort_order: subcategory?.sort_order || 1,
     is_active: subcategory?.is_active ?? true,
@@ -520,8 +573,8 @@ function SubcategoryForm({
     if (subcategory) {
       setFormData(prev => ({
         ...prev,
-        title: subcategory.title?.[currentLanguage] || '',
-        body_text: subcategory.body_text?.[currentLanguage] || ''
+        title: safeRenderText(subcategory.title),
+        body_text: safeRenderText(subcategory.body_text)
       }));
     }
   }, [currentLanguage, subcategory]);
@@ -675,7 +728,7 @@ function SubcategoryForm({
               <option value="">Select a category</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.name} ({category.locale.toUpperCase()})
+                  {safeRenderText(category.name)} ({category.locale.toUpperCase()})
                 </option>
               ))}
             </select>
