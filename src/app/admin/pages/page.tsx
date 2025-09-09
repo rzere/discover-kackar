@@ -499,6 +499,39 @@ function PageForm({ page, onSave, onCancel, onEditingPageChange }: { page: Page 
           </div>
         </div>
 
+        {/* Categories Section Content */}
+        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+          <h3 className="text-lg font-semibold text-purple-900 mb-3">📂 Categories Section Content</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Categories Section Title</label>
+              <input
+                type="text"
+                value={formData.content?.categories_title || ''}
+                onChange={(e) => setFormData({
+                  ...formData, 
+                  content: {...formData.content, categories_title: e.target.value}
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Explore Categories"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Categories Section Description</label>
+              <textarea
+                value={formData.content?.categories_description || ''}
+                onChange={(e) => setFormData({
+                  ...formData, 
+                  content: {...formData.content, categories_description: e.target.value}
+                })}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder="e.g., Discover every aspect of Kaçkar Mountains through our carefully curated categories, each offering unique experiences and adventures."
+              />
+            </div>
+          </div>
+        </div>
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
           <input

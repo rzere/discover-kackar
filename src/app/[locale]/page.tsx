@@ -62,6 +62,7 @@ export default function Home({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [pageData, setPageData] = useState<PageData | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [footerData, setFooterData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const imageSize = useImageSize();
 
@@ -132,6 +133,17 @@ export default function Home({
           setCategories(categoriesData);
         } else {
           console.error('Error fetching categories:', categoriesResult.error);
+        }
+
+        // Fetch footer data
+        const footerResponse = await fetch(`/api/public/footer?locale=${params.locale}`);
+        const footerResult = await footerResponse.json();
+
+        if (footerResponse.ok && footerResult.data) {
+          console.log('Footer data loaded:', footerResult.data);
+          setFooterData(footerResult.data);
+        } else {
+          console.log('No footer data found, using fallback');
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -363,13 +375,13 @@ export default function Home({
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
-              {isEnglish ? 'Explore Categories' : 'Kategorileri Keşfet'}
+              {content.categories_title || (isEnglish ? 'Explore Categories' : 'Kategorileri Keşfet')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {isEnglish 
+              {content.categories_description || (isEnglish 
                 ? "Discover every aspect of Kaçkar Mountains through our carefully curated categories, each offering unique experiences and adventures."
                 : "Özenle hazırlanmış kategorilerimiz aracılığıyla Kaçkar Dağları'nın her yönünü keşfedin, her biri benzersiz deneyimler ve maceralar sunuyor."
-              }
+              )}
             </p>
           </div>
 
@@ -686,25 +698,36 @@ export default function Home({
                     />
                   </div>
                   <h3 className="text-2xl font-serif font-bold text-white">
-            Discover Kaçkar
-          </h3>
+                    {footerData?.company_name || 'Discover Kaçkar'}
+                  </h3>
                 </div>
                 <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
-            {isEnglish 
+                  {footerData?.company_description || (isEnglish 
                     ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains. Your gateway to Turkey's hidden mountain paradise."
                     : "Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin. Türkiye'nin gizli dağ cennetine açılan kapınız."
-            }
-          </p>
+                  )}
+                </p>
                 <div className="flex space-x-4">
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
-                    <FacebookLogo size={20} />
-                  </a>
-                  <a href="https://www.instagram.com/discoverkackar" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
-                    <InstagramLogo size={20} />
-                  </a>
-                  <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
-                    <TwitterLogo size={20} />
-                  </a>
+                  {footerData?.social_links?.facebook && (
+                    <a href={footerData.social_links.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
+                      <FacebookLogo size={20} />
+                    </a>
+                  )}
+                  {footerData?.social_links?.instagram && (
+                    <a href={footerData.social_links.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                      <InstagramLogo size={20} />
+                    </a>
+                  )}
+                  {footerData?.social_links?.twitter && (
+                    <a href={footerData.social_links.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
+                      <TwitterLogo size={20} />
+                    </a>
+                  )}
+                  {footerData?.social_links?.youtube && (
+                    <a href={footerData.social_links.youtube} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="YouTube">
+                      <TwitterLogo size={20} />
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -714,31 +737,43 @@ export default function Home({
                   {isEnglish ? 'Explore' : 'Keşfet'}
                 </h4>
                 <ul className="space-y-3">
-                  <li>
-                    <Link href={`/${params.locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Nature & Adventure' : 'Doğa & Macera'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/${params.locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Culture & Local Life' : 'Kültür & Yerel Hayat'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/${params.locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Gastronomy & Local Flavours' : 'Gastronomi & Yerel Lezzetler'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/${params.locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Music & Dance' : 'Müzik & Dans'}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/${params.locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                      {isEnglish ? 'Sustainable Tourism' : 'Sürdürülebilir Turizm'}
-                    </Link>
-                  </li>
+                  {footerData?.quick_links && footerData.quick_links.length > 0 ? (
+                    footerData.quick_links.map((link: any, index: number) => (
+                      <li key={index}>
+                        <Link href={link.url} className="text-gray-300 hover:text-white transition-colors text-sm">
+                          {link.title}
+                        </Link>
+                      </li>
+                    ))
+                  ) : (
+                    <>
+                      <li>
+                        <Link href={`/${params.locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                          {isEnglish ? 'Nature & Adventure' : 'Doğa & Macera'}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${params.locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                          {isEnglish ? 'Culture & Local Life' : 'Kültür & Yerel Hayat'}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${params.locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                          {isEnglish ? 'Gastronomy & Local Flavours' : 'Gastronomi & Yerel Lezzetler'}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${params.locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                          {isEnglish ? 'Music & Dance' : 'Müzik & Dans'}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${params.locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                          {isEnglish ? 'Sustainable Tourism' : 'Sürdürülebilir Turizm'}
+                        </Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
 
@@ -748,27 +783,57 @@ export default function Home({
                   {isEnglish ? 'Contact' : 'İletişim'}
                 </h4>
                 <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <MapPin size={18} className="text-white mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-gray-300 text-sm">
-                        {isEnglish ? 'Kaçkar Mountains, Rize/Artvin' : 'Kaçkar Dağları, Rize/Artvin'}
-                      </p>
-                      <p className="text-gray-300 text-sm">Türkiye</p>
+                  {footerData?.address && (
+                    <div className="flex items-start space-x-3">
+                      <MapPin size={18} className="text-white mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-gray-300 text-sm">
+                          {footerData.address}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Envelope size={18} className="text-white flex-shrink-0" />
-                    <a href="mailto:info@discoverkackar.com" className="text-gray-300 hover:text-white transition-colors text-sm">
-                      info@discoverkackar.com
-                    </a>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Phone size={18} className="text-white flex-shrink-0" />
-                    <a href="tel:+90464XXXXXXX" className="text-gray-300 hover:text-white transition-colors text-sm">
-                      +90 464 XXX XX XX
-                    </a>
-                  </div>
+                  )}
+                  {footerData?.email && (
+                    <div className="flex items-center space-x-3">
+                      <Envelope size={18} className="text-white flex-shrink-0" />
+                      <a href={`mailto:${footerData.email}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                        {footerData.email}
+                      </a>
+                    </div>
+                  )}
+                  {footerData?.phone && (
+                    <div className="flex items-center space-x-3">
+                      <Phone size={18} className="text-white flex-shrink-0" />
+                      <a href={`tel:${footerData.phone}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                        {footerData.phone}
+                      </a>
+                    </div>
+                  )}
+                  {!footerData && (
+                    <>
+                      <div className="flex items-start space-x-3">
+                        <MapPin size={18} className="text-white mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-gray-300 text-sm">
+                            {isEnglish ? 'Kaçkar Mountains, Rize/Artvin' : 'Kaçkar Dağları, Rize/Artvin'}
+                          </p>
+                          <p className="text-gray-300 text-sm">Türkiye</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Envelope size={18} className="text-white flex-shrink-0" />
+                        <a href="mailto:info@discoverkackar.com" className="text-gray-300 hover:text-white transition-colors text-sm">
+                          info@discoverkackar.com
+                        </a>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <Phone size={18} className="text-white flex-shrink-0" />
+                        <a href="tel:+90464XXXXXXX" className="text-gray-300 hover:text-white transition-colors text-sm">
+                          +90 464 XXX XX XX
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -779,22 +844,32 @@ export default function Home({
             <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
               <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
                 <p className="text-gray-300 text-sm">
-            © {new Date().getFullYear()} Discover Kaçkar. {isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}
+                  {footerData?.copyright_text || `© ${new Date().getFullYear()} Discover Kaçkar. ${isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}`}
                 </p>
                 <div className="flex items-center space-x-4 text-xs text-gray-400">
                   <span>{isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}</span>
                 </div>
               </div>
               <div className="flex space-x-6">
-                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
-                </Link>
-                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
-                </Link>
-                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {isEnglish ? 'Cookie Policy' : 'Çerez Politikası'}
-                </Link>
+                {footerData?.legal_links && footerData.legal_links.length > 0 ? (
+                  footerData.legal_links.map((link: any, index: number) => (
+                    <Link key={index} href={link.url} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {link.title}
+                    </Link>
+                  ))
+                ) : (
+                  <>
+                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
+                    </Link>
+                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
+                    </Link>
+                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {isEnglish ? 'Cookie Policy' : 'Çerez Politikası'}
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
