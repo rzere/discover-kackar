@@ -86,24 +86,47 @@ interface SubcategoryWithCategory extends Subcategory {
   category?: Category;
 }
 
+interface FormData {
+  category_id: string;
+  slug: string;
+  title: { en: string; tr: string };
+  body_text: { en: string; tr: string };
+  sort_order: number;
+  is_active: boolean;
+  image_id: string | null;
+  image_alt_text: string;
+  image_caption: string;
+}
+
 export default function AdminSubcategories() {
   const [subcategories, setSubcategories] = useState<SubcategoryWithCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [originalCount, setOriginalCount] = useState<number>(0);
   const [editingSubcategory, setEditingSubcategory] = useState<Subcategory | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     category_id: '',
     slug: '',
-    title: '',
-    body_text: '',
+    title: { en: '', tr: '' },
+    body_text: { en: '', tr: '' },
     sort_order: 0,
     is_active: true,
-    image_id: null as string | null,
+    image_id: null,
     image_alt_text: '',
     image_caption: ''
   });
   const [currentLanguage, setCurrentLanguage] = useState<'en' | 'tr'>('en');
+
+  // Helper function to get current language text
+  const getCurrentText = (textObj: { en: string; tr: string }) => {
+    return textObj[currentLanguage] || '';
+  };
+
+  // Helper function to update text for current language
+  const updateCurrentText = (textObj: { en: string; tr: string }, newValue: string) => {
+    return { ...textObj, [currentLanguage]: newValue };
+  };
 
   // Function to generate a unique slug
   const generateUniqueSlug = async (title: string, categoryId: string, excludeId?: string) => {
@@ -141,6 +164,44 @@ export default function AdminSubcategories() {
     fetchCategories();
   }, []);
 
+  // Function to deduplicate subcategories
+  const deduplicateSubcategories = (subcategories: SubcategoryWithCategory[]) => {
+    const seen = new Map<string, SubcategoryWithCategory>();
+    const duplicates: string[] = [];
+    
+    for (const subcategory of subcategories) {
+      // Create a unique key based on slug and category_id
+      // This ensures we don't have duplicate subcategories with the same slug in the same category
+      const key = `${subcategory.slug}-${subcategory.category_id}`;
+      
+      if (!seen.has(key)) {
+        // First time seeing this combination, keep it
+        seen.set(key, subcategory);
+      } else {
+        // Duplicate found, keep the one with the most recent updated_at
+        duplicates.push(key);
+        const existing = seen.get(key)!;
+        const existingDate = new Date(existing.updated_at || existing.created_at || '');
+        const currentDate = new Date(subcategory.updated_at || subcategory.created_at || '');
+        
+        if (currentDate > existingDate) {
+          // Keep the newer one
+          seen.set(key, subcategory);
+          console.log(`Replacing duplicate: ${key} (keeping newer version)`);
+        } else {
+          console.log(`Skipping duplicate: ${key} (keeping existing version)`);
+        }
+      }
+    }
+    
+    if (duplicates.length > 0) {
+      console.log(`Found ${duplicates.length} duplicate subcategories:`, duplicates);
+      console.log(`Original count: ${subcategories.length}, Deduplicated count: ${seen.size}`);
+    }
+    
+    return Array.from(seen.values());
+  };
+
   const fetchSubcategories = async () => {
     try {
       const response = await fetch('/api/admin/subcategories');
@@ -150,7 +211,18 @@ export default function AdminSubcategories() {
         throw new Error(result.error || 'Failed to fetch subcategories');
       }
       
-      setSubcategories(result.data || []);
+      // Deduplicate subcategories based on slug and category_id
+      const originalCount = result.data?.length || 0;
+      const deduplicatedData = deduplicateSubcategories(result.data || []);
+      const deduplicatedCount = deduplicatedData.length;
+      
+      setOriginalCount(originalCount);
+      
+      if (originalCount > deduplicatedCount) {
+        console.log(`Deduplication: ${originalCount} → ${deduplicatedCount} subcategories`);
+      }
+      
+      setSubcategories(deduplicatedData);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
       alert('Error fetching subcategories: ' + (error instanceof Error ? error.message : 'Unknown error'));
@@ -177,11 +249,16 @@ export default function AdminSubcategories() {
 
   const handleEdit = (subcategory: Subcategory) => {
     setEditingSubcategory(subcategory);
+    
+    // Properly handle multilingual data
+    const titleData = typeof subcategory.title === 'object' ? subcategory.title : { en: subcategory.title || '', tr: '' };
+    const bodyTextData = typeof subcategory.body_text === 'object' ? subcategory.body_text : { en: subcategory.body_text || '', tr: '' };
+    
     setFormData({
       category_id: subcategory.category_id,
       slug: subcategory.slug,
-      title: safeRenderText(subcategory.title), // Start with English
-      body_text: safeRenderText(subcategory.body_text),
+      title: { en: titleData.en || '', tr: titleData.tr || '' },
+      body_text: { en: bodyTextData.en || '', tr: bodyTextData.tr || '' },
       sort_order: subcategory.sort_order,
       is_active: subcategory.is_active,
       image_id: subcategory.image_id || null,
@@ -196,34 +273,17 @@ export default function AdminSubcategories() {
   };
 
   const handleLanguageChange = (newLanguage: 'en' | 'tr') => {
-    if (editingSubcategory) {
-      // Save current language data
-      const currentData = {
-        ...editingSubcategory,
-        title: {
-          ...editingSubcategory.title,
-          [currentLanguage]: formData.title
-        },
-        body_text: {
-          ...editingSubcategory.body_text,
-          [currentLanguage]: formData.body_text
-        }
-      };
-      
-      // Update form with new language data
-      setFormData({
-        ...formData,
-        title: safeRenderText(currentData.title),
-        body_text: safeRenderText(currentData.body_text)
-      });
-    }
     setCurrentLanguage(newLanguage);
+    // The form will automatically show the correct language data since it's stored in formData.title[newLanguage]
   };
 
   const handleTitleChange = (newTitle: string) => {
     setFormData(prev => ({
       ...prev,
-      title: newTitle
+      title: {
+        ...prev.title,
+        [currentLanguage]: newTitle
+      }
     }));
     
     // Auto-generate slug if creating new subcategory and slug is empty
@@ -247,8 +307,8 @@ export default function AdminSubcategories() {
     setFormData({
       category_id: '',
       slug: '',
-      title: '',
-      body_text: '',
+      title: { en: '', tr: '' },
+      body_text: { en: '', tr: '' },
       sort_order: 0,
       is_active: true,
       image_id: null,
@@ -362,8 +422,8 @@ export default function AdminSubcategories() {
       setFormData({
         category_id: '',
         slug: '',
-        title: '',
-        body_text: '',
+        title: { en: '', tr: '' },
+        body_text: { en: '', tr: '' },
         sort_order: 0,
         is_active: true,
         image_id: null,
@@ -402,6 +462,11 @@ export default function AdminSubcategories() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Subcategories</h1>
           <p className="text-gray-600 mt-2">Manage subcategories for each category</p>
+          {originalCount > subcategories.length && (
+            <p className="text-sm text-blue-600 mt-1">
+              📊 Showing {subcategories.length} unique subcategories (removed {originalCount - subcategories.length} duplicates)
+            </p>
+          )}
         </div>
         <button
           onClick={handleCreateNew}
@@ -466,16 +531,21 @@ export default function AdminSubcategories() {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {toLocaleUppercase(safeRenderText(subcategory.title), 'en')}
               </h3>
-              <p className="text-gray-600 text-sm mb-2 line-clamp-3">
-                {safeRenderText(subcategory.body_text)}
-              </p>
+              <div className="text-gray-600 text-sm mb-2">
+                <div className="line-clamp-2">
+                  <span className="font-medium text-blue-600">EN:</span> {safeRenderText(subcategory.body_text, 'en')}
+                </div>
+                <div className="line-clamp-2">
+                  <span className="font-medium text-green-600">TR:</span> {safeRenderText(subcategory.body_text, 'tr')}
+                </div>
+              </div>
               
               <div className="mb-2">
                 <div className="text-sm">
-                  <span className="font-medium text-blue-600">EN:</span> {safeRenderText(subcategory.title)}
+                  <span className="font-medium text-blue-600">EN:</span> {safeRenderText(subcategory.title, 'en')}
                 </div>
                 <div className="text-sm">
-                  <span className="font-medium text-green-600">TR:</span> {safeRenderText(subcategory.title)}
+                  <span className="font-medium text-green-600">TR:</span> {safeRenderText(subcategory.title, 'tr')}
                 </div>
               </div>
               
@@ -548,17 +618,27 @@ function SubcategoryForm({
   currentLanguage: 'en' | 'tr',
   onLanguageChange: (language: 'en' | 'tr') => void
 }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     category_id: subcategory?.category_id || '',
     slug: subcategory?.slug || '',
-    title: safeRenderText(subcategory?.title),
-    body_text: safeRenderText(subcategory?.body_text),
+    title: typeof subcategory?.title === 'object' ? subcategory.title : { en: subcategory?.title || '', tr: '' },
+    body_text: typeof subcategory?.body_text === 'object' ? subcategory.body_text : { en: subcategory?.body_text || '', tr: '' },
     image_id: subcategory?.image_id || null,
     sort_order: subcategory?.sort_order || 1,
     is_active: subcategory?.is_active ?? true,
     image_alt_text: subcategory?.image?.alt_text || '',
     image_caption: subcategory?.image?.caption || ''
   });
+
+  // Helper function to get current language text
+  const getCurrentText = (textObj: { en: string; tr: string }) => {
+    return textObj[currentLanguage] || '';
+  };
+
+  // Helper function to update text for current language
+  const updateCurrentText = (textObj: { en: string; tr: string }, newValue: string) => {
+    return { ...textObj, [currentLanguage]: newValue };
+  };
 
   const [uploadingImage, setUploadingImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -571,10 +651,13 @@ function SubcategoryForm({
   // Update form data when language changes
   useEffect(() => {
     if (subcategory) {
+      const titleData = typeof subcategory.title === 'object' ? subcategory.title : { en: subcategory.title || '', tr: '' };
+      const bodyTextData = typeof subcategory.body_text === 'object' ? subcategory.body_text : { en: subcategory.body_text || '', tr: '' };
+      
       setFormData(prev => ({
         ...prev,
-        title: safeRenderText(subcategory.title),
-        body_text: safeRenderText(subcategory.body_text)
+        title: titleData,
+        body_text: bodyTextData
       }));
     }
   }, [currentLanguage, subcategory]);
@@ -618,7 +701,7 @@ function SubcategoryForm({
   const handleTitleChange = (newTitle: string) => {
     setFormData(prev => ({
       ...prev,
-      title: newTitle
+      title: updateCurrentText(prev.title, newTitle)
     }));
     
     // Auto-generate slug if creating new subcategory and slug is empty
@@ -646,7 +729,7 @@ function SubcategoryForm({
       const uploadFormData = new FormData();
       uploadFormData.append('file', selectedImage);
       uploadFormData.append('category', 'subcategory');
-      uploadFormData.append('alt_text', formData.image_alt_text || formData.title || 'Subcategory image');
+      uploadFormData.append('alt_text', formData.image_alt_text || getCurrentText(formData.title) || 'Subcategory image');
       uploadFormData.append('caption', formData.image_caption || '');
 
       const response = await fetch('/api/admin/images/upload', {
@@ -701,11 +784,7 @@ function SubcategoryForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
-      ...formData,
-      title: { en: formData.title, tr: formData.title },
-      body_text: { en: formData.body_text, tr: formData.body_text }
-    } as any);
+    onSave(formData as any);
   };
 
   return (
@@ -795,7 +874,7 @@ function SubcategoryForm({
           </label>
           <input
             type="text"
-            value={formData.title}
+            value={getCurrentText(formData.title)}
             onChange={(e) => handleTitleChange(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder={currentLanguage === 'en' ? "e.g., Hiking & Trekking" : "e.g., Doğa Yürüyüşü & Trekking"}
@@ -809,8 +888,8 @@ function SubcategoryForm({
             Body Text ({currentLanguage.toUpperCase()}) <span className="text-red-500">*</span>
           </label>
           <textarea
-            value={formData.body_text}
-            onChange={(e) => setFormData({...formData, body_text: e.target.value})}
+            value={getCurrentText(formData.body_text)}
+            onChange={(e) => setFormData({...formData, body_text: updateCurrentText(formData.body_text, e.target.value)})}
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder={currentLanguage === 'en' ? "Detailed description of the subcategory..." : "Alt kategori için detaylı açıklama..."}

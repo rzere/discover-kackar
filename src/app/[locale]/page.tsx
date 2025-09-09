@@ -278,7 +278,7 @@ export default function Home({
           </h1>
           
           {/* Glass Panel for Text Content */}
-          <div className="bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
+          <div className="relative z-20 bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-primary font-medium drop-shadow-lg">
               {content.subtitle}
             </p>
@@ -328,16 +328,16 @@ export default function Home({
           </div>
         </div>
 
-        {/* Image Indicators - Small white dots */}
-        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {/* Image Indicators - Small white dots positioned behind glass panel */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-1 z-0">
           {heroImages.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              className={`w-1 h-1 rounded-full transition-all duration-300 ${
                 index === currentImageIndex 
-                  ? 'bg-white' 
-                  : 'bg-white/40 hover:bg-white/60'
+                  ? 'bg-white/80' 
+                  : 'bg-white/30 hover:bg-white/50'
               }`}
               aria-label={`Go to image ${index + 1}`}
             />
