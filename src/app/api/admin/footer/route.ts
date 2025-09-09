@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const supabaseAdmin = getSupabaseAdmin();
     const { data, error } = await supabaseAdmin
-      .from('footer')
+      .from('footer' as any)
       .select('*')
       .order('locale', { ascending: true });
 
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const supabaseAdmin = getSupabaseAdmin();
     
     const { data, error } = await supabaseAdmin
-      .from('footer')
+      .from('footer' as any)
       .upsert([body], { onConflict: 'locale' })
       .select();
 

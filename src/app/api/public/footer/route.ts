@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const locale = searchParams.get('locale') || 'en';
 
     const { data, error } = await supabase
-      .from('footer')
+      .from('footer' as any)
       .select('*')
       .eq('locale', locale)
       .eq('is_active', true)
