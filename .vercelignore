@@ -1,0 +1,16 @@
+# Ignore temp files and uploads
+temp/
+
+# Ignore large image files
+public/images/*.jpg
+public/images/*.jpeg
+public/images/*.png
+public/images/*.avif
+public/images/*.webp
+
+# Ignore large development files
+*.log
+.DS_Store
+
+# Ignore test files
+test-*.html
