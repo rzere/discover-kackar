@@ -12,7 +12,6 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
-    optimizeCss: true,
     scrollRestoration: true,
   },
   // Performance optimizations
