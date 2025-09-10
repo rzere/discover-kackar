@@ -113,7 +113,7 @@ export default function ContactPage({ params }: ContactPageProps) {
           <h1 className="text-4xl md:text-6xl font-serif font-black mb-6 leading-tight text-white drop-shadow-2xl">
             {getLocalizedText(contactPageData?.hero_title, isEnglish ? 'Contact Us' : 'İletişime Geçin')}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto">
             {getLocalizedText(contactPageData?.hero_subtitle, isEnglish 
               ? 'Get in touch with us for any questions about your Kaçkar adventure' 
               : 'Kaçkar maceranız hakkında sorularınız için bizimle iletişime geçin')}
