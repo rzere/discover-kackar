@@ -159,7 +159,7 @@ export default function Home({
   // Preload the first hero image for faster initial load
   useEffect(() => {
     if (heroImages[0]) {
-      const img = new Image();
+      const img = new window.Image();
       img.src = getImageUrl(heroImages[0], imageSize);
     }
   }, [heroImages, imageSize]);
@@ -171,7 +171,7 @@ export default function Home({
         const nextIndex = (prev + 1) % heroImages.length;
         // Preload next image
         if (heroImages[nextIndex]) {
-          const img = new Image();
+          const img = new window.Image();
           img.src = getImageUrl(heroImages[nextIndex], imageSize);
         }
         return nextIndex;
@@ -314,7 +314,7 @@ export default function Home({
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-black mb-4 sm:mb-6 leading-tight text-white uppercase drop-shadow-2xl px-2">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-black mb-4 sm:mb-6 leading-tight text-white drop-shadow-2xl px-2">
             {pageTitle}
           </h1>
           

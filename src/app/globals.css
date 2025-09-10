@@ -20,6 +20,13 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 900 !important; /* font-black equivalent */
 }
 
+/* Override for hero sections where we want white text */
+section h1.text-white,
+.hero h1.text-white,
+h1.text-white {
+  color: white !important;
+}
+
 .font-serif {
   font-family: var(--font-poppins), "Poppins", sans-serif !important;
   font-weight: 900 !important; /* font-black equivalent */

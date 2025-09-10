@@ -21,7 +21,7 @@ export default function SimpleHero({ locale }: SimpleHeroProps) {
           <Mountains size={80} className="text-primary" />
         </div>
         
-        <h1 className="text-6xl md:text-7xl font-serif font-black text-white uppercase mb-6 drop-shadow-lg">
+        <h1 className="text-6xl md:text-7xl font-serif font-black text-white mb-6 drop-shadow-lg">
           Discover Kaçkar
         </h1>
         

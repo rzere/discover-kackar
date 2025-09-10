@@ -83,7 +83,7 @@ export default function Hero() {
           <div className="absolute -top-5 -right-10 w-16 h-16 bg-secondary/20 rounded-full blur-xl animate-pulse delay-1000"></div>
           <div className="absolute -bottom-10 -left-20 w-24 h-24 bg-teal/20 rounded-full blur-xl animate-pulse delay-2000"></div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black mb-6 leading-tight text-white uppercase drop-shadow-2xl">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black mb-6 leading-tight text-white drop-shadow-2xl">
             {t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl mb-4 text-primary font-medium drop-shadow-lg">

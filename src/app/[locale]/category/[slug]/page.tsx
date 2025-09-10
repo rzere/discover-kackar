@@ -407,7 +407,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-serif font-black mb-4 leading-tight text-white uppercase drop-shadow-2xl">
+          <h1 className="text-5xl md:text-6xl font-serif font-black mb-4 leading-tight text-white drop-shadow-2xl">
             {category.name}
           </h1>
           
