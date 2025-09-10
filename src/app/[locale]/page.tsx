@@ -75,7 +75,7 @@ export default function Home({
       try {
         // OPTIMIZED: Fetch all data in parallel for much faster loading
         const [pageResponse, categoriesResponse, footerResponse, ctaResponse] = await Promise.all([
-          fetch(`/api/public/pages?locale=${params.locale}`), // Use public API for better performance
+          fetch(`/api/admin/pages`), // Use admin API since public API is not working
           fetch(`/api/public/categories?locale=${params.locale}`), // Use correct locale
           fetch(`/api/public/footer?locale=${params.locale}`), // Use correct locale
           fetch(`/api/admin/cta-cards`) // Fetch CTA card data from admin API
@@ -85,6 +85,7 @@ export default function Home({
         if (pageResponse.ok) {
           const pageResult = await pageResponse.json();
           if (pageResult.data) {
+            // Admin API returns array, find the home page for current locale
             const homePage = pageResult.data.find((page: any) => 
               page.slug === 'home' && page.locale === params.locale
             );
