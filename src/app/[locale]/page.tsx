@@ -682,7 +682,7 @@ export default function Home({
               
               <div className="flex justify-center">
                 <Link
-                  href={ctaCard?.buttonUrl || `/${params.locale}/contact`}
+                  href={`/${params.locale}/contact`}
                   className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   <Envelope size={20} className="mr-2" />
@@ -764,13 +764,28 @@ export default function Home({
                 </h4>
                 <ul className="space-y-2 sm:space-y-3">
                   {footerData?.quick_links && footerData.quick_links.length > 0 ? (
-                    footerData.quick_links.map((link: any, index: number) => (
-                      <li key={index}>
-                        <Link href={link.url} className="text-gray-300 hover:text-white transition-colors text-sm">
-                          {link.title}
-                        </Link>
-                      </li>
-                    ))
+                    footerData.quick_links.map((link: any, index: number) => {
+                      // Disable About and Blog links but keep them visible
+                      const isDisabled = link.title?.toLowerCase().includes('about') || 
+                                       link.title?.toLowerCase().includes('blog') ||
+                                       link.title?.toLowerCase().includes('hakkında') ||
+                                       link.title?.toLowerCase().includes('hakkımızda') ||
+                                       link.title?.toLowerCase().includes('blok');
+                      
+                      return (
+                        <li key={index}>
+                          {isDisabled ? (
+                            <span className="text-gray-300 text-sm cursor-not-allowed opacity-60">
+                              {link.title}
+                            </span>
+                          ) : (
+                            <Link href={link.url} className="text-gray-300 hover:text-white transition-colors text-sm">
+                              {link.title}
+                            </Link>
+                          )}
+                        </li>
+                      );
+                    })
                   ) : (
                     <>
                       <li>

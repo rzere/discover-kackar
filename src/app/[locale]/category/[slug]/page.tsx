@@ -443,7 +443,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <div className="mb-8">
             <Link
               href={`/${locale}`}
-              className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
+              className="inline-flex items-center text-primary hover:text-primary/80 transition-all duration-200 ease-in-out transform hover:-translate-y-1"
             >
               ← {isEnglish ? 'Back to Home' : 'Ana Sayfaya Dön'}
             </Link>
