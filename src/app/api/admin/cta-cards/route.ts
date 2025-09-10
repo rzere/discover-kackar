@@ -30,7 +30,9 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    console.log('CTA Cards PUT request received');
     const body = await request.json();
+    console.log('Request body:', body);
     const { id, title, description, button_text, button_url, is_active } = body;
 
     const supabase = getSupabaseAdmin();
@@ -57,6 +59,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    console.log('CTA card updated successfully:', data);
     return NextResponse.json({ data });
   } catch (error) {
     console.error('Error in admin CTA cards update API:', error);

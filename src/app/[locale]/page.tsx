@@ -63,6 +63,7 @@ export default function Home({
   const [pageData, setPageData] = useState<PageData | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [footerData, setFooterData] = useState<any>(null);
+  const [ctaCard, setCtaCard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const imageSize = useImageSize();
 
@@ -73,10 +74,11 @@ export default function Home({
       
       try {
         // OPTIMIZED: Fetch all data in parallel for much faster loading
-        const [pageResponse, categoriesResponse, footerResponse] = await Promise.all([
+        const [pageResponse, categoriesResponse, footerResponse, ctaResponse] = await Promise.all([
           fetch(`/api/public/pages?locale=${params.locale}`), // Use public API for better performance
           fetch(`/api/public/categories?locale=${params.locale}`), // Use correct locale
-          fetch(`/api/public/footer?locale=${params.locale}`) // Use correct locale
+          fetch(`/api/public/footer?locale=${params.locale}`), // Use correct locale
+          fetch(`/api/public/cta-cards?locale=${params.locale}&slug=plan-your-trip`) // Fetch CTA card data
         ]);
 
         // Process page data
@@ -136,6 +138,14 @@ export default function Home({
           const footerResult = await footerResponse.json();
           if (footerResult.data) {
             setFooterData(footerResult.data);
+          }
+        }
+
+        // Process CTA card data
+        if (ctaResponse.ok) {
+          const ctaResult = await ctaResponse.json();
+          if (ctaResult.data) {
+            setCtaCard(ctaResult.data);
           }
         }
 
@@ -644,23 +654,23 @@ export default function Home({
               </div>
               
               <h3 className="text-3xl font-serif text-navy mb-4">
-                {isEnglish ? 'Plan Your Perfect Journey' : 'Mükemmel Yolculuğunuzu Planlayın'}
+                {ctaCard?.title || (isEnglish ? 'Plan Your Perfect Journey' : 'Mükemmel Yolculuğunuzu Planlayın')}
               </h3>
               
               <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                {isEnglish 
+                {ctaCard?.description || (isEnglish 
                   ? "Combine multiple categories to create your ideal Kaçkar experience. From nature exploration to cultural immersion, every adventure awaits."
                   : "İdeal Kaçkar deneyiminizi yaratmak için birden fazla kategoriyi birleştirin. Doğa keşfinden kültürel deneyime, her macera sizi bekliyor."
-                }
+                )}
               </p>
               
               <div className="flex justify-center">
                 <Link
-                  href={`/${params.locale}/contact`}
+                  href={ctaCard?.buttonUrl || `/${params.locale}/contact`}
                   className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   <Envelope size={20} className="mr-2" />
-                  {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
+                  {ctaCard?.buttonText || (isEnglish ? 'Contact Us' : 'İletişime Geçin')}
                 </Link>
               </div>
             </div>

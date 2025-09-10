@@ -58,6 +58,11 @@ export default function CTACards() {
 
   const handleSave = async (cardData: Partial<CTACard>) => {
     try {
+      console.log('Saving CTA card with data:', {
+        id: editingCard?.id,
+        ...cardData,
+      });
+
       const response = await fetch('/api/admin/cta-cards', {
         method: 'PUT',
         headers: {
@@ -69,11 +74,25 @@ export default function CTACards() {
         }),
       });
 
-      const result = await response.json();
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to update CTA card');
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
+
+      // Check if response has content
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
+      
+      if (!responseText) {
+        throw new Error('Empty response from server');
+      }
+
+      const result = JSON.parse(responseText);
+      console.log('Success result:', result);
 
       // Update local state
       setCtaCards(prev => 
