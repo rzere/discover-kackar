@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
-      .from('contact_pages')
+      .from('contact_pages' as any)
       .select('*')
       .eq('locale', locale)
       .eq('is_active', true)

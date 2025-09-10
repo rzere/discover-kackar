@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    const supabase = getSupabaseAdmin();
 
     const { data: ctaCards, error } = await supabase
-      .from('cta_cards')
+      .from('cta_cards' as any)
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -33,10 +33,10 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { id, title, description, button_text, button_url, is_active } = body;
 
-    const supabase = createClient();
+    const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
-      .from('cta_cards')
+      .from('cta_cards' as any)
       .update({
         title,
         description,

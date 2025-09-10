@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const supabase = getSupabaseAdmin();
 
     let query = supabase
-      .from('contact_pages')
+      .from('contact_pages' as any)
       .select('*')
       .order('locale', { ascending: true });
 
@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest) {
     const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
-      .from('contact_pages')
+      .from('contact_pages' as any)
       .update({
         ...updateData,
         updated_at: new Date().toISOString(),
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
-      .from('contact_pages')
+      .from('contact_pages' as any)
       .insert(body)
       .select()
       .single();

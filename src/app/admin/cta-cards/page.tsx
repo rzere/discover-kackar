@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { 
   ChatCircle, 
-  Edit, 
-  Save, 
+  PencilSimple, 
+  FloppyDisk, 
   X, 
   Eye, 
   EyeSlash,
@@ -88,7 +88,7 @@ export default function CTACards() {
       setEditingCard(null);
     } catch (error) {
       console.error('Error saving CTA card:', error);
-      alert('Error saving CTA card: ' + error.message);
+      alert('Error saving CTA card: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -230,7 +230,7 @@ export default function CTACards() {
                     onClick={() => handleEdit(card)}
                     className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                   >
-                    <Edit size={16} className="mr-1" />
+                    <PencilSimple size={16} className="mr-1" />
                     Edit
                   </button>
                 </div>
@@ -421,7 +421,7 @@ function CTACardForm({ card, onSave, onCancel }: CTACardFormProps) {
               type="submit"
               className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
             >
-              <Save size={16} />
+              <FloppyDisk size={16} />
               Save Changes
             </button>
           </div>

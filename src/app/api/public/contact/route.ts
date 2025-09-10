@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     try {
       const { data, error } = await supabase
-        .from('contact_submissions')
+        .from('contact_submissions' as any)
         .insert({
           name: name.trim(),
           email: email.trim().toLowerCase(),
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         { 
-          data: { id: data.id },
+          data: { id: (data as any).id },
           message: 'Contact form submitted successfully' 
         },
         { status: 201 }

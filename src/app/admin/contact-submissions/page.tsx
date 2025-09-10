@@ -118,7 +118,7 @@ export default function ContactSubmissions() {
       setAdminNotes('');
     } catch (error) {
       console.error('Error updating submission:', error);
-      alert('Error updating submission: ' + error.message);
+      alert('Error updating submission: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 

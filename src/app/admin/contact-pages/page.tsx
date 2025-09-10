@@ -126,7 +126,7 @@ export default function ContactPages() {
       setEditForm({});
     } catch (error) {
       console.error('Error updating contact page:', error);
-      alert('Error updating contact page: ' + error.message);
+      alert('Error updating contact page: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -168,7 +168,7 @@ export default function ContactPages() {
 
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image: ' + error.message);
+      alert('Error uploading image: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setUploadingImage(false);
     }

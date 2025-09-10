@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase';
+import { getSupabaseAdmin } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
@@ -7,10 +7,10 @@ export async function GET(request: NextRequest) {
     const locale = searchParams.get('locale') || 'en';
     const slug = searchParams.get('slug') || 'plan-your-trip';
 
-    const supabase = createClient();
+    const supabase = getSupabaseAdmin();
 
     const { data: ctaCard, error } = await supabase
-      .from('cta_cards')
+      .from('cta_cards' as any)
       .select('*')
       .eq('slug', slug)
       .eq('is_active', true)
@@ -33,13 +33,13 @@ export async function GET(request: NextRequest) {
 
     // Extract localized content
     const localizedCard = {
-      id: ctaCard.id,
-      slug: ctaCard.slug,
-      title: ctaCard.title[locale] || ctaCard.title.en,
-      description: ctaCard.description?.[locale] || ctaCard.description?.en,
-      buttonText: ctaCard.button_text[locale] || ctaCard.button_text.en,
-      buttonUrl: ctaCard.button_url,
-      isActive: ctaCard.is_active,
+      id: (ctaCard as any).id,
+      slug: (ctaCard as any).slug,
+      title: (ctaCard as any).title[locale] || (ctaCard as any).title.en,
+      description: (ctaCard as any).description?.[locale] || (ctaCard as any).description?.en,
+      buttonText: (ctaCard as any).button_text[locale] || (ctaCard as any).button_text.en,
+      buttonUrl: (ctaCard as any).button_url,
+      isActive: (ctaCard as any).is_active,
     };
 
     return NextResponse.json(

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const supabase = getSupabaseAdmin();
 
     let query = supabase
-      .from('contact_submissions')
+      .from('contact_submissions' as any)
       .select('*', { count: 'exact' })
       .order('created_at', { ascending: false });
 
@@ -57,7 +57,7 @@ export async function PUT(request: NextRequest) {
     const supabase = getSupabaseAdmin();
 
     const { data, error } = await supabase
-      .from('contact_submissions')
+      .from('contact_submissions' as any)
       .update({
         status,
         admin_notes,
