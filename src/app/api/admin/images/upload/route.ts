@@ -31,11 +31,11 @@ async function optimizeImage(inputBuffer: Buffer, baseName: string): Promise<{
   const results: any = {};
   
   for (const { suffix, width, quality } of sizes) {
-    const outputPath = join(outputDir, `${baseName}_${suffix}.avif`);
+    const outputPath = join(outputDir, `${baseName}_${suffix}.webp`);
     
     try {
-      // Convert to AVIF with specific dimensions and quality
-      const command = `convert "${inputPath}" -resize ${width}x -quality ${quality} -format avif "${outputPath}"`;
+      // Convert to WebP with specific dimensions and quality (AVIF not supported)
+      const command = `magick "${inputPath}" -resize ${width}x -quality ${quality} -format webp "${outputPath}"`;
       execSync(command, { stdio: 'ignore' });
       
       const optimizedBuffer = await import('fs').then(fs => fs.promises.readFile(outputPath));
@@ -124,8 +124,8 @@ export async function POST(request: NextRequest) {
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_mobile.avif`, optimizedImages.mobile.buffer, {
-          contentType: 'image/avif',
+        .upload(`${optimizedFilename}_mobile.webp`, optimizedImages.mobile.buffer, {
+          contentType: 'image/webp',
           cacheControl: '3600',
           upsert: false
         })
@@ -139,8 +139,8 @@ export async function POST(request: NextRequest) {
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_tablet.avif`, optimizedImages.tablet.buffer, {
-          contentType: 'image/avif',
+        .upload(`${optimizedFilename}_tablet.webp`, optimizedImages.tablet.buffer, {
+          contentType: 'image/webp',
           cacheControl: '3600',
           upsert: false
         })
@@ -154,8 +154,8 @@ export async function POST(request: NextRequest) {
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_desktop.avif`, optimizedImages.desktop.buffer, {
-          contentType: 'image/avif',
+        .upload(`${optimizedFilename}_desktop.webp`, optimizedImages.desktop.buffer, {
+          contentType: 'image/webp',
           cacheControl: '3600',
           upsert: false
         })
@@ -181,9 +181,9 @@ export async function POST(request: NextRequest) {
     console.log('All optimized images uploaded successfully');
 
     // Get public URLs for the optimized images
-    const mobileUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_mobile.avif`).data.publicUrl;
-    const tabletUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_tablet.avif`).data.publicUrl;
-    const desktopUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_desktop.avif`).data.publicUrl;
+    const mobileUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_mobile.webp`).data.publicUrl;
+    const tabletUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_tablet.webp`).data.publicUrl;
+    const desktopUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_desktop.webp`).data.publicUrl;
     
     console.log('Generated public URLs:', { mobileUrl, tabletUrl, desktopUrl });
 
@@ -197,17 +197,17 @@ export async function POST(request: NextRequest) {
       mobile: {
         size: optimizedImages.mobile.size,
         path: mobileUrl,
-        filename: `${optimizedFilename}_mobile.avif`
+        filename: `${optimizedFilename}_mobile.webp`
       },
       tablet: {
         size: optimizedImages.tablet.size,
         path: tabletUrl,
-        filename: `${optimizedFilename}_tablet.avif`
+        filename: `${optimizedFilename}_tablet.webp`
       },
       desktop: {
         size: optimizedImages.desktop.size,
         path: desktopUrl,
-        filename: `${optimizedFilename}_desktop.avif`
+        filename: `${optimizedFilename}_desktop.webp`
       }
     };
 
@@ -222,11 +222,11 @@ export async function POST(request: NextRequest) {
     // Save to database
     console.log('Saving optimized image data to database...');
     console.log('Image data:', {
-      filename: `${optimizedFilename}_mobile.avif`,
+      filename: `${optimizedFilename}_mobile.webp`,
       original_filename: file.name,
       file_path: mobileUrl,
       file_size: optimizedImages.mobile.size,
-      mime_type: 'image/avif',
+      mime_type: 'image/webp',
       category,
       uploaded_by: user.id
     });
@@ -234,11 +234,11 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabaseAdmin
       .from('images')
       .insert({
-        filename: `${optimizedFilename}_mobile.avif`,
+        filename: `${optimizedFilename}_mobile.webp`,
         original_filename: file.name,
         file_path: mobileUrl, // Use the mobile optimized URL
         file_size: optimizedImages.mobile.size,
-        mime_type: 'image/avif',
+        mime_type: 'image/webp',
         width,
         height,
         category: category as any,
