@@ -292,7 +292,7 @@ export default function Home({
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 sm:mb-6 leading-tight text-white drop-shadow-2xl px-2">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-black mb-4 sm:mb-6 leading-tight text-white uppercase drop-shadow-2xl px-2">
             {pageTitle}
           </h1>
           

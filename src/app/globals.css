@@ -17,12 +17,12 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: #0E4542 !important; /* Dark green */
-  font-weight: bold !important;
+  font-weight: 900 !important; /* font-black equivalent */
 }
 
 .font-serif {
   font-family: var(--font-poppins), "Poppins", sans-serif !important;
-  font-weight: 600 !important;
+  font-weight: 900 !important; /* font-black equivalent */
   font-style: normal !important;
 }
 
