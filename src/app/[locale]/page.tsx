@@ -70,33 +70,29 @@ export default function Home({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch home page data from admin API
-        const pageResponse = await fetch(`/api/admin/pages?t=${Date.now()}`);
-        const pageResult = await pageResponse.json();
+        // OPTIMIZED: Fetch all data in parallel for much faster loading
+        const [pageResponse, categoriesResponse, footerResponse] = await Promise.all([
+          fetch(`/api/admin/pages`), // Removed timestamp to use cache
+          fetch(`/api/public/categories?locale=en`), // Removed timestamp to use cache
+          fetch(`/api/public/footer?locale=${params.locale}`) // Removed timestamp to use cache
+        ]);
 
-        if (pageResponse.ok && pageResult.data) {
-          console.log('All pages loaded:', pageResult.data);
-          // Find the home page for the current locale
-          const homePage = pageResult.data.find((page: any) => 
-            page.slug === 'home' && page.locale === params.locale
-          );
-          
-          if (homePage) {
-            console.log('Home page found:', homePage);
-            setPageData(homePage);
-          } else {
-            console.log('No home page found for locale:', params.locale);
+        // Process page data
+        if (pageResponse.ok) {
+          const pageResult = await pageResponse.json();
+          if (pageResult.data) {
+            const homePage = pageResult.data.find((page: any) => 
+              page.slug === 'home' && page.locale === params.locale
+            );
+            if (homePage) {
+              setPageData(homePage);
+            }
           }
-        } else {
-          console.log('No page data found, using fallback');
         }
 
-        // Fetch categories (always fetch English, then translate if needed)
-        const categoriesResponse = await fetch(`/api/public/categories?locale=en`);
-        const categoriesResult = await categoriesResponse.json();
-
+        // Process categories data
         if (categoriesResponse.ok) {
-          console.log('Categories loaded:', categoriesResult.data);
+          const categoriesResult = await categoriesResponse.json();
           let categoriesData = categoriesResult.data || [];
           
           // Apply Turkish translations if needed
@@ -131,20 +127,16 @@ export default function Home({
           }
           
           setCategories(categoriesData);
-        } else {
-          console.error('Error fetching categories:', categoriesResult.error);
         }
 
-        // Fetch footer data
-        const footerResponse = await fetch(`/api/public/footer?locale=${params.locale}`);
-        const footerResult = await footerResponse.json();
-
-        if (footerResponse.ok && footerResult.data) {
-          console.log('Footer data loaded:', footerResult.data);
-          setFooterData(footerResult.data);
-        } else {
-          console.log('No footer data found, using fallback');
+        // Process footer data
+        if (footerResponse.ok) {
+          const footerResult = await footerResponse.json();
+          if (footerResult.data) {
+            setFooterData(footerResult.data);
+          }
         }
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -155,7 +147,7 @@ export default function Home({
     fetchData();
   }, [params.locale]);
   
-  // Get hero images
+  // OPTIMIZED: Get hero images with lazy loading
   const heroImages = [
     getImageFromCategory('hero', 0),
     getImageFromCategory('hero', 1),
@@ -164,14 +156,30 @@ export default function Home({
     getImageFromCategory('hero', 4)
   ];
 
+  // Preload the first hero image for faster initial load
+  useEffect(() => {
+    if (heroImages[0]) {
+      const img = new Image();
+      img.src = getImageUrl(heroImages[0], imageSize);
+    }
+  }, [heroImages, imageSize]);
+
   // Rotate background images every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+      setCurrentImageIndex((prev) => {
+        const nextIndex = (prev + 1) % heroImages.length;
+        // Preload next image
+        if (heroImages[nextIndex]) {
+          const img = new Image();
+          img.src = getImageUrl(heroImages[nextIndex], imageSize);
+        }
+        return nextIndex;
+      });
     }, 8000);
 
     return () => clearInterval(interval);
-  }, [heroImages.length]);
+  }, [heroImages.length, imageSize]);
 
   // Fallback content if no data from Supabase
   const fallbackContent = {
@@ -195,8 +203,22 @@ export default function Home({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-white">
+        {/* Loading skeleton for hero section */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden text-white py-16 sm:py-20">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-teal/20 animate-pulse"></div>
+          <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-4 sm:mb-6 flex justify-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 rounded-full animate-pulse"></div>
+            </div>
+            <div className="h-16 sm:h-20 bg-white/20 rounded-lg mb-4 sm:mb-6 animate-pulse"></div>
+            <div className="h-6 bg-white/20 rounded-lg mb-8 sm:mb-12 animate-pulse"></div>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <div className="h-12 w-32 bg-white/20 rounded-lg animate-pulse"></div>
+              <div className="h-12 w-32 bg-white/20 rounded-lg animate-pulse"></div>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }

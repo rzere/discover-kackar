@@ -6,11 +6,25 @@ const withNextIntl = createNextIntlPlugin('./src/lib/request.ts');
 const nextConfig = {
   images: {
     domains: ['localhost'],
-    unoptimized: true
+    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000, // 1 year
   },
   experimental: {
-    optimizePackageImports: ['@phosphor-icons/react']
-  }
+    optimizePackageImports: ['@phosphor-icons/react'],
+    optimizeCss: true,
+    scrollRestoration: true,
+  },
+  // Performance optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Enable compression
+  compress: true,
+  // Optimize bundle
+  swcMinify: true,
+  // Enable static optimization
+  output: 'standalone',
 };
 
 module.exports = withNextIntl(nextConfig);

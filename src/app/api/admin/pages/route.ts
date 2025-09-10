@@ -14,7 +14,12 @@ export async function GET() {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ data });
+    return NextResponse.json({ data }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600', // 5min cache, 10min stale
+        'CDN-Cache-Control': 'public, s-maxage=600', // 10min CDN cache
+      }
+    });
   } catch (error) {
     console.error('Error in pages API:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
