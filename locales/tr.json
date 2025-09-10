@@ -40,24 +40,47 @@
     }
   },
   "contact": {
-    "title": "İletişim",
-    "subtitle": "Bize Ulaşın",
-    "description": "Kaçkar hakkında sorularınız mı var? Size yardımcı olmaktan memnuniyet duyarız.",
+    "meta": {
+      "title": "İletişim - Kaçkar'ı Keşfedin",
+      "description": "Mükemmel Kaçkar Dağları maceranızı planlamak için bizimle iletişime geçin. Türkiye'nin kuzeydoğu bölgesinin güzelliğini keşfetmenize yardımcı olmaktan mutluluk duyarız."
+    },
+    "hero": {
+      "title": "İletişime Geçin",
+      "subtitle": "Güzel Kaçkar Dağları'nı keşfetmeye hazır mısınız? Mükemmel macerayı planlamanıza yardımcı olalım."
+    },
     "form": {
-      "name": "Adınız",
-      "email": "E-posta Adresiniz",
-      "subject": "Konu",
-      "message": "Mesajınız",
-      "send": "Mesaj Gönder",
-      "sending": "Gönderiliyor...",
-      "success": "Mesajınız başarıyla gönderildi!",
-      "error": "Mesaj gönderilirken bir hata oluştu."
+      "title": "Bize Ulaşın",
+      "description": "Kaçkar hakkında sorularınız mı var? Mükemmel maceranızı planlamanıza yardımcı olmaktan memnuniyet duyarız.",
+      "name": "Ad Soyad",
+      "namePlaceholder": "Adınızı ve soyadınızı girin",
+      "email": "E-posta Adresi",
+      "emailPlaceholder": "E-posta adresinizi girin",
+      "phone": "Telefon Numarası",
+      "phonePlaceholder": "Telefon numaranızı girin (isteğe bağlı)",
+      "country": "Ülke",
+      "countryPlaceholder": "Ülkenizi seçin",
+      "message": "Mesaj",
+      "messagePlaceholder": "Seyahat planlarınız, sorularınız veya size nasıl yardımcı olabileceğimiz hakkında bize bilgi verin...",
+      "submit": "Mesaj Gönder",
+      "submitting": "Gönderiliyor...",
+      "successMessage": "Teşekkürler! Mesajınız başarıyla gönderildi. 24 saat içinde size dönüş yapacağız.",
+      "errorMessage": "Üzgünüz, mesajınız gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
     },
     "info": {
-      "address": "Adres",
-      "phone": "Telefon",
-      "email": "E-posta",
-      "workingHours": "Çalışma Saatleri"
+      "title": "İletişim Bilgileri",
+      "description": "Mükemmel Kaçkar maceranızı planlamanıza yardımcı olmak için buradayız",
+      "email": {
+        "title": "E-posta Gönderin",
+        "value": "info@discoverkackar.com"
+      },
+      "phone": {
+        "title": "Bizi Arayın",
+        "value": "+90 (555) 123-4567"
+      },
+      "response": {
+        "title": "Yanıt Süresi",
+        "value": "24 saat içinde"
+      }
     }
   },
   "admin": {

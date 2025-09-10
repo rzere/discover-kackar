@@ -198,20 +198,13 @@ export default function SimpleCategoryGrid({ locale }: SimpleCategoryGridProps) 
               }
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Link
-                href={`/${locale}/plan-your-trip`}
+                href={`/${locale}/contact`}
                 className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center"
               >
                 <Camera size={20} className="mr-2" />
-                {isEnglish ? 'Plan Your Trip' : 'Seyahatini Planla'}
-              </Link>
-              
-              <Link
-                href={`/${locale}/contact`}
-                className="bg-transparent border-2 border-navy text-navy px-8 py-3 rounded-lg font-medium hover:bg-navy hover:text-white transition-colors"
-              >
-                {isEnglish ? 'Get Expert Help' : 'Uzman Yardımı Al'}
+                {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
               </Link>
             </div>
           </div>

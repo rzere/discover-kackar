@@ -137,16 +137,24 @@ export default function Footer() {
                 <span>{locale === 'tr' ? 'Türkiye\'nin Gizli Dağ Cenneti' : 'Turkey\'s Hidden Mountain Paradise'}</span>
               </div>
             </div>
-            <div className="flex space-x-6">
-              <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
-                {locale === 'tr' ? 'Gizlilik Politikası' : 'Privacy Policy'}
+            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+              <Link 
+                href={`/${locale}/contact`} 
+                className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+              >
+                {locale === 'tr' ? 'İletişime Geçin' : 'Contact Us'}
               </Link>
-              <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
-                {locale === 'tr' ? 'Kullanım Şartları' : 'Terms of Service'}
-              </Link>
-              <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
-                {locale === 'tr' ? 'Çerez Politikası' : 'Cookie Policy'}
-              </Link>
+              <div className="flex space-x-6">
+                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Gizlilik Politikası' : 'Privacy Policy'}
+                </Link>
+                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Kullanım Şartları' : 'Terms of Service'}
+                </Link>
+                <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  {locale === 'tr' ? 'Çerez Politikası' : 'Cookie Policy'}
+                </Link>
+              </div>
             </div>
           </div>
         </div>

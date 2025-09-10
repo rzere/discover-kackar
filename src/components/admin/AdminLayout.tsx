@@ -14,7 +14,10 @@ import {
   SignOut,
   List,
   X,
-  Layout
+  Layout,
+  ChatCircle,
+  Envelope,
+  Globe
 } from '@phosphor-icons/react';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
@@ -88,6 +91,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: 'Subcategories', href: '/admin/subcategories', icon: Users },
     { name: 'Images', href: '/admin/images', icon: Image },
     { name: 'Footer', href: '/admin/footer', icon: Layout },
+    { name: 'Contact Submissions', href: '/admin/contact-submissions', icon: Envelope },
+    { name: 'CTA Cards', href: '/admin/cta-cards', icon: ChatCircle },
+    { name: 'Contact Pages', href: '/admin/contact-pages', icon: Globe },
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Settings', href: '/admin/settings', icon: Gear },
   ];

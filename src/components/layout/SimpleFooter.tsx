@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { MapPin, Phone, EnvelopeSimple, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
 
@@ -142,13 +144,21 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
           <p className="text-gray-400 text-sm">
             © 2024 Discover Kaçkar. {isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}
           </p>
-          <div className="flex space-x-6 mt-4 sm:mt-0">
-            <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-primary text-sm transition-colors">
-              {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
+          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0">
+            <Link 
+              href={`/${locale}/contact`} 
+              className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+            >
+              {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
             </Link>
-            <Link href={`/${locale}/terms`} className="text-gray-400 hover:text-primary text-sm transition-colors">
-              {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
-            </Link>
+            <div className="flex space-x-6">
+              <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-primary text-sm transition-colors">
+                {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
+              </Link>
+              <Link href={`/${locale}/terms`} className="text-gray-400 hover:text-primary text-sm transition-colors">
+                {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

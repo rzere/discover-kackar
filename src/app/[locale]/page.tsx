@@ -666,20 +666,13 @@ export default function Home({
                 }
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex justify-center">
                 <Link
-                  href={`/${params.locale}/plan-your-trip`}
+                  href={`/${params.locale}/contact`}
                   className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   <Camera size={20} className="mr-2" />
-                  {isEnglish ? 'Plan Your Trip' : 'Seyahatini Planla'}
-                </Link>
-                
-                <Link
-                  href={`/${params.locale}/contact`}
-                  className="bg-transparent border-2 border-navy text-navy px-8 py-3 rounded-lg font-medium hover:bg-navy hover:text-white transition-colors"
-                >
-                  {isEnglish ? 'Get Expert Help' : 'Uzman Yardımı Al'}
+                  {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
                 </Link>
               </div>
             </div>
@@ -869,26 +862,34 @@ export default function Home({
                   <span>{isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}</span>
                 </div>
               </div>
-              <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
-                {footerData?.legal_links && footerData.legal_links.length > 0 ? (
-                  footerData.legal_links.map((link: any, index: number) => (
-                    <Link key={index} href={link.url} className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
-                      {link.title}
-                    </Link>
-                  ))
-                ) : (
-                  <>
-                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
-                      {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
-                    </Link>
-                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
-                      {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
-                    </Link>
-                    <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
-                      {isEnglish ? 'Cookie Policy' : 'Çerez Politikası'}
-                    </Link>
-                  </>
-                )}
+              <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <Link 
+                  href={`/${params.locale}/contact`} 
+                  className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
+                >
+                  {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
+                </Link>
+                <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
+                  {footerData?.legal_links && footerData.legal_links.length > 0 ? (
+                    footerData.legal_links.map((link: any, index: number) => (
+                      <Link key={index} href={link.url} className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
+                        {link.title}
+                      </Link>
+                    ))
+                  ) : (
+                    <>
+                      <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
+                        {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
+                      </Link>
+                      <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
+                        {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
+                      </Link>
+                      <Link href="#" className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
+                        {isEnglish ? 'Cookie Policy' : 'Çerez Politikası'}
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

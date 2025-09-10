@@ -316,36 +316,50 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const isEnglish = locale === 'en';
   const imageSize = useImageSize();
   const [category, setCategory] = useState<Category | null>(null);
+  const [footerData, setFooterData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
 
   useEffect(() => {
-    const fetchCategory = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         console.log('Fetching category for slug:', slug, 'locale:', locale);
-        const response = await fetch(`/api/public/categories/${slug}?locale=${locale}&t=${Date.now()}`);
         
-        console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
+        const [categoryResponse, footerResponse] = await Promise.all([
+          fetch(`/api/public/categories/${slug}?locale=${locale}&t=${Date.now()}`),
+          fetch(`/api/public/footer?locale=${locale}`)
+        ]);
         
-        if (response.ok) {
-          const result = await response.json();
+        console.log('Category response status:', categoryResponse.status);
+        console.log('Category response ok:', categoryResponse.ok);
+        
+        if (categoryResponse.ok) {
+          const result = await categoryResponse.json();
           console.log('Category fetched:', result.data);
           console.log('Subcategories:', result.data?.subcategories);
           
           if (result.data) {
             setCategory(result.data);
-            setLoading(false);
-            return;
           }
         }
         
-        console.log('Category not found for slug:', slug, 'locale:', locale);
-        console.log('Response status:', response.status);
-        const errorText = await response.text();
-        console.log('Response text:', errorText);
-        notFound();
+        if (footerResponse.ok) {
+          const footerResult = await footerResponse.json();
+          if (footerResult.data) {
+            setFooterData(footerResult.data);
+          }
+        }
+        
+        if (!categoryResponse.ok) {
+          console.log('Category not found for slug:', slug, 'locale:', locale);
+          console.log('Response status:', categoryResponse.status);
+          const errorText = await categoryResponse.text();
+          console.log('Response text:', errorText);
+          notFound();
+        }
+        
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching category:', error);
         notFound();
@@ -353,7 +367,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     };
 
     if (slug && locale) {
-      fetchCategory();
+      fetchData();
     }
   }, [slug, locale]);
   
@@ -563,18 +577,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   : 'Mükemmel Kaçkar deneyiminizi planlamak için yerel uzmanlarla iletişime geçin.'
                 }
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex justify-center">
                 <Link
                   href={`/${locale}/contact`}
                   className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
-                  {isEnglish ? 'Contact Experts' : 'Uzmanlarla İletişim'}
-                </Link>
-                <Link
-                  href={`/${locale}/plan-your-trip`}
-                  className="bg-transparent border-2 border-navy text-navy px-8 py-3 rounded-lg font-medium hover:bg-navy hover:text-white transition-colors"
-                >
-                  {isEnglish ? 'Plan Your Trip' : 'Seyahatini Planla'}
+                  {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
                 </Link>
               </div>
             </div>
@@ -582,137 +590,146 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </section>
 
-      {/* Full Footer */}
+      {/* Dynamic Footer */}
       <footer className="bg-navy text-white mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            {/* Brand */}
-            <div className="col-span-1 md:col-span-2">
-              <Link href={`/${locale}`} className="flex items-center space-x-3 mb-6">
-                <div className="h-12 w-32 bg-white p-2 rounded flex items-center justify-center">
-                  <img 
-                    src="/logos/logo-main.png" 
-                    alt="Discover Kaçkar" 
-                    className="h-10 w-auto"
-                    style={{ maxWidth: '120px' }}
-                    onError={(e) => {
-                      console.log('Footer logo failed to load, trying JPG version');
-                      e.currentTarget.src = '/logos/logo-main.jpg';
-                      e.currentTarget.onerror = () => {
-                        console.log('JPG also failed, trying UTMB logo');
-                        e.currentTarget.src = '/logos/logo-UTMB.png';
-                        e.currentTarget.onerror = () => {
-                          console.log('All logos failed, showing fallback text');
-                          e.currentTarget.style.display = 'none';
-                          e.currentTarget.parentElement!.innerHTML = '<span class="text-sm text-gray-600 font-bold">LOGO</span>';
-                        };
-                      };
-                    }}
-                  />
-                </div>
-                <span className="text-2xl font-serif font-bold text-white">
-                  Discover Kaçkar
-                </span>
-              </Link>
-              <p className="text-gray-300 max-w-md leading-relaxed mb-6">
-                {isEnglish 
-                  ? "Discover the natural beauty, rich culture, and adventure opportunities of the Kaçkar Mountains in Turkey's Black Sea region."
-                  : "Türkiye'nin Karadeniz bölgesindeki Kaçkar Dağları'nın doğal güzelliklerini, zengin kültürünü ve macera fırsatlarını keşfedin."
-                }
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            {/* Company Info */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/logos/logo-main.png"
+                  alt="Discover Kaçkar"
+                  className="h-12 w-auto mr-3"
+                  onError={(e) => {
+                    console.log('Footer logo failed to load, trying UTMB logo');
+                    e.currentTarget.src = '/logos/logo-UTMB.png';
+                  }}
+                />
+                <h3 className="text-xl font-bold">
+                  {footerData?.company_name || 'Discover Kaçkar'}
+                </h3>
+              </div>
+              <p className="text-gray-300 mb-6 max-w-md">
+                {footerData?.company_description || (isEnglish 
+                  ? 'Discover the breathtaking beauty of the Kaçkar Mountains through our comprehensive travel guide.' 
+                  : 'Kapsamlı seyahat rehberimiz aracılığıyla Kaçkar Dağları\'nın nefes kesen güzelliğini keşfedin.')}
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Facebook">
-                  <FacebookLogo size={20} />
-                </a>
-                <a href="https://www.instagram.com/discoverkackar" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Instagram">
-                  <InstagramLogo size={20} />
-                </a>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10" title="Twitter">
-                  <TwitterLogo size={20} />
-                </a>
+                {footerData?.social_links?.facebook && (
+                  <a href={footerData.social_links.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Facebook">
+                    <FacebookLogo size={20} />
+                  </a>
+                )}
+                {footerData?.social_links?.instagram && (
+                  <a href={footerData.social_links.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                    <InstagramLogo size={20} />
+                  </a>
+                )}
+                {footerData?.social_links?.twitter && (
+                  <a href={footerData.social_links.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Twitter">
+                    <TwitterLogo size={20} />
+                  </a>
+                )}
+                {footerData?.social_links?.youtube && (
+                  <a href={footerData.social_links.youtube} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="YouTube">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                  </a>
+                )}
               </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-6 text-white">
-                {isEnglish ? 'Explore' : 'Keşfet'}
+              <h4 className="text-lg font-semibold mb-4">
+                {isEnglish ? 'Quick Links' : 'Hızlı Bağlantılar'}
               </h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link href={`/${locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                    {isEnglish ? 'Nature & Adventure' : 'Doğa & Macera'}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={`/${locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                    {isEnglish ? 'Culture & Local Life' : 'Kültür & Yerel Hayat'}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                    {isEnglish ? 'Gastronomy & Local Flavours' : 'Gastronomi & Yerel Lezzetler'}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={`/${locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                    {isEnglish ? 'Music & Dance' : 'Müzik & Dans'}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={`/${locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                    {isEnglish ? 'Sustainable Tourism' : 'Sürdürülebilir Turizm'}
-                  </Link>
-                </li>
+              <ul className="space-y-2">
+                {footerData?.quick_links && footerData.quick_links.length > 0 ? (
+                  footerData.quick_links.map((link: any, index: number) => (
+                    <li key={index}>
+                      <a 
+                        href={link.url} 
+                        className="text-gray-300 hover:text-white transition-colors text-sm"
+                      >
+                        {isEnglish ? link.title_en : link.title_tr}
+                      </a>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li><a href={`/${locale}`} className="text-gray-300 hover:text-white transition-colors text-sm">{isEnglish ? 'Home' : 'Ana Sayfa'}</a></li>
+                    <li><a href={`/${locale}/contact`} className="text-gray-300 hover:text-white transition-colors text-sm">{isEnglish ? 'Contact' : 'İletişim'}</a></li>
+                  </>
+                )}
               </ul>
             </div>
 
             {/* Contact Info */}
             <div>
-              <h4 className="text-lg font-semibold mb-6 text-white">
-                {isEnglish ? 'Contact' : 'İletişim'}
+              <h4 className="text-lg font-semibold mb-4">
+                {isEnglish ? 'Contact Info' : 'İletişim Bilgileri'}
               </h4>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <MapPin size={20} className="text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-gray-300 text-sm">
-                      {isEnglish 
-                        ? 'Kaçkar Mountains, Black Sea Region, Turkey'
-                        : 'Kaçkar Dağları, Karadeniz Bölgesi, Türkiye'
-                      }
-                    </p>
+              <div className="space-y-3">
+                {footerData?.address && (
+                  <div className="flex items-start space-x-2">
+                    <MapPin size={16} className="text-gray-400 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-300 text-sm">
+                      {footerData.address}
+                    </span>
                   </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Envelope size={20} className="text-primary flex-shrink-0" />
-                  <a href="mailto:info@discoverkackar.com" className="text-gray-300 hover:text-white transition-colors text-sm">
-                    info@discoverkackar.com
-                  </a>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Phone size={20} className="text-primary flex-shrink-0" />
-                  <a href="tel:+905551234567" className="text-gray-300 hover:text-white transition-colors text-sm">
-                    +90 555 123 45 67
-                  </a>
-                </div>
+                )}
+                {footerData?.email && (
+                  <div className="flex items-center space-x-2">
+                    <Envelope size={16} className="text-gray-400 flex-shrink-0" />
+                    <a href={`mailto:${footerData.email}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {footerData.email}
+                    </a>
+                  </div>
+                )}
+                {footerData?.phone && (
+                  <div className="flex items-center space-x-2">
+                    <Phone size={16} className="text-gray-400 flex-shrink-0" />
+                    <a href={`tel:${footerData.phone}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {footerData.phone}
+                    </a>
+                  </div>
+                )}
+                {!footerData && (
+                  <div className="text-gray-300 text-sm">
+                    <p>{isEnglish ? 'Contact us for more information' : 'Daha fazla bilgi için bizimle iletişime geçin'}</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="border-t border-gray-700 mt-12 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-400 text-sm mb-4 md:mb-0">
-                © {new Date().getFullYear()} Discover Kaçkar. {isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}
-              </p>
-              <div className="flex space-x-6">
-                <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-white transition-colors text-sm">
-                  {isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}
-                </Link>
-                <Link href={`/${locale}/terms`} className="text-gray-400 hover:text-white transition-colors text-sm">
-                  {isEnglish ? 'Terms of Service' : 'Kullanım Şartları'}
-                </Link>
+          {/* Bottom Footer */}
+          <div className="border-t border-gray-700 pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+              <div className="text-sm text-gray-400">
+                {footerData?.copyright_text || `© ${new Date().getFullYear()} Discover Kaçkar. ${isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}`}
+              </div>
+              <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
+                {footerData?.legal_links && footerData.legal_links.length > 0 ? (
+                  footerData.legal_links.map((link: any, index: number) => (
+                    <a 
+                      key={index}
+                      href={link.url} 
+                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                    >
+                      {isEnglish ? link.title_en : link.title_tr}
+                    </a>
+                  ))
+                ) : (
+                  <>
+                    <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">{isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}</a>
+                    <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">{isEnglish ? 'Terms of Service' : 'Hizmet Şartları'}</a>
+                  </>
+                )}
               </div>
             </div>
           </div>
