@@ -248,6 +248,22 @@ function PageForm({ page, onSave, onCancel, onEditingPageChange }: { page: Page 
     status: page?.status || 'draft'
   });
 
+  // Update form data when page prop changes
+  useEffect(() => {
+    if (page) {
+      setFormData({
+        slug: page.slug || '',
+        locale: page.locale || 'en',
+        title: page.title || '',
+        meta_title: page.meta_title || '',
+        meta_description: page.meta_description || '',
+        h1: page.h1 || '',
+        content: page.content || {},
+        status: page.status || 'draft'
+      });
+    }
+  }, [page]);
+
   const [loadingLocale, setLoadingLocale] = useState(false);
 
   // Function to fetch page data for a specific locale
