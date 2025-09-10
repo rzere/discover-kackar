@@ -73,7 +73,7 @@ export default function Home({
         // OPTIMIZED: Fetch all data in parallel for much faster loading
         const [pageResponse, categoriesResponse, footerResponse] = await Promise.all([
           fetch(`/api/admin/pages`), // Removed timestamp to use cache
-          fetch(`/api/public/categories?locale=en`), // Removed timestamp to use cache
+          fetch(`/api/public/categories?locale=en&t=${Date.now()}`), // Added timestamp to bust cache temporarily
           fetch(`/api/public/footer?locale=${params.locale}`) // Removed timestamp to use cache
         ]);
 

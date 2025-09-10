@@ -143,11 +143,18 @@ export function getImageFromCategory(category: ImageCategory, index: number = 0)
 // Get category-specific image for a given category slug or ID
 export function getCategoryImage(categorySlugOrId: string): string {
   const categoryImages = {
-    // By slug (from Supabase)
+    // By slug (from Supabase) - Updated with all 9 categories
     'nature': 'Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg',
     'culture': 'Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg',
     'gastronomy': 'aa-01_edited.jpg',
-    'adventure': 'Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg',
+    'music-dance': 'Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg',
+    'sustainable-tourism': 'Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg',
+    'health-wellness': 'Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg',
+    'photography-art': 'Kackar_HiRes-nodumsports_moritzklee-MK_00781-2.jpg',
+    'educational-research': 'Kackar_HiRes-nodumsports_moritzklee-MK_01854-2.jpg',
+    'events-festivals': 'Kackar_HiRes-nodumsports_moritzklee-MK_01928-2.jpg',
+    // Legacy support for old slugs
+    'adventure': 'Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg',
     'accommodation': 'Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg',
     'transportation': 'Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg',
     // By ID (legacy support)
@@ -162,5 +169,5 @@ export function getCategoryImage(categorySlugOrId: string): string {
     '9': 'Kackar_HiRes-nodumsports_moritzklee-MK_01928-2.jpg'  // Events & Festivals
   };
   
-  return categoryImages[categorySlugOrId as keyof typeof categoryImages] || 'placeholder.jpg';
+  return categoryImages[categorySlugOrId as keyof typeof categoryImages] || '/images/placeholder.jpg';
 }
