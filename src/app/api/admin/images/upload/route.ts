@@ -5,6 +5,21 @@ import { execSync } from 'child_process';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
+// Check if ImageMagick is available
+function isImageMagickAvailable(): boolean {
+  try {
+    execSync('magick -version', { stdio: 'ignore' });
+    return true;
+  } catch {
+    try {
+      execSync('convert -version', { stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+}
+
 // Image optimization function
 async function optimizeImage(inputBuffer: Buffer, baseName: string): Promise<{
   mobile: { buffer: Buffer; size: number };
@@ -22,6 +37,16 @@ async function optimizeImage(inputBuffer: Buffer, baseName: string): Promise<{
   // Write original file
   await writeFile(inputPath, inputBuffer);
   
+  // Check if ImageMagick is available
+  if (!isImageMagickAvailable()) {
+    console.log('⚠️ ImageMagick not available, using original image for all sizes');
+    return {
+      mobile: { buffer: inputBuffer, size: inputBuffer.length },
+      tablet: { buffer: inputBuffer, size: inputBuffer.length },
+      desktop: { buffer: inputBuffer, size: inputBuffer.length }
+    };
+  }
+  
   const sizes = [
     { suffix: 'mobile', width: 640, quality: 80 },
     { suffix: 'tablet', width: 1024, quality: 85 },
@@ -34,9 +59,17 @@ async function optimizeImage(inputBuffer: Buffer, baseName: string): Promise<{
     const outputPath = join(outputDir, `${baseName}_${suffix}.webp`);
     
     try {
-      // Convert to WebP with specific dimensions and quality (AVIF not supported)
-      const command = `magick "${inputPath}" -resize ${width}x -quality ${quality} -format webp "${outputPath}"`;
-      execSync(command, { stdio: 'ignore' });
+      // Try magick command first (ImageMagick v7)
+      let command = `magick "${inputPath}" -resize ${width}x -quality ${quality} -format webp "${outputPath}"`;
+      
+      try {
+        execSync(command, { stdio: 'ignore' });
+      } catch (magickError) {
+        console.log(`Magick failed, trying convert command...`);
+        // Fallback to convert command (ImageMagick v6 or older)
+        command = `convert "${inputPath}" -resize ${width}x -quality ${quality} -format webp "${outputPath}"`;
+        execSync(command, { stdio: 'ignore' });
+      }
       
       const optimizedBuffer = await import('fs').then(fs => fs.promises.readFile(outputPath));
       results[suffix] = {
@@ -47,7 +80,14 @@ async function optimizeImage(inputBuffer: Buffer, baseName: string): Promise<{
       console.log(`✅ Optimized ${suffix}: ${Math.round(optimizedBuffer.length / 1024)}KB (${width}px wide)`);
     } catch (error) {
       console.error(`❌ Failed to optimize ${suffix}:`, error);
-      throw error;
+      
+      // If optimization fails, use original image as fallback
+      console.log(`Using original image as fallback for ${suffix}`);
+      const fallbackBuffer = await import('fs').then(fs => fs.promises.readFile(inputPath));
+      results[suffix] = {
+        buffer: fallbackBuffer,
+        size: fallbackBuffer.length
+      };
     }
   }
   
@@ -100,7 +140,7 @@ export async function POST(request: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.name.split('.').pop();
+    const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
     const filename = `${timestamp}_${randomString}.${fileExtension}`;
     const optimizedFilename = `${timestamp}_${randomString}`;
 
@@ -120,12 +160,17 @@ export async function POST(request: NextRequest) {
     const uploadPromises = [];
     const uploadedFiles: any = {};
     
+    // Determine content type based on file extension
+    const contentType = fileExtension === 'png' ? 'image/png' : 
+                       fileExtension === 'webp' ? 'image/webp' : 
+                       fileExtension === 'avif' ? 'image/avif' : 'image/jpeg';
+    
     // Upload mobile version
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_mobile.webp`, optimizedImages.mobile.buffer, {
-          contentType: 'image/webp',
+        .upload(`${optimizedFilename}_mobile.${fileExtension}`, optimizedImages.mobile.buffer, {
+          contentType: contentType,
           cacheControl: '3600',
           upsert: false
         })
@@ -139,8 +184,8 @@ export async function POST(request: NextRequest) {
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_tablet.webp`, optimizedImages.tablet.buffer, {
-          contentType: 'image/webp',
+        .upload(`${optimizedFilename}_tablet.${fileExtension}`, optimizedImages.tablet.buffer, {
+          contentType: contentType,
           cacheControl: '3600',
           upsert: false
         })
@@ -154,8 +199,8 @@ export async function POST(request: NextRequest) {
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_desktop.webp`, optimizedImages.desktop.buffer, {
-          contentType: 'image/webp',
+        .upload(`${optimizedFilename}_desktop.${fileExtension}`, optimizedImages.desktop.buffer, {
+          contentType: contentType,
           cacheControl: '3600',
           upsert: false
         })
@@ -181,9 +226,9 @@ export async function POST(request: NextRequest) {
     console.log('All optimized images uploaded successfully');
 
     // Get public URLs for the optimized images
-    const mobileUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_mobile.webp`).data.publicUrl;
-    const tabletUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_tablet.webp`).data.publicUrl;
-    const desktopUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_desktop.webp`).data.publicUrl;
+    const mobileUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_mobile.${fileExtension}`).data.publicUrl;
+    const tabletUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_tablet.${fileExtension}`).data.publicUrl;
+    const desktopUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_desktop.${fileExtension}`).data.publicUrl;
     
     console.log('Generated public URLs:', { mobileUrl, tabletUrl, desktopUrl });
 
@@ -197,17 +242,17 @@ export async function POST(request: NextRequest) {
       mobile: {
         size: optimizedImages.mobile.size,
         path: mobileUrl,
-        filename: `${optimizedFilename}_mobile.webp`
+        filename: `${optimizedFilename}_mobile.${fileExtension}`
       },
       tablet: {
         size: optimizedImages.tablet.size,
         path: tabletUrl,
-        filename: `${optimizedFilename}_tablet.webp`
+        filename: `${optimizedFilename}_tablet.${fileExtension}`
       },
       desktop: {
         size: optimizedImages.desktop.size,
         path: desktopUrl,
-        filename: `${optimizedFilename}_desktop.webp`
+        filename: `${optimizedFilename}_desktop.${fileExtension}`
       }
     };
 
@@ -222,11 +267,11 @@ export async function POST(request: NextRequest) {
     // Save to database
     console.log('Saving optimized image data to database...');
     console.log('Image data:', {
-      filename: `${optimizedFilename}_mobile.webp`,
+      filename: `${optimizedFilename}_mobile.${fileExtension}`,
       original_filename: file.name,
       file_path: mobileUrl,
       file_size: optimizedImages.mobile.size,
-      mime_type: 'image/webp',
+      mime_type: contentType,
       category,
       uploaded_by: user.id
     });
@@ -234,11 +279,11 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabaseAdmin
       .from('images')
       .insert({
-        filename: `${optimizedFilename}_mobile.webp`,
+        filename: `${optimizedFilename}_mobile.${fileExtension}`,
         original_filename: file.name,
         file_path: mobileUrl, // Use the mobile optimized URL
         file_size: optimizedImages.mobile.size,
-        mime_type: 'image/webp',
+        mime_type: contentType,
         width,
         height,
         category: category as any,

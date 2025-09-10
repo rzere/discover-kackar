@@ -21,23 +21,28 @@ const safeRenderText = (value: any, locale: string = 'en'): string => {
   
   if (typeof value === 'object') {
     // Try to get the locale-specific version first
-    if (value[locale]) {
-      return String(value[locale]);
+    if (value[locale] && typeof value[locale] === 'string') {
+      return value[locale];
     }
     // Fallback to English
-    if (value.en) {
-      return String(value.en);
+    if (value.en && typeof value.en === 'string') {
+      return value.en;
     }
     // Fallback to Turkish
-    if (value.tr) {
-      return String(value.tr);
+    if (value.tr && typeof value.tr === 'string') {
+      return value.tr;
     }
     // If it's an array, join it
     if (Array.isArray(value)) {
       return value.join(', ');
     }
-    // Last resort: stringify the object
-    return JSON.stringify(value);
+    // If it's an object but no valid text found, try to extract any string value
+    const stringValues = Object.values(value).filter(v => typeof v === 'string' && v.trim() !== '');
+    if (stringValues.length > 0) {
+      return stringValues[0] as string;
+    }
+    // Last resort: return empty string instead of [object Object]
+    return '';
   }
   
   return String(value || '');
@@ -732,12 +737,25 @@ function SubcategoryForm({
       uploadFormData.append('alt_text', formData.image_alt_text || getCurrentText(formData.title) || 'Subcategory image');
       uploadFormData.append('caption', formData.image_caption || '');
 
+      console.log('Starting image upload for subcategory...');
+      console.log('File size:', Math.round(selectedImage.size / 1024 / 1024), 'MB');
+
+      // Add timeout and better error handling
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const response = await fetch('/api/admin/images/upload', {
         method: 'POST',
         body: uploadFormData,
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
+
+      console.log('Upload response status:', response.status);
+
       const result = await response.json();
+      console.log('Upload result:', result);
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to upload image');
@@ -762,7 +780,17 @@ function SubcategoryForm({
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      
+      let errorMessage = 'Unknown error occurred';
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = 'Upload timed out. Please try again with a smaller image.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      alert('Error uploading image: ' + errorMessage);
     } finally {
       setUploadingImage(false);
     }
