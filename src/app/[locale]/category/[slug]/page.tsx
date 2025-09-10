@@ -323,7 +323,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     const fetchCategory = async () => {
       try {
         setLoading(true);
+        console.log('Fetching category for slug:', slug, 'locale:', locale);
         const response = await fetch(`/api/public/categories/${slug}?locale=${locale}&t=${Date.now()}`);
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
         
         if (response.ok) {
           const result = await response.json();
@@ -338,6 +342,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         }
         
         console.log('Category not found for slug:', slug, 'locale:', locale);
+        console.log('Response status:', response.status);
+        const errorText = await response.text();
+        console.log('Response text:', errorText);
         notFound();
       } catch (error) {
         console.error('Error fetching category:', error);
@@ -508,17 +515,34 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                         <div className="w-full lg:flex-1 lg:px-4">
                           <h3 className="text-xl sm:text-2xl font-bold text-navy mb-4 tracking-wide">
                             {toLocaleUppercase(
-                              isEnglish 
-                                ? (typeof subcategory.title === 'string' ? subcategory.title : (subcategory.title as any)?.en || '')
-                                : (typeof subcategory.title === 'string' ? subcategory.title : (subcategory.title as any)?.tr || ''), 
+                              (() => {
+                                if (typeof subcategory.title === 'string') {
+                                  return subcategory.title;
+                                }
+                                const titleObj = subcategory.title as any;
+                                if (isEnglish) {
+                                  // Handle nested structure: title.en.en or title.en
+                                  return titleObj?.en?.en || titleObj?.en || '';
+                                } else {
+                                  return titleObj?.tr || '';
+                                }
+                              })(), 
                               locale
                             )}
                           </h3>
                           <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                            {isEnglish 
-                              ? (typeof subcategory.body_text === 'string' ? subcategory.body_text : (subcategory.body_text as any)?.en || '')
-                              : (typeof subcategory.body_text === 'string' ? subcategory.body_text : (subcategory.body_text as any)?.tr || '')
-                            }
+                            {(() => {
+                              if (typeof subcategory.body_text === 'string') {
+                                return subcategory.body_text;
+                              }
+                              const bodyObj = subcategory.body_text as any;
+                              if (isEnglish) {
+                                // Handle nested structure: body_text.en.en or body_text.en
+                                return bodyObj?.en?.en || bodyObj?.en || '';
+                              } else {
+                                return bodyObj?.tr || '';
+                              }
+                            })()}
                           </p>
                         </div>
                       </div>

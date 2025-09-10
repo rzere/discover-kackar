@@ -59,9 +59,6 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
                 }}
               />
             </div>
-            <span className="text-xl font-serif font-bold text-primary">
-              Discover Kaçkar
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

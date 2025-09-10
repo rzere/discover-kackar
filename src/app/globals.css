@@ -21,8 +21,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .font-serif {
-  font-family: var(--font-im-fell-english), 'IM Fell English', serif !important;
-  font-weight: 400 !important; /* IM Fell English only has 400 weight */
+  font-family: var(--font-poppins), "Poppins", sans-serif !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
 }
 
 .text-primary {

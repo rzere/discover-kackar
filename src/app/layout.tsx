@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { IM_Fell_English, Lato, Open_Sans } from "next/font/google";
+import { Poppins, Lato, Open_Sans } from "next/font/google";
 import "./globals.css";
 
-const imFellEnglish = IM_Fell_English({
-  variable: "--font-im-fell-english",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 const lato = Lato({
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body
-        className={`${imFellEnglish.variable} ${lato.variable} ${openSans.variable} font-sans antialiased bg-white text-gray-900`}
+        className={`${poppins.variable} ${lato.variable} ${openSans.variable} font-sans antialiased bg-white text-gray-900`}
         suppressHydrationWarning
       >
         {children}
