@@ -33,9 +33,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data }, {
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
+        'CDN-Cache-Control': 'public, s-maxage=3600'
       }
     });
   } catch (error) {

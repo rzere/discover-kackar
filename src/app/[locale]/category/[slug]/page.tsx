@@ -322,12 +322,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Removed minimum loading time for fastest possible loading
+      
       try {
         setLoading(true);
         console.log('Fetching category for slug:', slug, 'locale:', locale);
         
         const [categoryResponse, footerResponse] = await Promise.all([
-          fetch(`/api/public/categories/${slug}?locale=${locale}&t=${Date.now()}`),
+          fetch(`/api/public/categories/${slug}?locale=${locale}`),
           fetch(`/api/public/footer?locale=${locale}`)
         ]);
         
@@ -373,8 +375,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }

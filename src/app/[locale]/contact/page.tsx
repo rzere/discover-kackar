@@ -5,9 +5,9 @@ import ContactForm from '@/components/sections/ContactForm';
 import { getImageUrl } from '@/lib/utils/imageUtils';
 import SimpleNavbar from '@/components/layout/SimpleNavbar';
 import { 
-  MapPin,
+  MapPin, 
   Envelope,
-  Phone,
+  Phone, 
   FacebookLogo,
   InstagramLogo,
   TwitterLogo
@@ -33,12 +33,13 @@ export default function ContactPage({ params }: ContactPageProps) {
   };
 
   const fetchData = async () => {
+    // Removed minimum loading time for fastest possible loading
     setLoading(true);
 
     try {
       const [footerResponse, contactPageResponse] = await Promise.all([
         fetch(`/api/public/footer?locale=${params.locale}`),
-        fetch(`/api/admin/contact-pages?locale=${params.locale}&t=${Date.now()}`)
+        fetch(`/api/admin/contact-pages?locale=${params.locale}`)
       ]);
 
       if (footerResponse.ok) {
@@ -81,10 +82,18 @@ export default function ContactPage({ params }: ContactPageProps) {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [params.locale]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <SimpleNavbar locale={params.locale} />
-      
+
       {/* Hero Section */}
       <section className="relative py-20 px-4">
         {contactPageData?.hero_background_image_url ? (
@@ -161,7 +170,7 @@ export default function ContactPage({ params }: ContactPageProps) {
                 ? 'We\'re here to help you plan your perfect Kaçkar adventure' 
                 : 'Mükemmel Kaçkar maceranızı planlamanıza yardımcı olmak için buradayız')}
             </p>
-          </div>
+      </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Email */}
@@ -193,7 +202,7 @@ export default function ContactPage({ params }: ContactPageProps) {
                 {contactPageData?.phone_value || '+90 (555) 123-4567'}
                 {/* Debug: {JSON.stringify(contactPageData?.phone_value)} */}
               </p>
-            </div>
+              </div>
 
             {/* Response Time */}
             <div className="text-center p-6 bg-gray-50 rounded-xl">
@@ -263,7 +272,7 @@ export default function ContactPage({ params }: ContactPageProps) {
                   </a>
                 )}
               </div>
-            </div>
+              </div>
 
             {/* Quick Links */}
             <div>
@@ -289,13 +298,13 @@ export default function ContactPage({ params }: ContactPageProps) {
                   </>
                 )}
               </ul>
-            </div>
+          </div>
 
             {/* Contact Info */}
-            <div>
+                  <div>
               <h4 className="text-lg font-semibold mb-4">
                 {isEnglish ? 'Contact Info' : 'İletişim Bilgileri'}
-              </h4>
+                    </h4>
               <div className="space-y-3">
                 {footerData?.address && (
                   <div className="flex items-start space-x-2">
@@ -326,9 +335,9 @@ export default function ContactPage({ params }: ContactPageProps) {
                     <p>{isEnglish ? 'Contact us for more information' : 'Daha fazla bilgi için bizimle iletişime geçin'}</p>
                   </div>
                 )}
+                </div>
               </div>
             </div>
-          </div>
 
           {/* Bottom Footer */}
           <div className="border-t border-gray-700 pt-8">

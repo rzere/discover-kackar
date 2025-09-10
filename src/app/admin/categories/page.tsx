@@ -480,21 +480,21 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
     setUploadProgress(0);
 
     try {
-      const formData = new FormData();
-      formData.append('file', selectedImage);
-      formData.append('category', 'category');
-      formData.append('alt_text', formData.image_alt_text || formData.name || 'Category hero image');
-      formData.append('caption', formData.image_caption || '');
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', selectedImage);
+      uploadFormData.append('category', 'category');
+      uploadFormData.append('alt_text', formData.image_alt_text || selectedImage.name || 'Category hero image');
+      uploadFormData.append('caption', formData.image_caption || '');
 
       console.log('Sending upload request to /api/admin/images/upload');
       console.log('FormData contents:');
-      for (let [key, value] of formData.entries()) {
+      for (let [key, value] of uploadFormData.entries()) {
         console.log(key, value);
       }
 
       const response = await fetch('/api/admin/images/upload', {
         method: 'POST',
-        body: formData,
+        body: uploadFormData,
       });
 
       console.log('Upload response status:', response.status);

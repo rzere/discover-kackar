@@ -69,12 +69,14 @@ export default function Home({
   // Fetch page data and categories from API routes
   useEffect(() => {
     const fetchData = async () => {
+      // Removed minimum loading time for fastest possible loading
+      
       try {
         // OPTIMIZED: Fetch all data in parallel for much faster loading
         const [pageResponse, categoriesResponse, footerResponse] = await Promise.all([
-          fetch(`/api/admin/pages`), // Removed timestamp to use cache
-          fetch(`/api/public/categories?locale=en&t=${Date.now()}`), // Added timestamp to bust cache temporarily
-          fetch(`/api/public/footer?locale=${params.locale}`) // Removed timestamp to use cache
+          fetch(`/api/public/pages?locale=${params.locale}`), // Use public API for better performance
+          fetch(`/api/public/categories?locale=${params.locale}`), // Use correct locale
+          fetch(`/api/public/footer?locale=${params.locale}`) // Use correct locale
         ]);
 
         // Process page data
@@ -203,22 +205,8 @@ export default function Home({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
-        {/* Loading skeleton for hero section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden text-white py-16 sm:py-20">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-teal/20 animate-pulse"></div>
-          <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-4 sm:mb-6 flex justify-center">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 rounded-full animate-pulse"></div>
-            </div>
-            <div className="h-16 sm:h-20 bg-white/20 rounded-lg mb-4 sm:mb-6 animate-pulse"></div>
-            <div className="h-6 bg-white/20 rounded-lg mb-8 sm:mb-12 animate-pulse"></div>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <div className="h-12 w-32 bg-white/20 rounded-lg animate-pulse"></div>
-              <div className="h-12 w-32 bg-white/20 rounded-lg animate-pulse"></div>
-            </div>
-          </div>
-        </section>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
@@ -671,7 +659,7 @@ export default function Home({
                   href={`/${params.locale}/contact`}
                   className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
-                  <Camera size={20} className="mr-2" />
+                  <Envelope size={20} className="mr-2" />
                   {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
                 </Link>
               </div>
