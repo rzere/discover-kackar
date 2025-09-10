@@ -233,7 +233,7 @@ const countries: Country[] = [
   { code: 'TO', name: 'Tonga', flag: '🇹🇴' },
   { code: 'TT', name: 'Trinidad and Tobago', flag: '🇹🇹' },
   { code: 'TN', name: 'Tunisia', flag: '🇹🇳' },
-  { code: 'TR', name: 'Turkey', flag: '🇹🇷' },
+  { code: 'TR', name: 'Turkiye', flag: '🇹🇷' },
   { code: 'TM', name: 'Turkmenistan', flag: '🇹🇲' },
   { code: 'TC', name: 'Turks and Caicos Islands', flag: '🇹🇨' },
   { code: 'TV', name: 'Tuvalu', flag: '🇹🇻' },
