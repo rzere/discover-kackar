@@ -78,7 +78,7 @@ export default function Home({
           fetch(`/api/public/pages?locale=${params.locale}`), // Use public API for better performance
           fetch(`/api/public/categories?locale=${params.locale}`), // Use correct locale
           fetch(`/api/public/footer?locale=${params.locale}`), // Use correct locale
-          fetch(`/api/public/cta-cards?locale=${params.locale}&slug=plan-your-trip`) // Fetch CTA card data
+          fetch(`/api/admin/cta-cards`) // Fetch CTA card data from admin API
         ]);
 
         // Process page data
@@ -144,9 +144,25 @@ export default function Home({
         // Process CTA card data
         if (ctaResponse.ok) {
           const ctaResult = await ctaResponse.json();
-          if (ctaResult.data) {
-            setCtaCard(ctaResult.data);
+          if (ctaResult.data && ctaResult.data.length > 0) {
+            // Find the plan-your-trip card from the admin API response
+            const planYourTripCard = ctaResult.data.find((card: any) => card.slug === 'plan-your-trip');
+            if (planYourTripCard) {
+              // Transform admin API format to frontend format
+              const transformedCard = {
+                id: planYourTripCard.id,
+                slug: planYourTripCard.slug,
+                title: planYourTripCard.title[params.locale] || planYourTripCard.title.en,
+                description: planYourTripCard.description?.[params.locale] || planYourTripCard.description?.en,
+                buttonText: planYourTripCard.button_text[params.locale] || planYourTripCard.button_text.en,
+                buttonUrl: planYourTripCard.button_url,
+                isActive: planYourTripCard.is_active,
+              };
+              setCtaCard(transformedCard);
+            }
           }
+        } else {
+          console.error('CTA API Error:', ctaResponse.status, await ctaResponse.text());
         }
 
       } catch (error) {
