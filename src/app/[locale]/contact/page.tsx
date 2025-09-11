@@ -5,6 +5,7 @@ import ContactForm from '@/components/sections/ContactForm';
 import { getImageUrl } from '@/lib/utils/imageUtils';
 import { getLocalizedText, getTranslation, type Locale } from '@/lib/utils/translations';
 import SimpleNavbar from '@/components/layout/SimpleNavbar';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { 
   MapPin, 
   Envelope,
@@ -87,7 +88,7 @@ export default function ContactPage({ params }: ContactPageProps) {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
+        <LoadingSpinner size="xl" />
       </div>
     );
   }

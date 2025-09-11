@@ -8,6 +8,7 @@ import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
 import { getTranslation, getLocaleFromPathname, type Locale } from '@/lib/utils/translations';
 import Navbar from '@/components/layout/Navbar';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 // Using API routes instead of direct Supabase calls
 import { 
   Mountains, 
@@ -236,7 +237,7 @@ export default function Home({
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
+        <LoadingSpinner size="xl" />
       </div>
     );
   }
