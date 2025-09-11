@@ -295,7 +295,7 @@ const categoryImageMap = {
   nature: 'Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg',
   culture: 'Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg',
   gastronomy: 'aa-01_edited.jpg',
-  adventure: 'Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg',
+  adventure: 'Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg',
   accommodation: 'Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg',
   transportation: 'Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg',
   'music-dance': 'Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg',

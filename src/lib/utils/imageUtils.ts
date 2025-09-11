@@ -154,7 +154,7 @@ export function getCategoryImage(categorySlugOrId: string): string {
     'educational-research': 'Kackar_HiRes-nodumsports_moritzklee-MK_01854-2.jpg',
     'events-festivals': 'Kackar_HiRes-nodumsports_moritzklee-MK_01928-2.jpg',
     // Legacy support for old slugs
-    'adventure': 'Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg',
+    'adventure': 'Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg',
     'accommodation': 'Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg',
     'transportation': 'Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg',
     // By ID (legacy support)
