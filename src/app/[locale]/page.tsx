@@ -244,24 +244,36 @@ export default function Home({
       <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href={`/${params.locale}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-              <div className="h-10 w-24 flex items-center justify-center">
-                <img 
-                  src="/logos/logo-main.png" 
-                  alt="Discover Kaçkar" 
-                  className="h-8 w-auto"
-                  style={{ maxWidth: '100px' }}
-                  onLoad={() => console.log('Page navbar logo loaded successfully!')}
-                  onError={(e) => {
-                    console.log('Page navbar logo failed to load, trying UTMB logo');
-                    e.currentTarget.src = '/logos/logo-UTMB.png';
-                    e.currentTarget.onerror = () => {
-                      console.log('All logos failed, showing fallback text');
+            <Link href={`/${params.locale}`} className="flex items-center hover:opacity-80 transition-opacity">
+              <div className="flex items-center space-x-2">
+                {/* Main Logo */}
+                <div className="h-10 w-20 flex items-center justify-center">
+                  <img 
+                    src="/logos/logo-main.png" 
+                    alt="Discover Kaçkar" 
+                    className="h-8 w-auto"
+                    style={{ maxWidth: '80px' }}
+                    onLoad={() => console.log('Page navbar main logo loaded successfully!')}
+                    onError={(e) => {
+                      console.log('Main logo failed to load');
                       e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement!.innerHTML = '<span class="text-xs text-gray-600 font-bold">LOGO</span>';
-                    };
-                  }}
-                />
+                    }}
+                  />
+                </div>
+                {/* UTMB Logo */}
+                <div className="h-10 w-16 flex items-center justify-center">
+                  <img 
+                    src="/logos/logo-UTMB.png" 
+                    alt="UTMB" 
+                    className="h-6 w-auto"
+                    style={{ maxWidth: '60px' }}
+                    onLoad={() => console.log('Page navbar UTMB logo loaded successfully!')}
+                    onError={(e) => {
+                      console.log('UTMB logo failed to load');
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                </div>
               </div>
             </Link>
             <div className="flex space-x-4">
@@ -706,7 +718,8 @@ export default function Home({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
               {/* Brand Section */}
               <div className="lg:col-span-2">
-                <div className="flex items-center space-x-3 mb-4 sm:mb-6">
+                <div className="flex items-center space-x-2 mb-4 sm:mb-6">
+                  {/* Main Logo */}
                   <div className="h-10 sm:h-12 w-24 sm:w-32 flex items-center justify-center">
                     <img 
                       src="/logos/logo-main.png" 
@@ -714,19 +727,24 @@ export default function Home({
                       className="h-8 sm:h-10 w-auto"
                       style={{ maxWidth: '120px' }}
                       onError={(e) => {
-                        console.log('Footer logo failed to load, trying UTMB logo');
-                        e.currentTarget.src = '/logos/logo-UTMB.png';
-                        e.currentTarget.onerror = () => {
-                          console.log('All logos failed, showing fallback text');
-                          e.currentTarget.style.display = 'none';
-                          e.currentTarget.parentElement!.innerHTML = '<span class="text-sm text-gray-600 font-bold">LOGO</span>';
-                        };
+                        console.log('Main logo failed to load');
+                        e.currentTarget.style.display = 'none';
                       }}
                     />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white">
-                    {footerData?.company_name || 'Discover Kaçkar'}
-                  </h3>
+                  {/* UTMB Logo */}
+                  <div className="h-10 sm:h-12 w-16 sm:w-20 flex items-center justify-center">
+                    <img 
+                      src="/logos/logo-UTMB.png" 
+                      alt="UTMB" 
+                      className="h-6 sm:h-8 w-auto"
+                      style={{ maxWidth: '80px' }}
+                      onError={(e) => {
+                        console.log('UTMB logo failed to load');
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
                 </div>
                 <p className="text-gray-300 mb-4 sm:mb-6 max-w-md leading-relaxed text-sm sm:text-base">
                   {footerData?.company_description || (isEnglish 
