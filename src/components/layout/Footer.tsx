@@ -65,7 +65,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-6 text-white">
-              {getTranslation('categories.exploreButton', locale)}
+              {getTranslation('categories.exploreButton', locale as Locale)}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -99,7 +99,7 @@ export default function Footer() {
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold mb-6 text-white">
-              {getTranslation('contact.contact', locale)}
+              {getTranslation('contact.contact', locale as Locale)}
             </h3>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">

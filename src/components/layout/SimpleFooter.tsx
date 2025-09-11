@@ -119,7 +119,7 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
           {/* Contact */}
           <div>
             <h4 className="text-lg font-semibold mb-4">
-              {getTranslation('contact.contact', locale)}
+              {getTranslation('contact.contact', locale as Locale)}
             </h4>
             <ul className="space-y-3">
               <li className="flex items-center">
