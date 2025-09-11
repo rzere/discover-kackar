@@ -21,7 +21,7 @@ interface Image {
 }
 
 export default function ImageGallery() {
-  const locale = useLocale() as 'tr' | 'en';
+  const locale = useLocale() as Locale;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
@@ -168,8 +168,8 @@ export default function ImageGallery() {
               className="inline-flex items-center px-8 py-4 bg-white text-navy font-semibold rounded-full hover:bg-gray-50 transition-colors shadow-lg border-2 border-primary"
             >
               {showAll 
-                ? (locale === 'tr' ? 'Daha Az Göster' : 'Show Less')
-                : (locale === 'tr' ? 'Daha Fazla Görüntüle' : 'View More Images')
+                ? (locale === 'tr' ? 'Daha Az Göster' : locale === 'fr' ? 'Afficher Moins' : locale === 'de' ? 'Weniger Anzeigen' : 'Show Less')
+                : (locale === 'tr' ? 'Daha Fazla Görüntüle' : locale === 'fr' ? 'Voir Plus d\'Images' : locale === 'de' ? 'Mehr Bilder Anzeigen' : 'View More Images')
               }
               <svg className={`w-5 h-5 ml-2 transition-transform ${showAll ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

@@ -94,8 +94,8 @@ interface SubcategoryWithCategory extends Subcategory {
 interface FormData {
   category_id: string;
   slug: string;
-  title: { en: string; tr: string };
-  body_text: { en: string; tr: string };
+  title: { en: string; tr: string; fr: string; de: string };
+  body_text: { en: string; tr: string; fr: string; de: string };
   sort_order: number;
   is_active: boolean;
   image_id: string | null;
@@ -113,23 +113,23 @@ export default function AdminSubcategories() {
   const [formData, setFormData] = useState<FormData>({
     category_id: '',
     slug: '',
-    title: { en: '', tr: '' },
-    body_text: { en: '', tr: '' },
+    title: { en: '', tr: '', fr: '', de: '' },
+    body_text: { en: '', tr: '', fr: '', de: '' },
     sort_order: 0,
     is_active: true,
     image_id: null,
     image_alt_text: '',
     image_caption: ''
   });
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'tr'>('en');
+  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'tr' | 'fr' | 'de'>('en');
 
   // Helper function to get current language text
-  const getCurrentText = (textObj: { en: string; tr: string }) => {
+  const getCurrentText = (textObj: { en: string; tr: string; fr: string; de: string }) => {
     return textObj[currentLanguage] || '';
   };
 
   // Helper function to update text for current language
-  const updateCurrentText = (textObj: { en: string; tr: string }, newValue: string) => {
+  const updateCurrentText = (textObj: { en: string; tr: string; fr: string; de: string }, newValue: string) => {
     return { ...textObj, [currentLanguage]: newValue };
   };
 
@@ -256,14 +256,24 @@ export default function AdminSubcategories() {
     setEditingSubcategory(subcategory);
     
     // Properly handle multilingual data
-    const titleData = typeof subcategory.title === 'object' ? subcategory.title : { en: subcategory.title || '', tr: '' };
-    const bodyTextData = typeof subcategory.body_text === 'object' ? subcategory.body_text : { en: subcategory.body_text || '', tr: '' };
+    const titleData = typeof subcategory.title === 'object' ? { en: '', tr: '', fr: '', de: '', ...(subcategory.title as any) } : { en: subcategory.title || '', tr: '', fr: '', de: '' };
+    const bodyTextData = typeof subcategory.body_text === 'object' ? { en: '', tr: '', fr: '', de: '', ...(subcategory.body_text as any) } : { en: subcategory.body_text || '', tr: '', fr: '', de: '' };
     
     setFormData({
       category_id: subcategory.category_id,
       slug: subcategory.slug,
-      title: { en: titleData.en || '', tr: titleData.tr || '' },
-      body_text: { en: bodyTextData.en || '', tr: bodyTextData.tr || '' },
+      title: { 
+        en: titleData.en || '', 
+        tr: titleData.tr || '', 
+        fr: titleData.fr || '', 
+        de: titleData.de || '' 
+      },
+      body_text: { 
+        en: bodyTextData.en || '', 
+        tr: bodyTextData.tr || '', 
+        fr: bodyTextData.fr || '', 
+        de: bodyTextData.de || '' 
+      },
       sort_order: subcategory.sort_order,
       is_active: subcategory.is_active,
       image_id: subcategory.image_id || null,
@@ -277,7 +287,7 @@ export default function AdminSubcategories() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleLanguageChange = (newLanguage: 'en' | 'tr') => {
+  const handleLanguageChange = (newLanguage: 'en' | 'tr' | 'fr' | 'de') => {
     setCurrentLanguage(newLanguage);
     // The form will automatically show the correct language data since it's stored in formData.title[newLanguage]
   };
@@ -312,8 +322,8 @@ export default function AdminSubcategories() {
     setFormData({
       category_id: '',
       slug: '',
-      title: { en: '', tr: '' },
-      body_text: { en: '', tr: '' },
+      title: { en: '', tr: '', fr: '', de: '' },
+      body_text: { en: '', tr: '', fr: '', de: '' },
       sort_order: 0,
       is_active: true,
       image_id: null,
@@ -350,25 +360,17 @@ export default function AdminSubcategories() {
   const handleSave = async (subcategoryData: any) => {
     try {
       // Prepare the multilingual data
-      let titleData = { en: '', tr: '' };
-      let bodyTextData = { en: '', tr: '' };
+      let titleData = { en: '', tr: '', fr: '', de: '' };
+      let bodyTextData = { en: '', tr: '', fr: '', de: '' };
       
       if (editingSubcategory) {
-        // When editing, preserve existing data and update current language
-        titleData = {
-          en: (editingSubcategory.title as any)?.en || '',
-          tr: (editingSubcategory.title as any)?.tr || '',
-          [currentLanguage]: subcategoryData.title
-        };
-        bodyTextData = {
-          en: (editingSubcategory.body_text as any)?.en || '',
-          tr: (editingSubcategory.body_text as any)?.tr || '',
-          [currentLanguage]: subcategoryData.body_text
-        };
+        // When editing, use the form data which already has all languages
+        titleData = subcategoryData.title;
+        bodyTextData = subcategoryData.body_text;
       } else {
         // When creating new, set current language data
-        titleData[currentLanguage] = subcategoryData.title;
-        bodyTextData[currentLanguage] = subcategoryData.body_text;
+        titleData = { en: '', tr: '', fr: '', de: '', [currentLanguage]: subcategoryData.title };
+        bodyTextData = { en: '', tr: '', fr: '', de: '', [currentLanguage]: subcategoryData.body_text };
       }
 
       // Generate unique slug if creating new or if slug is empty
@@ -427,8 +429,8 @@ export default function AdminSubcategories() {
       setFormData({
         category_id: '',
         slug: '',
-        title: { en: '', tr: '' },
-        body_text: { en: '', tr: '' },
+        title: { en: '', tr: '', fr: '', de: '' },
+        body_text: { en: '', tr: '', fr: '', de: '' },
         sort_order: 0,
         is_active: true,
         image_id: null,
@@ -620,14 +622,14 @@ function SubcategoryForm({
   categories: Category[],
   onSave: (data: Partial<Subcategory>) => void, 
   onCancel: () => void,
-  currentLanguage: 'en' | 'tr',
-  onLanguageChange: (language: 'en' | 'tr') => void
+  currentLanguage: 'en' | 'tr' | 'fr' | 'de',
+  onLanguageChange: (language: 'en' | 'tr' | 'fr' | 'de') => void
 }) {
   const [formData, setFormData] = useState<FormData>({
     category_id: subcategory?.category_id || '',
     slug: subcategory?.slug || '',
-    title: typeof subcategory?.title === 'object' ? subcategory.title : { en: subcategory?.title || '', tr: '' },
-    body_text: typeof subcategory?.body_text === 'object' ? subcategory.body_text : { en: subcategory?.body_text || '', tr: '' },
+    title: typeof subcategory?.title === 'object' ? { en: '', tr: '', fr: '', de: '', ...(subcategory.title as any) } : { en: subcategory?.title || '', tr: '', fr: '', de: '' },
+    body_text: typeof subcategory?.body_text === 'object' ? { en: '', tr: '', fr: '', de: '', ...(subcategory.body_text as any) } : { en: subcategory?.body_text || '', tr: '', fr: '', de: '' },
     image_id: subcategory?.image_id || null,
     sort_order: subcategory?.sort_order || 1,
     is_active: subcategory?.is_active ?? true,
@@ -636,12 +638,12 @@ function SubcategoryForm({
   });
 
   // Helper function to get current language text
-  const getCurrentText = (textObj: { en: string; tr: string }) => {
+  const getCurrentText = (textObj: { en: string; tr: string; fr: string; de: string }) => {
     return textObj[currentLanguage] || '';
   };
 
   // Helper function to update text for current language
-  const updateCurrentText = (textObj: { en: string; tr: string }, newValue: string) => {
+  const updateCurrentText = (textObj: { en: string; tr: string; fr: string; de: string }, newValue: string) => {
     return { ...textObj, [currentLanguage]: newValue };
   };
 
@@ -656,8 +658,8 @@ function SubcategoryForm({
   // Update form data when language changes
   useEffect(() => {
     if (subcategory) {
-      const titleData = typeof subcategory.title === 'object' ? subcategory.title : { en: subcategory.title || '', tr: '' };
-      const bodyTextData = typeof subcategory.body_text === 'object' ? subcategory.body_text : { en: subcategory.body_text || '', tr: '' };
+      const titleData = typeof subcategory.title === 'object' ? { en: '', tr: '', fr: '', de: '', ...(subcategory.title as any) } : { en: subcategory.title || '', tr: '', fr: '', de: '' };
+      const bodyTextData = typeof subcategory.body_text === 'object' ? { en: '', tr: '', fr: '', de: '', ...(subcategory.body_text as any) } : { en: subcategory.body_text || '', tr: '', fr: '', de: '' };
       
       setFormData(prev => ({
         ...prev,
@@ -846,11 +848,13 @@ function SubcategoryForm({
             </label>
             <select
               value={currentLanguage}
-              onChange={(e) => onLanguageChange(e.target.value as 'en' | 'tr')}
+              onChange={(e) => onLanguageChange(e.target.value as 'en' | 'tr' | 'fr' | 'de')}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="en">English</option>
               <option value="tr">Turkish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
             </select>
           </div>
         </div>

@@ -59,6 +59,13 @@ const getLocalizedSubcategoryText = (jsonbField: any, locale: string, fallback: 
   
   // Handle JSONB object with language keys
   const text = jsonbField[locale] || jsonbField.en || jsonbField.tr || fallback;
+  
+  // Ensure we return a string, not an object
+  if (typeof text !== 'string') {
+    console.warn('getLocalizedSubcategoryText: Expected string but got:', typeof text, text);
+    return fallback;
+  }
+  
   return text;
 };
 
@@ -525,7 +532,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                             <div className="relative overflow-hidden rounded-2xl shadow-xl">
                               <img
                                 src={subcategory.image.file_path}
-                                alt={subcategory.image.alt_text || subcategory.title}
+                                alt={subcategory.image.alt_text || getLocalizedSubcategoryText(subcategory.title, locale)}
                                 className="w-full h-64 sm:h-80 lg:h-96 xl:h-[28rem] object-cover transition-transform duration-300 hover:scale-105"
                               />
                               {subcategory.image.caption && (

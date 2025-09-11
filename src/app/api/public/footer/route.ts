@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600', // 5min cache, 10min stale
-        'CDN-Cache-Control': 'public, s-maxage=600', // 10min CDN cache
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120', // 1min cache, 2min stale
+        'CDN-Cache-Control': 'public, s-maxage=120', // 2min CDN cache
       }
     });
   } catch (error) {
