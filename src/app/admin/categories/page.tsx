@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -120,7 +119,7 @@ export default function AdminCategories() {
       setCategories(sortedCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);
-      alert('Error fetching categories: ' + error.message);
+      alert('Error fetching categories: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -147,7 +146,7 @@ export default function AdminCategories() {
       fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
-      alert('Error deleting category: ' + error.message);
+      alert('Error deleting category: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -156,9 +155,7 @@ export default function AdminCategories() {
       // Clean up the data before sending - convert empty string to null for UUID fields
       const cleanedData = {
         ...categoryData,
-        hero_image_id: categoryData.hero_image_id === '' ? null : categoryData.hero_image_id,
-        image_alt_text: categoryData.image_alt_text,
-        image_caption: categoryData.image_caption
+        hero_image_id: categoryData.hero_image_id === '' ? undefined : categoryData.hero_image_id
       };
 
       let response;
@@ -234,7 +231,7 @@ export default function AdminCategories() {
       fetchCategories();
     } catch (error) {
       console.error('Error saving category:', error);
-      alert('Error saving category: ' + error.message);
+      alert('Error saving category: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -401,7 +398,7 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
     color_theme: category?.color_theme || 'from-blue-500 to-blue-600',
     sort_order: category?.sort_order || 1,
     is_active: category?.is_active ?? true,
-    hero_image_id: category?.hero_image_id || null,
+    hero_image_id: category?.hero_image_id || undefined,
     image_alt_text: category?.hero_image?.alt_text || '',
     image_caption: category?.hero_image?.caption || ''
   });
@@ -529,7 +526,7 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
 
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image: ' + error.message);
+      alert('Error uploading image: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setUploadingImage(false);
       setUploadProgress(0);
@@ -540,7 +537,7 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
   const handleRemoveImage = () => {
     setFormData(prev => ({
       ...prev,
-      hero_image_id: null
+      hero_image_id: undefined
     }));
     setCurrentImage(null);
     setSelectedImage(null);
@@ -656,7 +653,20 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    onSave(formData);
+    // Convert formData to match Category interface
+    const categoryData: Partial<Category> = {
+      slug: formData.slug,
+      locale: formData.locale,
+      name: formData.name,
+      description: formData.description,
+      content: formData.content,
+      icon_name: formData.icon_name,
+      color_theme: formData.color_theme,
+      sort_order: formData.sort_order,
+      is_active: formData.is_active,
+      hero_image_id: formData.hero_image_id
+    };
+    onSave(categoryData);
   };
 
   const colorThemes = [
