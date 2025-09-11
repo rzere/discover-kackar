@@ -21,8 +21,8 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Discover Kaçkar - Doğa, Kültür ve Macera",
-  description: "Kaçkar Dağları'nın doğa ve kültür hazinelerini keşfedin. Yürüyüş, trekking, kültürel deneyimler ve yerel lezzetlerle unutulmaz bir macera.",
+  title: "Kaçkar Mountains & Rize | Nature, Culture and Discovery",
+  description: "Discover the Kaçkar Mountains and Rize, where nature, culture, and history meet. Explore trails, highlands, local flavours, and traditions.",
 };
 
 export default function RootLayout({

@@ -212,11 +212,11 @@ export default function Home({
 
   // Fallback content if no data from Supabase
   const fallbackContent = {
-    title: isEnglish ? 'Discover Kaçkar' : 'Kaçkar\'ı Keşfedin',
+    title: isEnglish ? 'Where Nature and Culture Meet in the Peaks of Kaçkar' : 'Kaçkar\'ın Zirvelerinde Doğa ve Kültürün Buluşması',
     subtitle: isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti',
     description: isEnglish 
-      ? 'Explore the pristine wilderness, ancient cultures, and breathtaking landscapes of Turkey\'s hidden gem in the Black Sea region.'
-      : 'Karadeniz bölgesinin gizli hazinesi olan Kaçkar Dağları\'nın el değmemiş doğasını, kadim kültürlerini ve nefes kesen manzaralarını keşfedin.',
+      ? 'Discover the Kaçkar Mountains and Rize, where nature, culture, and history meet. Explore trails, highlands, local flavours, and traditions.'
+      : 'Kaçkar Dağları ve Rize\'de doğa, kültür ve tarihin buluştuğu eşsiz rotaları keşfedin. Yaylalar, lezzetler ve gelenekler sizi bekliyor.',
     cta_primary: isEnglish ? 'Explore Nature' : 'Doğayı Keşfet',
     cta_secondary: isEnglish ? 'Discover Culture' : 'Kültürü Keşfet',
     stats: [
@@ -321,14 +321,19 @@ export default function Home({
           
           {/* UTMB Banner */}
           <div className="mb-8 sm:mb-10 flex justify-center">
-            <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 border border-white/30 shadow-lg">
-              <svg className="w-4 h-4 text-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <a 
+              href="http://kackarbyutmb.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 border border-white/30 shadow-lg hover:bg-white/30 hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"
+            >
+              <svg className="w-4 h-4 text-white/60 group-hover:text-primary mr-2 transition-colors duration-300" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               <span className="text-white font-semibold text-sm sm:text-base">
-                Kaçkar by UTMB 26-28 September
+                Kaçkar by UTMB 26-28 September 2025
               </span>
-            </div>
+            </a>
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-black mb-8 sm:mb-10 leading-tight text-white drop-shadow-2xl px-2">
