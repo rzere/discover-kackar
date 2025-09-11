@@ -318,21 +318,20 @@ export default function Home({
           <div className="absolute -top-5 -right-10 w-16 h-16 bg-secondary/20 rounded-full blur-xl animate-pulse delay-1000 hidden sm:block"></div>
           <div className="absolute -bottom-10 -left-20 w-24 h-24 bg-teal/20 rounded-full blur-xl animate-pulse delay-2000 hidden sm:block"></div>
           
-          <div className="mb-4 sm:mb-6 flex justify-center">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-primary rounded-full flex items-center justify-center">
-              <img 
-                src="/logos/logolar-03.png" 
-                alt="Logo" 
-                className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
-                onError={(e) => {
-                  console.log('Hero logo failed to load');
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+          
+          {/* UTMB Banner */}
+          <div className="mb-8 sm:mb-10 flex justify-center">
+            <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 border border-white/30 shadow-lg">
+              <svg className="w-4 h-4 text-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+              </svg>
+              <span className="text-white font-semibold text-sm sm:text-base">
+                Kaçkar by UTMB 26-28 September
+              </span>
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-black mb-4 sm:mb-6 leading-tight text-white drop-shadow-2xl px-2">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-black mb-8 sm:mb-10 leading-tight text-white drop-shadow-2xl px-2">
             {pageTitle}
           </h1>
           
