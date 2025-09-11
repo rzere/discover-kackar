@@ -243,37 +243,20 @@ export default function Home({
       {/* Simple Navbar */}
       <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <Link href={`/${params.locale}`} className="flex items-center hover:opacity-80 transition-opacity">
-              <div className="flex items-center space-x-2">
-                {/* Main Logo */}
-                <div className="h-10 w-20 flex items-center justify-center">
-                  <img 
-                    src="/logos/logo-main.png" 
-                    alt="Discover Kaçkar" 
-                    className="h-8 w-auto"
-                    style={{ maxWidth: '80px' }}
-                    onLoad={() => console.log('Page navbar main logo loaded successfully!')}
-                    onError={(e) => {
-                      console.log('Main logo failed to load');
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
-                {/* UTMB Logo */}
-                <div className="h-10 w-16 flex items-center justify-center">
-                  <img 
-                    src="/logos/logo-UTMB.png" 
-                    alt="UTMB" 
-                    className="h-6 w-auto"
-                    style={{ maxWidth: '60px' }}
-                    onLoad={() => console.log('Page navbar UTMB logo loaded successfully!')}
-                    onError={(e) => {
-                      console.log('UTMB logo failed to load');
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                </div>
+              <div className="h-12 w-28 flex items-center justify-center">
+                <img 
+                  src="/logos/logo-main.png" 
+                  alt="Discover Kaçkar" 
+                  className="h-10 w-auto"
+                  style={{ maxWidth: '120px' }}
+                  onLoad={() => console.log('Page navbar main logo loaded successfully!')}
+                  onError={(e) => {
+                    console.log('Main logo failed to load');
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
               </div>
             </Link>
             <div className="flex space-x-4">
