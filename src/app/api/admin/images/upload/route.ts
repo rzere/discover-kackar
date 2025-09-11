@@ -148,11 +148,17 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    console.log('Starting image optimization...');
+    console.log('Starting image upload...');
     console.log('Original file size:', Math.round(buffer.length / 1024 / 1024), 'MB');
     
-    // Optimize the image
-    const optimizedImages = await optimizeImage(buffer, optimizedFilename);
+    // For Vercel deployment, skip optimization and use original image
+    // ImageMagick is not available in serverless environment
+    console.log('⚠️ Skipping image optimization in serverless environment');
+    const optimizedImages = {
+      mobile: { buffer: buffer, size: buffer.length },
+      tablet: { buffer: buffer, size: buffer.length },
+      desktop: { buffer: buffer, size: buffer.length }
+    };
     
     const supabaseAdmin = getSupabaseAdmin();
     
@@ -165,47 +171,17 @@ export async function POST(request: NextRequest) {
                        fileExtension === 'webp' ? 'image/webp' : 
                        fileExtension === 'avif' ? 'image/avif' : 'image/jpeg';
     
-    // Upload mobile version
+    // Upload single image (no optimization in serverless environment)
     uploadPromises.push(
       supabaseAdmin.storage
         .from('images')
-        .upload(`${optimizedFilename}_mobile.${fileExtension}`, optimizedImages.mobile.buffer, {
+        .upload(filename, buffer, {
           contentType: contentType,
           cacheControl: '3600',
           upsert: false
         })
         .then(result => {
-          uploadedFiles.mobile = result;
-          return result;
-        })
-    );
-    
-    // Upload tablet version
-    uploadPromises.push(
-      supabaseAdmin.storage
-        .from('images')
-        .upload(`${optimizedFilename}_tablet.${fileExtension}`, optimizedImages.tablet.buffer, {
-          contentType: contentType,
-          cacheControl: '3600',
-          upsert: false
-        })
-        .then(result => {
-          uploadedFiles.tablet = result;
-          return result;
-        })
-    );
-    
-    // Upload desktop version
-    uploadPromises.push(
-      supabaseAdmin.storage
-        .from('images')
-        .upload(`${optimizedFilename}_desktop.${fileExtension}`, optimizedImages.desktop.buffer, {
-          contentType: contentType,
-          cacheControl: '3600',
-          upsert: false
-        })
-        .then(result => {
-          uploadedFiles.desktop = result;
+          uploadedFiles.original = result;
           return result;
         })
     );
@@ -216,43 +192,26 @@ export async function POST(request: NextRequest) {
     // Check for upload errors
     const uploadErrors = uploadResults.filter(result => result.error);
     if (uploadErrors.length > 0) {
-      console.error('Error uploading optimized images:', uploadErrors);
+      console.error('Error uploading image:', uploadErrors);
       return NextResponse.json({ 
-        error: 'Failed to upload optimized images to storage', 
+        error: 'Failed to upload image to storage', 
         details: uploadErrors[0]?.error?.message || 'Unknown upload error'
       }, { status: 500 });
     }
     
-    console.log('All optimized images uploaded successfully');
+    console.log('Image uploaded successfully');
 
-    // Get public URLs for the optimized images
-    const mobileUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_mobile.${fileExtension}`).data.publicUrl;
-    const tabletUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_tablet.${fileExtension}`).data.publicUrl;
-    const desktopUrl = supabaseAdmin.storage.from('images').getPublicUrl(`${optimizedFilename}_desktop.${fileExtension}`).data.publicUrl;
+    // Get public URL for the uploaded image
+    const imageUrl = supabaseAdmin.storage.from('images').getPublicUrl(filename).data.publicUrl;
     
-    console.log('Generated public URLs:', { mobileUrl, tabletUrl, desktopUrl });
+    console.log('Generated public URL:', imageUrl);
 
-    // Create optimization data
-    const optimizationData = {
+    // Create simple data structure (no optimization in serverless)
+    const imageData = {
       original: {
         size: file.size,
-        path: mobileUrl, // Use mobile as default
+        path: imageUrl,
         filename: filename
-      },
-      mobile: {
-        size: optimizedImages.mobile.size,
-        path: mobileUrl,
-        filename: `${optimizedFilename}_mobile.${fileExtension}`
-      },
-      tablet: {
-        size: optimizedImages.tablet.size,
-        path: tabletUrl,
-        filename: `${optimizedFilename}_tablet.${fileExtension}`
-      },
-      desktop: {
-        size: optimizedImages.desktop.size,
-        path: desktopUrl,
-        filename: `${optimizedFilename}_desktop.${fileExtension}`
       }
     };
 
@@ -265,12 +224,12 @@ export async function POST(request: NextRequest) {
     const tagArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag) : null;
 
     // Save to database
-    console.log('Saving optimized image data to database...');
+    console.log('Saving image data to database...');
     console.log('Image data:', {
-      filename: `${optimizedFilename}_mobile.${fileExtension}`,
+      filename: filename,
       original_filename: file.name,
-      file_path: mobileUrl,
-      file_size: optimizedImages.mobile.size,
+      file_path: imageUrl,
+      file_size: file.size,
       mime_type: contentType,
       category,
       uploaded_by: user.id
@@ -279,10 +238,10 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabaseAdmin
       .from('images')
       .insert({
-        filename: `${optimizedFilename}_mobile.${fileExtension}`,
+        filename: filename,
         original_filename: file.name,
-        file_path: mobileUrl, // Use the mobile optimized URL
-        file_size: optimizedImages.mobile.size,
+        file_path: imageUrl,
+        file_size: file.size,
         mime_type: contentType,
         width,
         height,
@@ -290,8 +249,8 @@ export async function POST(request: NextRequest) {
         alt_text: altText || null,
         caption: caption || null,
         tags: tagArray,
-        is_optimized: true, // Now optimized!
-        optimization_data: optimizationData,
+        is_optimized: false, // No optimization in serverless environment
+        optimization_data: imageData,
         uploaded_by: null // Skip user association for now
       })
       .select('*')
@@ -307,14 +266,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ 
       image: data,
-      optimization: {
+      upload_info: {
         original_size: Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB',
-        mobile_size: Math.round(optimizedImages.mobile.size / 1024) + ' KB',
-        tablet_size: Math.round(optimizedImages.tablet.size / 1024) + ' KB',
-        desktop_size: Math.round(optimizedImages.desktop.size / 1024) + ' KB',
-        compression_ratio: Math.round((1 - optimizedImages.mobile.size / file.size) * 100) + '%'
+        file_type: contentType,
+        optimization: 'Skipped (serverless environment)'
       },
-      message: 'Image uploaded and optimized successfully' 
+      message: 'Image uploaded successfully' 
     }, { status: 201 });
 
   } catch (error) {
