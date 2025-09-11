@@ -669,7 +669,7 @@ export default function Home({
               
               <div className="flex justify-center">
                 <Link
-                  href={`/${params.locale}/contact`}
+                  href={ctaCard?.buttonUrl ? `/${params.locale}${ctaCard.buttonUrl}` : `/${params.locale}/contact`}
                   className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   <Envelope size={20} className="mr-2" />
@@ -772,7 +772,7 @@ export default function Home({
                               {link.title}
                             </span>
                           ) : (
-                            <Link href={link.url} className="text-gray-300 hover:text-white transition-colors text-sm">
+                            <Link href={`/${params.locale}${link.url}`} className="text-gray-300 hover:text-white transition-colors text-sm">
                               {link.title}
                             </Link>
                           )}
@@ -894,7 +894,7 @@ export default function Home({
                 <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
                   {footerData?.legal_links && footerData.legal_links.length > 0 ? (
                     footerData.legal_links.map((link: any, index: number) => (
-                      <Link key={index} href={link.url} className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
+                      <Link key={index} href={`/${params.locale}${link.url}`} className="text-gray-300 hover:text-white transition-colors text-xs sm:text-sm">
                         {link.title}
                       </Link>
                     ))
