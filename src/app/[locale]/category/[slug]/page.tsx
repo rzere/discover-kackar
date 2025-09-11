@@ -1,6 +1,7 @@
 'use client';
 
 import { notFound } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
 import { useImageSize } from '@/hooks/useResponsiveImage';
@@ -326,6 +327,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const { locale, slug } = params;
   const isEnglish = locale === 'en';
   const imageSize = useImageSize();
+  const router = useRouter();
   const [category, setCategory] = useState<Category | null>(null);
   const [footerData, setFooterData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -369,13 +371,15 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           console.log('Response status:', categoryResponse.status);
           const errorText = await categoryResponse.text();
           console.log('Response text:', errorText);
-          notFound();
+          router.push(`/${locale}`);
+          return;
         }
         
         setLoading(false);
       } catch (error) {
         console.error('Error fetching category:', error);
-        notFound();
+        router.push(`/${locale}`);
+        return;
       }
     };
 
@@ -393,7 +397,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   }
   
   if (!category) {
-    notFound();
+    router.push(`/${locale}`);
+    return null;
   }
 
   const backgroundImage = category?.hero_image?.file_path || categoryImageMap[slug as keyof typeof categoryImageMap];

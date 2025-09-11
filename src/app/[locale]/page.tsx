@@ -299,7 +299,7 @@ export default function Home({
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               <span className="text-white font-semibold text-sm sm:text-base">
-                {getTranslation('event.utmbBanner', locale)}
+                <span className="font-bold">Kaçkar by UTMB</span> {getTranslation('event.utmbBanner', locale).replace('Kaçkar by UTMB ', '')}
               </span>
             </a>
           </div>
