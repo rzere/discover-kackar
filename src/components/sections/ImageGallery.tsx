@@ -14,6 +14,7 @@ interface Image {
   alt_text: string;
   category: string;
   is_optimized: boolean;
+  is_visible: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -30,7 +31,7 @@ export default function ImageGallery() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('/api/admin/images');
+        const response = await fetch('/api/public/images');
         const result = await response.json();
         
         if (response.ok && result.data) {

@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 // Using API routes instead of direct Supabase calls
-import { Plus, Upload, Trash, Eye, Download } from '@phosphor-icons/react';
+import { Plus, Upload, Trash, Eye, Download, EyeSlash } from '@phosphor-icons/react';
 
 interface Image {
   id: string;
@@ -15,6 +15,7 @@ interface Image {
   alt_text: string;
   category: string;
   is_optimized: boolean;
+  is_visible: boolean;
   optimization_data?: {
     original: {
       size: number;
@@ -132,6 +133,35 @@ export default function AdminImages() {
     } catch (error) {
       console.error('Error deleting image:', error);
       alert('Error deleting image: ' + error.message);
+    }
+  };
+
+  const handleToggleVisibility = async (id: string, currentVisibility: boolean) => {
+    try {
+      const response = await fetch(`/api/admin/images/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          is_visible: !currentVisibility
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to update image visibility');
+      }
+
+      // Update the local state immediately for better UX
+      setImages(prevImages => 
+        prevImages.map(img => 
+          img.id === id ? { ...img, is_visible: !currentVisibility } : img
+        )
+      );
+    } catch (error) {
+      console.error('Error updating image visibility:', error);
+      alert('Error updating image visibility: ' + error.message);
     }
   };
 
@@ -264,15 +294,32 @@ export default function AdminImages() {
               <img
                 src={image.file_path}
                 alt={image.alt_text}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover ${!image.is_visible ? 'opacity-50' : ''}`}
                 onError={(e) => {
                   e.currentTarget.src = '/images/placeholder.jpg';
                 }}
               />
+              {!image.is_visible && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">HIDDEN</span>
+                </div>
+              )}
               <div className="absolute top-2 right-2 flex gap-1">
+                <button
+                  onClick={() => handleToggleVisibility(image.id, image.is_visible)}
+                  className={`p-1 rounded ${
+                    image.is_visible 
+                      ? 'bg-green-500 text-white hover:bg-green-600' 
+                      : 'bg-gray-500 text-white hover:bg-gray-600'
+                  }`}
+                  title={image.is_visible ? 'Hide image' : 'Show image'}
+                >
+                  {image.is_visible ? <Eye size={16} /> : <EyeSlash size={16} />}
+                </button>
                 <button
                   onClick={() => handleDelete(image.id)}
                   className="bg-red-500 text-white p-1 rounded hover:bg-red-600"
+                  title="Delete image"
                 >
                   <Trash size={16} />
                 </button>
@@ -313,13 +360,22 @@ export default function AdminImages() {
                 </p>
               )}
               <div className="flex items-center justify-between">
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                  image.is_optimized 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {image.is_optimized ? 'Optimized' : 'Original'}
-                </span>
+                <div className="flex gap-1">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    image.is_optimized 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {image.is_optimized ? 'Optimized' : 'Original'}
+                  </span>
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    image.is_visible 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {image.is_visible ? 'Visible' : 'Hidden'}
+                  </span>
+                </div>
                 <span className="text-xs text-gray-500">
                   {image.category}
                 </span>
