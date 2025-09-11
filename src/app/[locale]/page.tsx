@@ -319,8 +319,16 @@ export default function Home({
           <div className="absolute -bottom-10 -left-20 w-24 h-24 bg-teal/20 rounded-full blur-xl animate-pulse delay-2000 hidden sm:block"></div>
           
           <div className="mb-4 sm:mb-6 flex justify-center">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
-              <Mountains size={32} className="text-white sm:w-12 sm:h-12" />
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-primary rounded-full flex items-center justify-center">
+              <img 
+                src="/logos/logolar-03.png" 
+                alt="Logo" 
+                className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
+                onError={(e) => {
+                  console.log('Hero logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
             </div>
           </div>
           
@@ -715,15 +723,15 @@ export default function Home({
                       }}
                     />
                   </div>
-                  {/* UTMB Logo */}
+                  {/* Second Logo */}
                   <div className="h-10 sm:h-12 w-16 sm:w-20 flex items-center justify-center">
                     <img 
-                      src="/logos/logo-UTMB.png" 
-                      alt="UTMB" 
+                      src="/logos/logolar-01.png" 
+                      alt="Partner Logo" 
                       className="h-6 sm:h-8 w-auto"
                       style={{ maxWidth: '80px' }}
                       onError={(e) => {
-                        console.log('UTMB logo failed to load');
+                        console.log('Second logo failed to load');
                         e.currentTarget.style.display = 'none';
                       }}
                     />
