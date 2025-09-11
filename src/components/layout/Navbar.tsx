@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { useTranslations } from '@/lib/simple-translations';
 import { usePathname } from 'next/navigation';
 import { List, X, Globe } from '@phosphor-icons/react';
+import { locales } from '../../../i18n';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 
 interface Category {
   id: string;
@@ -22,7 +24,7 @@ export default function Navbar() {
   const [loading, setLoading] = useState(true);
   const t = useTranslations();
   const pathname = usePathname();
-  const locale = pathname.startsWith('/en') ? 'en' : 'tr';
+  const locale = pathname.startsWith('/en') ? 'en' : pathname.startsWith('/fr') ? 'fr' : pathname.startsWith('/de') ? 'de' : 'tr';
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
@@ -105,20 +107,16 @@ export default function Navbar() {
               
               {isLangMenuOpen && (
                 <div className="absolute right-0 mt-2 w-20 bg-white rounded-md shadow-lg py-1 z-50">
-                  <Link
-                    href={getLanguageUrl('tr')}
-                    className="block px-3 py-2 text-sm text-navy hover:bg-secondary/50 hover:text-primary"
-                    onClick={() => setIsLangMenuOpen(false)}
-                  >
-                    TR
-                  </Link>
-                  <Link
-                    href={getLanguageUrl('en')}
-                    className="block px-3 py-2 text-sm text-navy hover:bg-secondary/50 hover:text-primary"
-                    onClick={() => setIsLangMenuOpen(false)}
-                  >
-                    EN
-                  </Link>
+                  {locales.map((loc: string) => (
+                    <Link
+                      key={loc}
+                      href={getLanguageUrl(loc)}
+                      className="block px-3 py-2 text-sm text-navy hover:bg-secondary/50 hover:text-primary"
+                      onClick={() => setIsLangMenuOpen(false)}
+                    >
+                      {loc.toUpperCase()}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
@@ -147,7 +145,7 @@ export default function Navbar() {
                   className="block py-3 px-4 bg-primary text-white hover:bg-primary/90 transition-colors rounded-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {locale === 'en' ? 'Contact' : 'İletişim'}
+                  {getTranslation('contact.contact', locale as Locale)}
                 </Link>
               </div>
             </div>

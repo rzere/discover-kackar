@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
 import { X, CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 
 interface Image {
   id: string;
@@ -114,13 +115,10 @@ export default function ImageGallery() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-slide-up">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-navy mb-4">
-            {locale === 'tr' ? 'Kaçkar\'dan Kareler' : 'Glimpses of Kaçkar'}
+            {getTranslation('gallery.title', locale as Locale)}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {locale === 'tr' 
-              ? 'Kaçkar Dağları\'nın büyüleyici manzaralarını keşfedin'
-              : 'Discover the enchanting landscapes of the Kaçkar Mountains'
-            }
+            {getTranslation('gallery.description', locale as Locale)}
           </p>
         </div>
 

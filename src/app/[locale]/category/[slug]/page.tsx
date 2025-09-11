@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
 import { useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 import { 
   Leaf, 
   Users, 
@@ -47,6 +48,16 @@ const toLocaleUppercase = (text: string, locale: string): string => {
     // Standard uppercase for English and other languages
     return text.toUpperCase();
   }
+};
+
+// Helper function to extract localized text from JSONB fields
+const getLocalizedSubcategoryText = (jsonbField: any, locale: string, fallback: string = ''): string => {
+  if (!jsonbField) return fallback;
+  if (typeof jsonbField === 'string') return jsonbField;
+  
+  // Handle JSONB object with language keys
+  const text = jsonbField[locale] || jsonbField.en || jsonbField.tr || fallback;
+  return text;
 };
 
 interface CategoryPageProps {
@@ -445,7 +456,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               href={`/${locale}`}
               className="inline-flex items-center text-primary hover:text-primary/80 transition-all duration-200 ease-in-out transform hover:-translate-y-1"
             >
-              ← {isEnglish ? 'Back to Home' : 'Ana Sayfaya Dön'}
+              ← {getTranslation('category.backToHome', locale as Locale)}
             </Link>
           </div>
 
@@ -462,7 +473,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {category.content?.bullets && category.content.bullets.length > 0 && (
               <div className="bg-gray-50 rounded-xl p-8 mb-12">
                 <h3 className="text-2xl font-serif text-primary mb-6 text-center">
-                  {isEnglish ? 'Highlights' : 'Öne Çıkanlar'}
+                  {getTranslation('category.highlights', locale as Locale)}
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   {category.content.bullets.map((bullet: string, index: number) => (
@@ -495,7 +506,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {category.subcategories && category.subcategories.length > 0 && (
               <div className="mb-12">
                 <h2 className="text-3xl font-serif text-primary mb-8 text-center">
-                  {isEnglish ? 'Explore More' : 'Daha Fazla Keşfet'}
+                  {getTranslation('categories.exploreButton', locale as Locale)}
                 </h2>
                 <div className="space-y-16">
                   {category.subcategories.map((subcategory, index) => {
@@ -531,34 +542,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                         <div className="w-full lg:flex-1 lg:px-4">
                           <h3 className="text-xl sm:text-2xl font-bold text-navy mb-4 tracking-wide">
                             {toLocaleUppercase(
-                              (() => {
-                                if (typeof subcategory.title === 'string') {
-                                  return subcategory.title;
-                                }
-                                const titleObj = subcategory.title as any;
-                                if (isEnglish) {
-                                  // Handle nested structure: title.en.en or title.en
-                                  return titleObj?.en?.en || titleObj?.en || '';
-                                } else {
-                                  return titleObj?.tr || '';
-                                }
-                              })(), 
+                              getLocalizedSubcategoryText(subcategory.title, locale),
                               locale
                             )}
                           </h3>
                           <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                            {(() => {
-                              if (typeof subcategory.body_text === 'string') {
-                                return subcategory.body_text;
-                              }
-                              const bodyObj = subcategory.body_text as any;
-                              if (isEnglish) {
-                                // Handle nested structure: body_text.en.en or body_text.en
-                                return bodyObj?.en?.en || bodyObj?.en || '';
-                              } else {
-                                return bodyObj?.tr || '';
-                              }
-                            })()}
+                            {getLocalizedSubcategoryText(subcategory.body_text, locale)}
                           </p>
                         </div>
                       </div>
@@ -571,20 +560,17 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {/* Call to Action */}
             <div className="text-center bg-white border-2 border-primary/20 rounded-xl p-8">
               <h3 className="text-2xl font-serif text-navy mb-4">
-                {isEnglish ? 'Ready to Explore?' : 'Keşfetmeye Hazır mısın?'}
+                {getTranslation('category.readyToExplore', locale as Locale)}
               </h3>
               <p className="text-gray-600 mb-6">
-                {isEnglish 
-                  ? 'Get in touch with local experts to plan your perfect Kaçkar experience.'
-                  : 'Mükemmel Kaçkar deneyiminizi planlamak için yerel uzmanlarla iletişime geçin.'
-                }
+                {getTranslation('category.readyToExploreDescription', locale as Locale)}
               </p>
               <div className="flex justify-center">
                 <Link
                   href={`/${locale}/contact`}
                   className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
-                  {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
+                  {getTranslation('contact.contactUs', locale as Locale)}
                 </Link>
               </div>
             </div>

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { FacebookLogo, InstagramLogo, TwitterLogo, MapPin, Envelope, Phone } from '@phosphor-icons/react';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 
 export default function Footer() {
   const t = useTranslations();
@@ -64,7 +65,7 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-6 text-white">
-              {locale === 'tr' ? 'Keşfet' : 'Explore'}
+              {getTranslation('categories.exploreButton', locale)}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -98,7 +99,7 @@ export default function Footer() {
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold mb-6 text-white">
-              {locale === 'tr' ? 'İletişim' : 'Contact'}
+              {getTranslation('contact.contact', locale)}
             </h3>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
@@ -134,7 +135,7 @@ export default function Footer() {
                 © 2024 Discover Kaçkar. {locale === 'tr' ? 'Tüm hakları saklıdır.' : 'All rights reserved.'}
               </p>
               <div className="flex items-center space-x-4 text-xs text-gray-400">
-                <span>{locale === 'tr' ? 'Türkiye\'nin Gizli Dağ Cenneti' : 'Turkey\'s Hidden Mountain Paradise'}</span>
+                <span>{getTranslation('footer.subtitle', locale as Locale)}</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -142,7 +143,7 @@ export default function Footer() {
                 href={`/${locale}/contact`} 
                 className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
               >
-                {locale === 'tr' ? 'İletişime Geçin' : 'Contact Us'}
+                {getTranslation('contact.contactUs', locale as Locale)}
               </Link>
               <div className="flex space-x-6">
                 <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">

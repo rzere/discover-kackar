@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { MapPin, Phone, EnvelopeSimple, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 
 interface SimpleFooterProps {
   locale: string;
@@ -118,7 +119,7 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
           {/* Contact */}
           <div>
             <h4 className="text-lg font-semibold mb-4">
-              {isEnglish ? 'Contact' : 'İletişim'}
+              {getTranslation('contact.contact', locale)}
             </h4>
             <ul className="space-y-3">
               <li className="flex items-center">
@@ -149,7 +150,7 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
               href={`/${locale}/contact`} 
               className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
             >
-              {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
+              {getTranslation('contact.contactUs', locale as Locale)}
             </Link>
             <div className="flex space-x-6">
               <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-primary text-sm transition-colors">

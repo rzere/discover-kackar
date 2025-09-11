@@ -1,0 +1,95 @@
+{
+  "common": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "discover": "Entdecken",
+    "explore": "Erkunden",
+    "readMore": "Weiterlesen",
+    "learnMore": "Mehr erfahren",
+    "backToHome": "Zurück zur Startseite"
+  },
+  "hero": {
+    "title": "Entdecken Sie Kaçkar",
+    "subtitle": "Wo Natur, Kultur und Abenteuer aufeinandertreffen",
+    "description": "Entdecken Sie die einzigartigen Schönheiten, die reiche Kultur und die aufregenden Abenteuer der Kaçkar-Berge."
+  },
+  "navigation": {
+    "natureAdventure": "Natur & Abenteuer",
+    "cultureLocalLife": "Kultur & Lokales Leben",
+    "gastronomy": "Gastronomie",
+    "musicDance": "Musik & Tanz",
+    "sustainableTourism": "Nachhaltiger Tourismus",
+    "healthWellness": "Gesundheit & Wellness",
+    "photographyArt": "Fotografie & Kunst",
+    "educationalResearch": "Bildung & Forschung",
+    "eventsFestivals": "Veranstaltungen & Festivals"
+  },
+  "categories": {
+    "natureAdventure": {
+      "title": "Natur & Abenteuer",
+      "description": "Abenteuerliche Aktivitäten im Einklang mit der Natur in den Kaçkar-Bergen"
+    },
+    "cultureLocalLife": {
+      "title": "Kultur & Lokales Leben",
+      "description": "Entdecken Sie das reiche Erbe der Hemşin- und Laz-Kulturen"
+    },
+    "gastronomy": {
+      "title": "Gastronomie & Lokale Aromen",
+      "description": "Die einzigartigen Aromen und die kulinarische Kultur der Region"
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Kontaktieren Sie uns - Entdecken Sie Kaçkar",
+      "description": "Kontaktieren Sie uns, um Ihr perfektes Kaçkar-Berge-Abenteuer zu planen. Wir sind hier, um Ihnen zu helfen, die Schönheit der nordöstlichen Region der Türkei zu entdecken."
+    },
+    "hero": {
+      "title": "Kontaktieren Sie uns",
+      "subtitle": "Bereit, die wunderschönen Kaçkar-Berge zu erkunden? Lassen Sie uns Ihnen helfen, das perfekte Abenteuer zu planen."
+    },
+    "form": {
+      "title": "Kontakt aufnehmen",
+      "description": "Haben Sie Fragen zu Kaçkar? Wir helfen Ihnen gerne dabei, Ihr perfektes Abenteuer zu planen.",
+      "name": "Vollständiger Name",
+      "namePlaceholder": "Geben Sie Ihren vollständigen Namen ein",
+      "email": "E-Mail-Adresse",
+      "emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
+      "phone": "Telefonnummer",
+      "phonePlaceholder": "Geben Sie Ihre Telefonnummer ein (optional)",
+      "country": "Land",
+      "countryPlaceholder": "Wählen Sie Ihr Land",
+      "message": "Nachricht",
+      "messagePlaceholder": "Erzählen Sie uns von Ihren Reiseplänen, Fragen oder wie wir Ihnen helfen können...",
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "successMessage": "Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet. Wir werden Ihnen innerhalb von 24 Stunden antworten.",
+      "errorMessage": "Entschuldigung, beim Senden Ihrer Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "info": {
+      "title": "Kontaktinformationen",
+      "description": "Wir sind hier, um Ihnen zu helfen, Ihr perfektes Kaçkar-Abenteuer zu planen",
+      "email": {
+        "title": "E-Mail senden",
+        "value": "info@discoverkackar.com"
+      },
+      "phone": {
+        "title": "Anrufen",
+        "value": "+90 (555) 123-4567"
+      },
+      "response": {
+        "title": "Antwortzeit",
+        "value": "Innerhalb von 24 Stunden"
+      }
+    }
+  },
+  "admin": {
+    "dashboard": "Admin-Dashboard",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "content": "Content-Management",
+    "categories": "Kategorien",
+    "users": "Benutzer",
+    "settings": "Einstellungen"
+  }
+}

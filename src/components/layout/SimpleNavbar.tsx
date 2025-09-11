@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { List, X, Globe } from '@phosphor-icons/react';
+import { locales } from '../../../i18n';
 
 interface SimpleNavbarProps {
   locale: string;
@@ -73,12 +74,6 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
               </Link>
             ))}
             
-            {/* More Dropdown */}
-            <div className="relative">
-              <button className="text-gray-700 hover:text-primary transition-colors font-medium">
-                {isEnglish ? 'More' : 'Daha Fazla'}
-              </button>
-            </div>
 
             {/* Language Switcher */}
             <div className="relative">
@@ -92,20 +87,16 @@ export default function SimpleNavbar({ locale }: SimpleNavbarProps) {
               
               {isLangMenuOpen && (
                 <div className="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg">
-                  <Link
-                    href={getLanguageUrl('tr')}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary"
-                    onClick={() => setIsLangMenuOpen(false)}
-                  >
-                    TR
-                  </Link>
-                  <Link
-                    href={getLanguageUrl('en')}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary"
-                    onClick={() => setIsLangMenuOpen(false)}
-                  >
-                    EN
-                  </Link>
+                  {locales.map((loc: string) => (
+                    <Link
+                      key={loc}
+                      href={getLanguageUrl(loc)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/10 hover:text-primary"
+                      onClick={() => setIsLangMenuOpen(false)}
+                    >
+                      {loc.toUpperCase()}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>

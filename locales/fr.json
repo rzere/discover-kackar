@@ -1,0 +1,95 @@
+{
+  "common": {
+    "home": "Accueil",
+    "about": "À propos",
+    "contact": "Contact",
+    "discover": "Découvrir",
+    "explore": "Explorer",
+    "readMore": "Lire la suite",
+    "learnMore": "En savoir plus",
+    "backToHome": "Retour à l'accueil"
+  },
+  "hero": {
+    "title": "Découvrez Kaçkar",
+    "subtitle": "Où Nature, Culture et Aventure se Rencontrent",
+    "description": "Découvrez les beautés uniques, la culture riche et les aventures passionnantes des montagnes de Kaçkar."
+  },
+  "navigation": {
+    "natureAdventure": "Nature & Aventure",
+    "cultureLocalLife": "Culture & Vie Locale",
+    "gastronomy": "Gastronomie",
+    "musicDance": "Musique & Danse",
+    "sustainableTourism": "Tourisme Durable",
+    "healthWellness": "Santé & Bien-être",
+    "photographyArt": "Photographie & Art",
+    "educationalResearch": "Éducation & Recherche",
+    "eventsFestivals": "Événements & Festivals"
+  },
+  "categories": {
+    "natureAdventure": {
+      "title": "Nature & Aventure",
+      "description": "Activités d'aventure en harmonie avec la nature dans les montagnes de Kaçkar"
+    },
+    "cultureLocalLife": {
+      "title": "Culture & Vie Locale",
+      "description": "Découvrez le riche patrimoine des cultures Hemşin et Laz"
+    },
+    "gastronomy": {
+      "title": "Gastronomie & Saveurs Locales",
+      "description": "Les saveurs uniques et la culture culinaire de la région"
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contactez-nous - Découvrez Kaçkar",
+      "description": "Contactez-nous pour planifier votre parfaite aventure dans les montagnes de Kaçkar. Nous sommes là pour vous aider à découvrir la beauté de la région nord-est de la Turquie."
+    },
+    "hero": {
+      "title": "Contactez-nous",
+      "subtitle": "Prêt à explorer les magnifiques montagnes de Kaçkar ? Laissez-nous vous aider à planifier l'aventure parfaite."
+    },
+    "form": {
+      "title": "Entrez en contact",
+      "description": "Vous avez des questions sur Kaçkar ? Nous serions ravis de vous aider à planifier votre aventure parfaite.",
+      "name": "Nom complet",
+      "namePlaceholder": "Entrez votre nom complet",
+      "email": "Adresse e-mail",
+      "emailPlaceholder": "Entrez votre adresse e-mail",
+      "phone": "Numéro de téléphone",
+      "phonePlaceholder": "Entrez votre numéro de téléphone (optionnel)",
+      "country": "Pays",
+      "countryPlaceholder": "Sélectionnez votre pays",
+      "message": "Message",
+      "messagePlaceholder": "Parlez-nous de vos projets de voyage, questions ou comment nous pouvons vous aider...",
+      "submit": "Envoyer le message",
+      "submitting": "Envoi en cours...",
+      "successMessage": "Merci ! Votre message a été envoyé avec succès. Nous vous répondrons dans les 24 heures.",
+      "errorMessage": "Désolé, une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer."
+    },
+    "info": {
+      "title": "Informations de contact",
+      "description": "Nous sommes là pour vous aider à planifier votre parfaite aventure Kaçkar",
+      "email": {
+        "title": "Envoyez-nous un e-mail",
+        "value": "info@discoverkackar.com"
+      },
+      "phone": {
+        "title": "Appelez-nous",
+        "value": "+90 (555) 123-4567"
+      },
+      "response": {
+        "title": "Temps de réponse",
+        "value": "Dans les 24 heures"
+      }
+    }
+  },
+  "admin": {
+    "dashboard": "Tableau de bord administrateur",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "content": "Gestion de contenu",
+    "categories": "Catégories",
+    "users": "Utilisateurs",
+    "settings": "Paramètres"
+  }
+}

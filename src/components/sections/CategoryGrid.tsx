@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 import { useState, useEffect } from 'react';
 import { 
   Mountains, 
@@ -153,7 +154,7 @@ export default function CategoryGrid() {
                   
                   <div className="px-8 pb-8">
                     <div className="flex items-center text-primary font-medium group-hover:text-navy transition-colors">
-                      <span>{locale === 'tr' ? 'Keşfet' : 'Explore'}</span>
+                      <span>{getTranslation('categories.exploreButton', locale as Locale)}</span>
                       <svg 
                         className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" 
                         fill="none" 

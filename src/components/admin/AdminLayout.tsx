@@ -19,6 +19,7 @@ import {
   Envelope,
   Globe
 } from '@phosphor-icons/react';
+import LanguageToggle from './LanguageToggle';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -31,6 +32,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   // const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentLocale, setCurrentLocale] = useState('en');
   const router = useRouter();
 
   useEffect(() => {
@@ -174,6 +176,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             ))}
           </nav>
           <div className="p-4 border-t">
+            <div className="mb-4">
+              <LanguageToggle 
+                currentLocale={currentLocale} 
+                onLocaleChange={setCurrentLocale}
+                className="w-full"
+              />
+            </div>
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
@@ -210,6 +219,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </button>
           <div className="flex-1 flex items-center justify-center">
             <h1 className="text-lg font-semibold text-navy">Admin Panel</h1>
+          </div>
+          <div className="px-4">
+            <LanguageToggle 
+              currentLocale={currentLocale} 
+              onLocaleChange={setCurrentLocale}
+              className="scale-75"
+            />
           </div>
         </div>
 

@@ -6,6 +6,7 @@ import ImageGallery from '@/components/sections/ImageGallery';
 import { getImageFromCategory, getImageUrl, getCategoryImage } from '@/lib/utils/imageUtils';
 import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
+import { getTranslation, getLocaleFromPathname, type Locale } from '@/lib/utils/translations';
 import Navbar from '@/components/layout/Navbar';
 // Using API routes instead of direct Supabase calls
 import { 
@@ -60,6 +61,7 @@ export default function Home({
   params: {locale: string};
 }) {
   const isEnglish = params.locale === 'en';
+  const locale = params.locale as Locale;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [pageData, setPageData] = useState<PageData | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -297,10 +299,7 @@ export default function Home({
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               <span className="text-white font-semibold text-sm sm:text-base">
-                {isEnglish 
-                  ? "Kaçkar by UTMB 26-28 September 2025"
-                  : "Kaçkar by UTMB 26-28 Eylül 2025"
-                }
+                {getTranslation('event.utmbBanner', locale)}
               </span>
             </a>
           </div>
@@ -312,7 +311,7 @@ export default function Home({
           {/* Glass Panel for Text Content */}
           <div className="relative z-20 bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-white/20 shadow-2xl max-w-4xl mx-auto">
             <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-white font-medium drop-shadow-lg">
-              {content.subtitle || (isEnglish ? "Turkey's Hidden Mountain Paradise" : "Türkiye'nin Gizli Dağ Cenneti")}
+              {content.subtitle || getTranslation('hero.subtitle', locale)}
             </p>
             
             <p className="text-base sm:text-lg md:text-xl text-white leading-relaxed drop-shadow-md">
@@ -348,7 +347,7 @@ export default function Home({
               href="#"
               className="group inline-flex items-center justify-center w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-full hover:bg-white/30 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 border border-white/30 text-sm sm:text-base"
             >
-{isEnglish ? "Follow the Trails" : "Rotaları Keşfet"}
+{getTranslation('hero.followTrails', locale)}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -395,13 +394,10 @@ export default function Home({
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
-              {content.categories_title || (isEnglish ? 'Explore Categories' : 'Kategorileri Keşfet')}
+              {content.categories_title || getTranslation('categories.title', locale)}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {content.categories_description || (isEnglish 
-                ? "Discover every aspect of Kaçkar Mountains through our carefully curated categories, each offering unique experiences and adventures."
-                : "Özenle hazırlanmış kategorilerimiz aracılığıyla Kaçkar Dağları'nın her yönünü keşfedin, her biri benzersiz deneyimler ve maceralar sunuyor."
-              )}
+              {content.categories_description || getTranslation('categories.description', locale)}
             </p>
           </div>
 
@@ -430,7 +426,7 @@ export default function Home({
                         {category.description}
                       </p>
                       <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                        {isEnglish ? 'Explore →' : 'Keşfet →'}
+                        {getTranslation('categories.exploreButtonWithArrow', locale)}
                       </div>
                     </div>
                   </div>
@@ -455,7 +451,7 @@ export default function Home({
                     }
                   </p>
                   <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
                   </div>
                 </div>
               </div>
@@ -492,7 +488,7 @@ export default function Home({
                     </div>
                   </div>
                   <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
                   </div>
                 </div>
               </div>
@@ -529,7 +525,7 @@ export default function Home({
                     </div>
                   </div>
                   <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
                   </div>
                 </div>
               </div>
@@ -566,7 +562,7 @@ export default function Home({
                     </div>
                   </div>
                   <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
                   </div>
                 </div>
               </div>
@@ -603,7 +599,7 @@ export default function Home({
                     </div>
                   </div>
                   <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
                   </div>
                 </div>
               </div>
@@ -640,7 +636,7 @@ export default function Home({
                     </div>
                   </div>
                   <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {isEnglish ? 'Explore →' : 'Keşfet →'}
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
                   </div>
                 </div>
               </div>
@@ -673,7 +669,7 @@ export default function Home({
                   className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   <Envelope size={20} className="mr-2" />
-                  {ctaCard?.buttonText || (isEnglish ? 'Contact Us' : 'İletişime Geçin')}
+                  {ctaCard?.buttonText || getTranslation('contact.contactUs', locale)}
                 </Link>
               </div>
             </div>
@@ -753,7 +749,7 @@ export default function Home({
               {/* Quick Links */}
               <div>
                 <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-white">
-                  {isEnglish ? 'Explore' : 'Keşfet'}
+                  {getTranslation('categories.exploreButton', locale)}
                 </h4>
                 <ul className="space-y-2 sm:space-y-3">
                   {footerData?.quick_links && footerData.quick_links.length > 0 ? (
@@ -814,7 +810,7 @@ export default function Home({
               {/* Contact Info */}
               <div>
                 <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-white">
-                  {isEnglish ? 'Contact' : 'İletişim'}
+                  {getTranslation('contact.contact', locale)}
                 </h4>
                 <div className="space-y-3 sm:space-y-4">
                   {footerData?.address && (
@@ -881,7 +877,7 @@ export default function Home({
                   {footerData?.copyright_text || `© ${new Date().getFullYear()} Discover Kaçkar. ${isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}`}
                 </p>
                 <div className="flex items-center space-x-2 sm:space-x-4 text-xs text-gray-400">
-                  <span>{isEnglish ? 'Turkey\'s Hidden Mountain Paradise' : 'Türkiye\'nin Gizli Dağ Cenneti'}</span>
+                  <span>{getTranslation('footer.subtitle', locale)}</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -889,7 +885,7 @@ export default function Home({
                   href={`/${params.locale}/contact`} 
                   className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
                 >
-                  {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
+                  {getTranslation('contact.contactUs', locale)}
                 </Link>
                 <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
                   {footerData?.legal_links && footerData.legal_links.length > 0 ? (

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import ContactForm from '@/components/sections/ContactForm';
 import { getImageUrl } from '@/lib/utils/imageUtils';
+import { getLocalizedText, getTranslation, type Locale } from '@/lib/utils/translations';
 import SimpleNavbar from '@/components/layout/SimpleNavbar';
 import { 
   MapPin, 
@@ -24,6 +25,7 @@ export default function ContactPage({ params }: ContactPageProps) {
   const [contactPageData, setContactPageData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const isEnglish = params.locale === 'en';
+  const locale = params.locale as Locale;
 
   // Helper function to get localized text from JSONB field
   const getLocalizedText = (jsonbField: any, fallback: string = '') => {
@@ -137,22 +139,22 @@ export default function ContactPage({ params }: ContactPageProps) {
 
           <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
             <ContactForm 
-              translations={contactPageData ? {
-                name: getLocalizedText(contactPageData.form_name, isEnglish ? 'Full Name' : 'Ad Soyad'),
-                namePlaceholder: getLocalizedText(contactPageData.form_name_placeholder, isEnglish ? 'Enter your full name' : 'Adınızı ve soyadınızı girin'),
-                email: getLocalizedText(contactPageData.form_email, isEnglish ? 'Email Address' : 'E-posta Adresi'),
-                emailPlaceholder: getLocalizedText(contactPageData.form_email_placeholder, isEnglish ? 'Enter your email address' : 'E-posta adresinizi girin'),
-                phone: getLocalizedText(contactPageData.form_phone, isEnglish ? 'Phone Number' : 'Telefon Numarası'),
-                phonePlaceholder: getLocalizedText(contactPageData.form_phone_placeholder, isEnglish ? 'Enter your phone number (optional)' : 'Telefon numaranızı girin (isteğe bağlı)'),
-                country: getLocalizedText(contactPageData.form_country, isEnglish ? 'Country' : 'Ülke'),
-                countryPlaceholder: getLocalizedText(contactPageData.form_country_placeholder, isEnglish ? 'Select your country' : 'Ülkenizi seçin'),
-                message: getLocalizedText(contactPageData.form_message, isEnglish ? 'Message' : 'Mesaj'),
-                messagePlaceholder: getLocalizedText(contactPageData.form_message_placeholder, isEnglish ? 'Tell us about your travel plans, questions, or how we can help you...' : 'Seyahat planlarınız, sorularınız veya size nasıl yardımcı olabileceğimiz hakkında bize bilgi verin...'),
-                submit: getLocalizedText(contactPageData.form_submit, isEnglish ? 'Send Message' : 'Mesaj Gönder'),
-                submitting: getLocalizedText(contactPageData.form_submitting, isEnglish ? 'Sending...' : 'Gönderiliyor...'),
-                successMessage: getLocalizedText(contactPageData.form_success_message, isEnglish ? 'Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.' : 'Teşekkürler! Mesajınız başarıyla gönderildi. 24 saat içinde size dönüş yapacağız.'),
-                errorMessage: getLocalizedText(contactPageData.form_error_message, isEnglish ? 'Sorry, there was an error sending your message. Please try again.' : 'Üzgünüz, mesajınız gönderilirken bir hata oluştu. Lütfen tekrar deneyin.')
-              } : undefined}
+              translations={{
+                name: getTranslation('contact.form.name', locale),
+                namePlaceholder: getTranslation('contact.form.namePlaceholder', locale),
+                email: getTranslation('contact.form.email', locale),
+                emailPlaceholder: getTranslation('contact.form.emailPlaceholder', locale),
+                phone: getTranslation('contact.form.phone', locale),
+                phonePlaceholder: getTranslation('contact.form.phonePlaceholder', locale),
+                country: getTranslation('contact.form.country', locale),
+                countryPlaceholder: getTranslation('contact.form.countryPlaceholder', locale),
+                message: getTranslation('contact.form.message', locale),
+                messagePlaceholder: getTranslation('contact.form.messagePlaceholder', locale),
+                submit: getTranslation('contact.form.submit', locale),
+                submitting: getTranslation('contact.form.submitting', locale),
+                successMessage: getTranslation('contact.form.successMessage', locale),
+                errorMessage: getTranslation('contact.form.errorMessage', locale)
+              }}
             />
           </div>
         </div>

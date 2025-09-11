@@ -11,6 +11,7 @@ import {
   Heart
 } from '@phosphor-icons/react';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 
 interface SimpleCategoryGridProps {
   locale: string;
@@ -112,13 +113,10 @@ export default function SimpleCategoryGrid({ locale }: SimpleCategoryGridProps) 
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
-            {isEnglish ? 'Explore Categories' : 'Kategorileri Keşfet'}
+            {getTranslation('categories.title', locale as Locale)}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {isEnglish 
-              ? "Discover every aspect of Kaçkar Mountains through our carefully curated categories, each offering unique experiences and adventures."
-              : "Özenle hazırlanmış kategorilerimiz aracılığıyla Kaçkar Dağları'nın her yönünü keşfedin, her biri benzersiz deneyimler ve maceralar sunuyor."
-            }
+            {getTranslation('categories.description', locale as Locale)}
           </p>
         </div>
 
@@ -170,7 +168,7 @@ export default function SimpleCategoryGrid({ locale }: SimpleCategoryGridProps) 
                     
                     {/* Action */}
                     <div className="flex items-center text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                      {isEnglish ? 'Explore' : 'Keşfet'}
+                      {getTranslation('categories.exploreButton', locale as Locale)}
                       <MapPin size={18} className="ml-2" />
                     </div>
                   </div>
@@ -204,7 +202,7 @@ export default function SimpleCategoryGrid({ locale }: SimpleCategoryGridProps) 
                 className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center"
               >
                 <Camera size={20} className="mr-2" />
-                {isEnglish ? 'Contact Us' : 'İletişime Geçin'}
+                {getTranslation('contact.contactUs', locale as Locale)}
               </Link>
             </div>
           </div>
