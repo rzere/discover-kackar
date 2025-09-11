@@ -187,6 +187,7 @@ export type Database = {
           tags: string[] | null
           is_optimized: boolean
           optimization_data: Json | null
+          is_visible: boolean
           uploaded_by: string | null
           created_at: string
           updated_at: string
@@ -206,6 +207,7 @@ export type Database = {
           tags?: string[] | null
           is_optimized?: boolean
           optimization_data?: Json | null
+          is_visible?: boolean
           uploaded_by?: string | null
           created_at?: string
           updated_at?: string
@@ -225,6 +227,7 @@ export type Database = {
           tags?: string[] | null
           is_optimized?: boolean
           optimization_data?: Json | null
+          is_visible?: boolean
           uploaded_by?: string | null
           created_at?: string
           updated_at?: string
@@ -472,7 +475,7 @@ export type Database = {
     }
     Enums: {
       content_status: "draft" | "published" | "archived"
-      image_category: "hero" | "category" | "content" | "gallery" | "admin_upload"
+      image_category: "hero" | "category" | "content" | "gallery" | "admin_upload" | "subcategory" | "contact_hero"
       user_role: "admin" | "editor" | "viewer"
     }
     CompositeTypes: {

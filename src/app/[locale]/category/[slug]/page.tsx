@@ -24,7 +24,7 @@ import {
   Envelope,
   Phone
 } from '@phosphor-icons/react';
-import SimpleNavbar from '@/components/layout/SimpleNavbar';
+import Navbar from '@/components/layout/Navbar';
 
 // Function to properly convert text to uppercase based on locale
 const toLocaleUppercase = (text: string, locale: string): string => {
@@ -390,7 +390,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="min-h-screen bg-white" key={`${locale}-${slug}`}>
-      <SimpleNavbar locale={locale} />
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative h-96 flex items-center justify-center overflow-hidden text-white">

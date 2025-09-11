@@ -6,15 +6,19 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
 
+    // Define valid image categories
+    const validCategories = ['hero', 'category', 'content', 'gallery', 'admin_upload', 'subcategory', 'contact_hero'] as const;
+    type ImageCategory = typeof validCategories[number];
+
     let query = supabase
       .from('images')
       .select('*')
       .eq('is_visible', true) // Only return visible images
       .order('created_at', { ascending: false });
 
-    // Filter by category if provided
-    if (category) {
-      query = query.eq('category', category);
+    // Filter by category if provided and valid
+    if (category && validCategories.includes(category as ImageCategory)) {
+      query = query.eq('category', category as ImageCategory);
     }
 
     const { data, error } = await query;

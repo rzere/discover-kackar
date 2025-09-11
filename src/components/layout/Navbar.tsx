@@ -1,22 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from '@/lib/simple-translations';
 import { usePathname } from 'next/navigation';
 import { List, X, Globe } from '@phosphor-icons/react';
-import { categories } from '@/lib/data/mockData';
+
+interface Category {
+  id: string;
+  slug: string;
+  name: string;
+  locale: string;
+  is_active: boolean;
+}
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const t = useTranslations();
   const pathname = usePathname();
   const locale = pathname.startsWith('/en') ? 'en' : 'tr';
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/admin/categories');
+        if (response.ok) {
+          const result = await response.json();
+          // Filter categories by current locale and active status
+          const filteredCategories = (result.data || []).filter(
+            (category: Category) => category.locale === locale && category.is_active
+          );
+          setCategories(filteredCategories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, [locale]);
 
   // Create language switcher URLs that preserve the current path
   const getLanguageUrl = (targetLocale: string) => {
@@ -28,50 +60,44 @@ export default function Navbar() {
   return (
     <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b border-secondary/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link 
             href={`/${locale}`} 
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
           >
-            <div className="flex items-center space-x-3">
-              <div className="h-10 w-24 bg-white p-1 rounded shadow-sm border border-gray-200 flex items-center justify-center relative">
-                <Image 
-                  src="/logos/logo-main.png" 
-                  alt="Discover Kaçkar" 
-                  width={80}
-                  height={32}
-                  className="h-8 w-auto"
-                  style={{ maxWidth: '100px' }}
-                  onLoad={() => console.log('Logo loaded successfully!')}
-                  onError={() => {
-                    console.log('Logo failed to load, trying JPG version...');
-                    // Fallback handled by Next.js Image component
-                  }}
-                />
-                {/* Debug indicator - remove this later */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
-              </div>
+            <div className="h-12 w-28 flex items-center justify-center">
+              <Image 
+                src="/logos/logo-main.png" 
+                alt="Discover Kaçkar" 
+                width={100}
+                height={40}
+                className="h-10 w-auto"
+                style={{ maxWidth: '120px' }}
+                onLoad={() => console.log('Logo loaded successfully!')}
+                onError={() => {
+                  console.log('Logo failed to load, trying JPG version...');
+                  // Fallback handled by Next.js Image component
+                }}
+              />
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            {categories.slice(0, 6).map((category) => (
-              <Link
-                key={category.id}
-                href={`/${locale}/category/${category.slug}`}
-                className="text-primary hover:text-dark transition-colors font-medium text-sm"
-              >
-                {(category.name as any)[locale as 'tr' | 'en']}
-              </Link>
-            ))}
+          {/* Right side: Hamburger + Language Selector */}
+          <div className="flex items-center space-x-4">
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="text-navy hover:text-primary transition-colors"
+            >
+              {isMenuOpen ? <X size={24} /> : <List size={24} />}
+            </button>
             
             {/* Language Selector */}
             <div className="relative">
               <button
                 onClick={toggleLangMenu}
-                className="flex items-center space-x-1 text-primary hover:text-dark transition-colors"
+                className="flex items-center space-x-1 text-navy hover:text-primary transition-colors"
               >
                 <Globe size={20} />
                 <span className="uppercase text-sm font-medium">{locale}</span>
@@ -97,45 +123,31 @@ export default function Navbar() {
               )}
             </div>
           </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={toggleMenu}
-            className="md:hidden text-navy hover:text-primary transition-colors"
-          >
-            {isMenuOpen ? <X size={24} /> : <List size={24} />}
-          </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Hamburger Menu Dropdown */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4">
-            <div className="space-y-2">
-              {categories.slice(0, 6).map((category) => (
+          <div className="absolute top-full left-0 right-0 bg-white border-b border-secondary/20 shadow-lg z-40">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {!loading && categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/${locale}/category/${category.slug}`}
+                    className="block py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+                
+                {/* Contact Link - Primary CTA */}
                 <Link
-                  key={category.id}
-                  href={`/${locale}/category/${category.slug}`}
-                  className="block py-2 text-navy hover:text-primary transition-colors"
+                  href={`/${locale}/contact`}
+                  className="block py-3 px-4 bg-primary text-white hover:bg-primary/90 transition-colors rounded-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {(category.name as any)[locale as 'tr' | 'en']}
-                </Link>
-              ))}
-              
-              <div className="flex space-x-2 pt-2">
-                <Link
-                  href={getLanguageUrl('tr')}
-                  className="px-3 py-1 text-sm bg-secondary text-navy rounded"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  TR
-                </Link>
-                <Link
-                  href={getLanguageUrl('en')}
-                  className="px-3 py-1 text-sm bg-secondary text-navy rounded"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  EN
+                  {locale === 'en' ? 'Contact' : 'İletişim'}
                 </Link>
               </div>
             </div>

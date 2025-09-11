@@ -6,6 +6,7 @@ import ImageGallery from '@/components/sections/ImageGallery';
 import { getImageFromCategory, getImageUrl, getCategoryImage } from '@/lib/utils/imageUtils';
 import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
+import Navbar from '@/components/layout/Navbar';
 // Using API routes instead of direct Supabase calls
 import { 
   Mountains, 
@@ -240,42 +241,7 @@ export default function Home({
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Simple Navbar */}
-      <nav className="bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link href={`/${params.locale}`} className="flex items-center hover:opacity-80 transition-opacity">
-              <div className="h-12 w-28 flex items-center justify-center">
-                <img 
-                  src="/logos/logo-main.png" 
-                  alt="Discover Kaçkar" 
-                  className="h-10 w-auto"
-                  style={{ maxWidth: '120px' }}
-                  onLoad={() => console.log('Page navbar main logo loaded successfully!')}
-                  onError={(e) => {
-                    console.log('Main logo failed to load');
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-            </Link>
-            <div className="flex space-x-4">
-              <Link
-                href="/tr"
-                className={`px-3 py-1 text-sm rounded ${params.locale === 'tr' ? 'bg-primary text-white' : 'text-gray-700 hover:text-primary'}`}
-              >
-                TR
-              </Link>
-              <Link
-                href="/en"
-                className={`px-3 py-1 text-sm rounded ${params.locale === 'en' ? 'bg-primary text-white' : 'text-gray-700 hover:text-primary'}`}
-              >
-                EN
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden text-white py-16 sm:py-20">
@@ -331,7 +297,10 @@ export default function Home({
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               <span className="text-white font-semibold text-sm sm:text-base">
-                Kaçkar by UTMB 26-28 September 2025
+                {isEnglish 
+                  ? "Kaçkar by UTMB 26-28 September 2025"
+                  : "Kaçkar by UTMB 26-28 Eylül 2025"
+                }
               </span>
             </a>
           </div>
