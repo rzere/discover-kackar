@@ -914,6 +914,53 @@ export default function Home({
           </div>
         </div>
       </footer>
+
+      {/* Partner Logos Strip */}
+      <div className="bg-white py-6 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 lg:space-x-12">
+            {/* Rize Valiliği Logo */}
+            <div className="flex items-center justify-center">
+              <img 
+                src="/logos/logo_rizevaliligi.png" 
+                alt="Rize Valiliği" 
+                className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ maxWidth: '150px' }}
+                onError={(e) => {
+                  console.log('Rize Valiliği logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+            {/* Çamlıhemşin Kaymakamlığı Logo */}
+            <div className="flex items-center justify-center">
+              <img 
+                src="/logos/logo_camlihemsin_kaymakam.png" 
+                alt="Çamlıhemşin Kaymakamlığı" 
+                className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ maxWidth: '150px' }}
+                onError={(e) => {
+                  console.log('Çamlıhemşin Kaymakamlığı logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+            {/* DOKA Logo */}
+            <div className="flex items-center justify-center">
+              <img 
+                src="/logos/logo_doka.png" 
+                alt="DOKA" 
+                className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ maxWidth: '150px' }}
+                onError={(e) => {
+                  console.log('DOKA logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
