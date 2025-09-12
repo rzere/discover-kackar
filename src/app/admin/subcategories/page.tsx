@@ -107,7 +107,6 @@ export default function AdminSubcategories() {
   const [subcategories, setSubcategories] = useState<SubcategoryWithCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [originalCount, setOriginalCount] = useState<number>(0);
   const [editingSubcategory, setEditingSubcategory] = useState<Subcategory | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -169,39 +168,28 @@ export default function AdminSubcategories() {
     fetchCategories();
   }, []);
 
-  // Function to deduplicate subcategories
+  // Function to deduplicate subcategories (simplified since API now handles most deduplication)
   const deduplicateSubcategories = (subcategories: SubcategoryWithCategory[]) => {
+    // API now handles deduplication, but keep this as a safety net
     const seen = new Map<string, SubcategoryWithCategory>();
-    const duplicates: string[] = [];
     
     for (const subcategory of subcategories) {
-      // Create a unique key based on slug and category_id
-      // This ensures we don't have duplicate subcategories with the same slug in the same category
-      const key = `${subcategory.slug}-${subcategory.category_id}`;
+      // Create a unique key based on slug and category slug
+      const categorySlug = subcategory.category?.slug || 'unknown';
+      const key = `${subcategory.slug}-${categorySlug}`;
       
       if (!seen.has(key)) {
-        // First time seeing this combination, keep it
         seen.set(key, subcategory);
       } else {
-        // Duplicate found, keep the one with the most recent updated_at
-        duplicates.push(key);
+        // If we still have duplicates, keep the newer one
         const existing = seen.get(key)!;
         const existingDate = new Date(existing.updated_at || existing.created_at || '');
         const currentDate = new Date(subcategory.updated_at || subcategory.created_at || '');
         
         if (currentDate > existingDate) {
-          // Keep the newer one
           seen.set(key, subcategory);
-          console.log(`Replacing duplicate: ${key} (keeping newer version)`);
-        } else {
-          console.log(`Skipping duplicate: ${key} (keeping existing version)`);
         }
       }
-    }
-    
-    if (duplicates.length > 0) {
-      console.log(`Found ${duplicates.length} duplicate subcategories:`, duplicates);
-      console.log(`Original count: ${subcategories.length}, Deduplicated count: ${seen.size}`);
     }
     
     return Array.from(seen.values());
@@ -216,16 +204,8 @@ export default function AdminSubcategories() {
         throw new Error(result.error || 'Failed to fetch subcategories');
       }
       
-      // Deduplicate subcategories based on slug and category_id
-      const originalCount = result.data?.length || 0;
+      // API now handles deduplication, but keep frontend deduplication as safety net
       const deduplicatedData = deduplicateSubcategories(result.data || []);
-      const deduplicatedCount = deduplicatedData.length;
-      
-      setOriginalCount(originalCount);
-      
-      if (originalCount > deduplicatedCount) {
-        console.log(`Deduplication: ${originalCount} → ${deduplicatedCount} subcategories`);
-      }
       
       setSubcategories(deduplicatedData);
     } catch (error) {
@@ -469,11 +449,6 @@ export default function AdminSubcategories() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Subcategories</h1>
           <p className="text-gray-600 mt-2">Manage subcategories for each category</p>
-          {originalCount > subcategories.length && (
-            <p className="text-sm text-blue-600 mt-1">
-              📊 Showing {subcategories.length} unique subcategories (removed {originalCount - subcategories.length} duplicates)
-            </p>
-          )}
         </div>
         <button
           onClick={handleCreateNew}
