@@ -707,6 +707,8 @@ function CategoryForm({ category, onSave, onCancel, onEditingCategoryChange }: {
             >
               <option value="en">English</option>
               <option value="tr">Turkish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
             </select>
           </div>
         </div>
