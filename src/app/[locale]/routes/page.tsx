@@ -296,7 +296,7 @@ export default function RoutesPage({
       case 'tr':
         return {
           title: "Rotaları Takip Edin",
-          description: "Kaçkar Dağları, doğa yürüyüşü, koşu ve bisiklet için Türkiye'nin en özel rotalarını sunuyor. Orman içi patikalar, taş döşeli yollar, buzul gölleri ve yaylalar arasında ilerleyen parkurlar; hem doğa hem de kültürle iç içe, ilham verici bir deneyim vadediyor.",
+          description: "Kaçkar Dağları, doğa yürüyüşü, koşu ve bisiklet için Türkiye'nin en özel rotalarını sunuyor. Orman içi patikalar, taş döşeli yollar, buzul gölleri ve yaylalar arasında ilerleyen parkurlar; hem doğa hem de kültürle iç içe, ilham verici bir deneyim vadediyor. Rotalarda; tarihi taş köprüler, bulut denizi manzaraları, şenlikler ve yerel mutfak tatları sizi karşılıyor.",
           hikingTrails: {
             title: "🚶‍♂️ Yürüyüş Rotaları (12)",
             trails: [
@@ -323,7 +323,7 @@ export default function RoutesPage({
       case 'fr':
         return {
           title: "Suivez les Sentiers",
-          description: "Les montagnes Kaçkar offrent certains des sentiers les plus remarquables de Turquie pour la randonnée, la course et le vélo. À travers des chemins forestiers, des pistes pavées, des lacs glaciaires et des plateaux, chaque itinéraire promet une expérience inspirante où la nature et la culture se rencontrent.",
+          description: "Les montagnes Kaçkar offrent certains des sentiers les plus remarquables de Turquie pour la randonnée, la course et le vélo. À travers des chemins forestiers, des pistes pavées, des lacs glaciaires et des plateaux, chaque itinéraire promet une expérience inspirante où la nature et la culture se rencontrent. En chemin, vous découvrirez des ponts de pierre historiques, des mers de nuages, des festivals et la cuisine locale.",
           hikingTrails: {
             title: "Itinéraires de randonnée (12)",
             trails: [
@@ -350,7 +350,7 @@ export default function RoutesPage({
       case 'de':
         return {
           title: "Folgen Sie den Pfaden",
-          description: "Das Kaçkar-Gebirge bietet einige der bemerkenswertesten Routen der Türkei zum Wandern, Laufen und Radfahren. Durch Waldpfade, gepflasterte Wege, Gletscherseen und Hochplateaus verspricht jede Route ein inspirierendes Erlebnis, bei dem sich Natur und Kultur begegnen.",
+          description: "Das Kaçkar-Gebirge bietet einige der bemerkenswertesten Routen der Türkei zum Wandern, Laufen und Radfahren. Durch Waldpfade, gepflasterte Wege, Gletscherseen und Hochplateaus verspricht jede Route ein inspirierendes Erlebnis, bei dem sich Natur und Kultur begegnen. Unterwegs stoßen Sie auf historische Steinbrücken, Wolkenmeere, Feste und regionale Küche.",
           hikingTrails: {
             title: "Wanderwege (12)",
             trails: [
@@ -377,7 +377,7 @@ export default function RoutesPage({
       default: // English
         return {
           title: "Follow the Trails",
-          description: "The Kaçkar Mountains offer some of Türkiye's most remarkable trails for hiking, running and cycling. Through forest paths, cobblestone tracks, glacial lakes and high plateaus, each route promises an inspiring experience where nature and culture meet.",
+          description: "The Kaçkar Mountains offer some of Türkiye's most remarkable trails for hiking, running and cycling. Through forest paths, cobblestone tracks, glacial lakes and high plateaus, each route promises an inspiring experience where nature and culture meet. Along the way, you'll find historic stone bridges, sea-of-cloud views, festivals, and local cuisine.",
           hikingTrails: {
             title: "Hiking Trails (12)",
             trails: [
