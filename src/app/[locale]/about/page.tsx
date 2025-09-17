@@ -210,30 +210,30 @@ export default function AboutPage({
       case 'tr':
         return {
           title: 'Kaçkar Dağları Hakkında',
-          subtitle: 'Doğa yürüyüşü, koşu ve bisiklet için Türkiye\'nin en özel rotaları',
-          description: 'Kaçkar Dağları, doğa yürüyüşü, koşu ve bisiklet için Türkiye\'nin en özel rotalarını sunuyor. Orman içi patikalar, taş döşeli yollar, buzul gölleri ve yaylalar arasında ilerleyen parkurlar; hem doğa hem de kültürle iç içe, ilham verici bir deneyim vadediyor. Rotalarda; tarihi taş köprüler, bulut denizi manzaraları, şenlikler ve yerel mutfak tatları sizi karşılıyor.',
-          secondParagraph: 'Her rota farklı bir seviyeye hitap ediyor: kısa günlük yürüyüşlerden zorlu çok günlük parkurlara, ailelere uygun keşiflerden deneyimli dağcı ve koşuculara yönelik yüksek irtifa etaplarına kadar birçok seçenek mevcut. Yaz aylarında yürüyüş ve bisiklet için ideal olan bu rotalar, kışın ise kar yürüyüşü ve macera fırsatları sunuyor.'
+          subtitle: 'Doğa ve Kültürün Buluştuğu Yer',
+          description: 'Discover Kaçkar, Türkiye\'nin kuzeydoğusunda yer alan Kaçkar Dağları bölgesini hem doğa sporu meraklılarına hem de kültür-severlere açan kapsamlı bir turizm girişimidir. Proje; Rize Valiliği, DOKA (Doğu Karadeniz Kalkınma Ajansı) ve Gençlik ile Spor Bakanlığı gibi kurumların desteğiyle, Kültür ve Turizm Bakanlığı ve ildeki paydaşların iş birliğiyle, sürdürülebilirlik ilkesi gözetilerek yürütülmektedir.',
+          secondParagraph: 'Projenin merkezinde trekking ve bisiklet rotaları, rehberli doğa gezileri, yöresel kültür deneyimleri yer alır. Ayrıca uluslararası etkinliklere ev sahipliği yapmak, yöresel mutfak ve el sanatlarını tanıtmak, bölgenin flora ve fauna zenginliğini korumak gibi hedefleri de vardır. "Kaçkar by UTMB" ultra-trail koşusu gibi organizasyonlarla bölge, dünya çapında bir doğa ve macera turizmi merkezi olmayı amaçlamaktadır.'
         };
       case 'fr':
         return {
-          title: 'À propos des montagnes Kaçkar',
-          subtitle: 'Certains des sentiers les plus remarquables de Turquie pour la randonnée, la course et le vélo',
-          description: 'Les montagnes Kaçkar offrent certains des sentiers les plus remarquables de Turquie pour la randonnée, la course et le vélo. À travers des chemins forestiers, des pistes pavées, des lacs glaciaires et des plateaux, chaque itinéraire promet une expérience inspirante où la nature et la culture se rencontrent. En chemin, vous découvrirez des ponts de pierre historiques, des mers de nuages, des festivals et la cuisine locale.',
-          secondParagraph: 'Chaque parcours s\'adresse à un niveau différent : des promenades quotidiennes aux treks de plusieurs jours, des explorations familiales aux itinéraires en altitude pour les alpinistes et coureurs expérimentés. Idéal pour la randonnée et le vélo en été, les sentiers offrent également des possibilités de randonnée sur neige et d\'aventure en hiver.'
+          title: 'À Propos des Montagnes Kaçkar',
+          subtitle: 'Où la Nature et la Culture se Rencontrent',
+          description: 'Discover Kaçkar est une initiative touristique complète qui ouvre les montagnes du Kaçkar, au nord-est de la Turquie, aussi bien aux passionnés de nature qu\'aux amateurs de culture. Le projet est mené avec le soutien d\'institutions telles que le Gouvernorat de Rize, la DOKA (Agence de Développement de la mer Noire orientale) et le Ministère de la Jeunesse et des Sports, en coopération avec le Ministère de la Culture et du Tourisme et les acteurs locaux, dans une perspective de durabilité.',
+          secondParagraph: 'Au cœur du projet se trouvent des itinéraires de trekking et de vélo, des excursions guidées dans la nature et des expériences culturelles authentiques. Il vise également à accueillir des événements internationaux, à promouvoir la cuisine locale et l\'artisanat, et à protéger la riche flore et faune de la région. Avec des événements tels que la course d\'ultra-trail « Kaçkar by UTMB », la région aspire à devenir une destination mondiale du tourisme de nature et d\'aventure.'
         };
       case 'de':
         return {
           title: 'Über die Kaçkar-Berge',
-          subtitle: 'Einige der bemerkenswertesten Routen der Türkei zum Wandern, Laufen und Radfahren',
-          description: 'Das Kaçkar-Gebirge bietet einige der bemerkenswertesten Routen der Türkei zum Wandern, Laufen und Radfahren. Durch Waldpfade, gepflasterte Wege, Gletscherseen und Hochplateaus verspricht jede Route ein inspirierendes Erlebnis, bei dem sich Natur und Kultur begegnen. Unterwegs stoßen Sie auf historische Steinbrücken, Wolkenmeere, Feste und regionale Küche.',
-          secondParagraph: 'Jede Strecke richtet sich an ein anderes Niveau: von kurzen Tageswanderungen bis zu anspruchsvollen Mehrtagestouren, von familienfreundlichen Erkundungen bis zu Hochgebirgsrouten für erfahrene Bergsteiger und Läufer. Im Sommer ideal zum Wandern und Radfahren, im Winter bieten die Wege auch Möglichkeiten für Schneewanderungen und Abenteuer.'
+          subtitle: 'Wo sich Natur und Kultur Treffen',
+          description: 'Discover Kaçkar ist eine umfassende Tourismusinitiative, die das Kaçkar-Gebirge im Nordosten der Türkei sowohl für Natursportler als auch für Kulturliebhaber öffnet. Das Projekt wird mit Unterstützung von Institutionen wie der Provinzverwaltung Rize, DOKA (Entwicklungsagentur für das östliche Schwarze Meer) und dem Ministerium für Jugend und Sport durchgeführt, in Zusammenarbeit mit dem Ministerium für Kultur und Tourismus sowie lokalen Partnern, stets im Sinne der Nachhaltigkeit.',
+          secondParagraph: 'Im Mittelpunkt stehen Trekking- und Radwege, geführte Naturtouren und authentische Kulturerlebnisse. Darüber hinaus zielt das Projekt darauf ab, internationale Veranstaltungen auszurichten, die lokale Küche und das Kunsthandwerk zu fördern und die reiche Flora und Fauna der Region zu schützen. Mit Veranstaltungen wie dem „Kaçkar by UTMB"-Ultratrail will die Region zu einem weltweiten Zentrum für Natur- und Abenteuertourismus werden.'
         };
       default: // English
         return {
-          title: 'About the Kaçkar Mountains',
-          subtitle: 'Some of Türkiye\'s most remarkable trails for hiking, running and cycling',
-          description: 'The Kaçkar Mountains offer some of Türkiye\'s most remarkable trails for hiking, running and cycling. Through forest paths, cobblestone tracks, glacial lakes and high plateaus, each route promises an inspiring experience where nature and culture meet. Along the way, you\'ll find historic stone bridges, sea-of-cloud views, festivals, and local cuisine.',
-          secondParagraph: 'Each trail caters to a different level: from short daily hikes to challenging multi-day treks, from family-friendly explorations to high-altitude routes for experienced mountaineers and runners. Ideal for hiking and cycling in summer, the routes also open doors to snow trekking and adventure in winter.'
+          title: 'About Kaçkar Mountains',
+          subtitle: 'Where Nature and Culture Meet',
+          description: 'Discover Kaçkar is a comprehensive tourism initiative that opens the Kaçkar Mountains in northeastern Türkiye to both outdoor enthusiasts and culture lovers. The project is carried out with the support of institutions such as the Rize Governorship, DOKA (Eastern Black Sea Development Agency), and the Ministry of Youth and Sports, in cooperation with the Ministry of Culture and Tourism and local stakeholders, with a focus on sustainability.',
+          secondParagraph: 'At its core are trekking and cycling routes, guided nature tours, and authentic cultural experiences. The project also aims to host international events, promote local cuisine and handicrafts, and protect the region\'s rich flora and fauna. With events such as the "Kaçkar by UTMB" ultra-trail race, the region aspires to become a global destination for nature and adventure tourism.'
         };
     }
   })();
