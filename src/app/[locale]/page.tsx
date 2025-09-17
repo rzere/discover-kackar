@@ -62,6 +62,8 @@ export default function Home({
   params: {locale: string};
 }) {
   const isEnglish = params.locale === 'en';
+  const isFrench = params.locale === 'fr';
+  const isGerman = params.locale === 'de';
   const locale = params.locale as Locale;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [pageData, setPageData] = useState<PageData | null>(null);
@@ -111,6 +113,14 @@ export default function Home({
       return '/images/placeholder.jpg';
     }
     return randomImages[index % randomImages.length];
+  };
+
+  // Helper function to get localized content
+  const getLocalizedContent = (en: string, tr: string, fr: string, de: string): string => {
+    if (isEnglish) return en;
+    if (isFrench) return fr;
+    if (isGerman) return de;
+    return tr; // Default to Turkish
   };
   const imageSize = useImageSize();
 
@@ -456,13 +466,15 @@ export default function Home({
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
-              {isEnglish ? 'Discover Rize' : 'Rize\'yi Keşfedin'}
+              {getLocalizedContent('Discover Rize', 'Rize\'yi Keşfedin', 'Découvrir Rize', 'Rize entdecken')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {isEnglish 
-                ? 'Located on Türkiye\'s northeastern Black Sea coast, Rize is where steep mountains meet the sea. The province borders Artvin, Trabzon and Erzurum, shaped by deep valleys, rushing rivers and dramatic slopes.'
-                : 'Türkiye\'nin kuzeydoğusunda, Karadeniz\'in kıyısında yer alan Rize; sarp dağların denizle buluştuğu benzersiz bir coğrafyadır. İl, doğudan Artvin, batıdan Trabzon, güneyden Erzurum ile çevrilidir.'
-              }
+              {getLocalizedContent(
+                'Located on Türkiye\'s northeastern Black Sea coast, Rize is where steep mountains meet the sea. The province borders Artvin, Trabzon and Erzurum, shaped by deep valleys, rushing rivers and dramatic slopes.',
+                'Türkiye\'nin kuzeydoğusunda, Karadeniz\'in kıyısında yer alan Rize; sarp dağların denizle buluştuğu benzersiz bir coğrafyadır. İl, doğudan Artvin, batıdan Trabzon, güneyden Erzurum ile çevrilidir.',
+                'Située sur la côte nord-est de la Turquie, Rize est l\'endroit où les montagnes abruptes rencontrent la mer Noire. La province voisine d\'Artvin, Trabzon et Erzurum est façonnée par de profondes vallées, des rivières impétueuses et des pentes spectaculaires.',
+                'An der nordöstlichen Schwarzmeerküste der Türkei liegt Rize, wo steile Berge auf das Meer treffen. Die Provinz grenzt an Artvin, Trabzon und Erzurum und ist geprägt von tiefen Tälern, reißenden Flüssen und dramatischen Hängen.'
+              )}
             </p>
           </div>
 
@@ -487,34 +499,36 @@ export default function Home({
                             </svg>
                           </div>
                           <h3 className="text-3xl font-bold text-navy">
-                            {isEnglish ? 'Gate of Blacksea' : 'Karadeniz\'in Kapısı'}
+                            {getLocalizedContent('Between Mountains and the Sea', 'Karadeniz\'in Kapısı', 'Entre Montagnes et Mer', 'Zwischen Bergen und Meer')}
                           </h3>
                         </div>
                         <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                          {isEnglish 
-                            ? 'Located on Türkiye\'s northeastern Black Sea coast, Rize is where steep mountains meet the sea. The province borders Artvin, Trabzon and Erzurum, shaped by deep valleys, rushing rivers and dramatic slopes.'
-                            : 'Türkiye\'nin kuzeydoğusunda, Karadeniz\'in kıyısında yer alan Rize; sarp dağların denizle buluştuğu benzersiz bir coğrafyadır. İl, doğudan Artvin, batıdan Trabzon, güneyden Erzurum ile çevrilidir. Coğrafi yapısı dik yamaçlar, derin vadiler ve coşkulu derelerden oluşur.'
-                          }
+                          {getLocalizedContent(
+                            'Located on Türkiye\'s northeastern Black Sea coast, Rize is where steep mountains meet the sea. The province borders Artvin, Trabzon and Erzurum, shaped by deep valleys, rushing rivers and dramatic slopes.',
+                            'Türkiye\'nin kuzeydoğusunda, Karadeniz\'in kıyısında yer alan Rize; sarp dağların denizle buluştuğu benzersiz bir coğrafyadır. İl, doğudan Artvin, batıdan Trabzon, güneyden Erzurum ile çevrilidir. Coğrafi yapısı dik yamaçlar, derin vadiler ve coşkulu derelerden oluşur.',
+                            'Située sur la côte nord-est de la Turquie, Rize est l\'endroit où les montagnes abruptes rencontrent la mer Noire. La province voisine d\'Artvin, Trabzon et Erzurum est façonnée par de profondes vallées, des rivières impétueuses et des pentes spectaculaires.',
+                            'An der nordöstlichen Schwarzmeerküste der Türkei liegt Rize, wo steile Berge auf das Meer treffen. Die Provinz grenzt an Artvin, Trabzon und Erzurum und ist geprägt von tiefen Tälern, reißenden Flüssen und dramatischen Hängen.'
+                          )}
                         </p>
                         <div className="space-y-3">
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Northeastern Black Sea coast' : 'Kuzeydoğu Karadeniz kıyısı'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Northeastern Black Sea coast', 'Kuzeydoğu Karadeniz kıyısı', 'Côte nord-est de la mer Noire', 'Nordöstliche Schwarzmeerküste')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Steep mountains meet the sea' : 'Sarp dağlar denizle buluşur'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Steep mountains meet the sea', 'Sarp dağlar denizle buluşur', 'Montagnes abruptes rencontrent la mer', 'Steile Berge treffen auf das Meer')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Deep valleys and rushing rivers' : 'Derin vadiler ve coşkulu dereler'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Deep valleys and rushing rivers', 'Derin vadiler ve coşkulu dereler', 'Vallées profondes et rivières impétueuses', 'Tiefe Täler und reißende Flüsse')}</span>
                           </div>
                         </div>
                       </div>
                       <div className="relative">
                         <img 
                           src={getRandomImage(0)}
-                          alt={isEnglish ? 'Rize Gate of Blacksea' : 'Rize Karadeniz Kapısı'}
+                          alt={getLocalizedContent('Rize Between Mountains and Sea', 'Rize Karadeniz Kapısı', 'Rize Entre Montagnes et Mer', 'Rize Zwischen Bergen und Meer')}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
@@ -535,34 +549,36 @@ export default function Home({
                             </svg>
                           </div>
                           <h3 className="text-3xl font-bold text-navy">
-                            {isEnglish ? 'Mosaic of History and Culture' : 'Tarih ve Kültür Mozaiği'}
+                            {getLocalizedContent('Mosaic of History and Culture', 'Tarih ve Kültür Mozaiği', 'Mosaïque d\'Histoire et Culture', 'Mosaik aus Geschichte und Kultur')}
                           </h3>
                         </div>
                         <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                          {isEnglish 
-                            ? 'Settled since antiquity, Rize was a coastal stronghold in Roman and Byzantine times. In the Ottoman era, tea cultivation transformed the region. Today, Rize is a cultural mosaic shaped by Hemşin and Laz traditions.'
-                            : 'Antik çağlardan beri yerleşim yeri olan Rize, Roma ve Bizans döneminde önemli bir kıyı kalesiydi. Osmanlı döneminde çay tarımıyla büyük bir dönüşüm yaşandı. Bugün Rize, Hemşin ve Laz topluluklarının kültürel izlerini taşıyan bir mozaiktir.'
-                          }
+                          {getLocalizedContent(
+                            'Settled since antiquity, Rize was a coastal stronghold in Roman and Byzantine times. In the Ottoman era, tea cultivation transformed the region. Today, Rize is a cultural mosaic shaped by Hemşin and Laz traditions.',
+                            'Antik çağlardan beri yerleşim yeri olan Rize, Roma ve Bizans döneminde önemli bir kıyı kalesiydi. Osmanlı döneminde çay tarımıyla büyük bir dönüşüm yaşandı. Bugün Rize, Hemşin ve Laz topluluklarının kültürel izlerini taşıyan bir mozaiktir.',
+                            'Habité depuis l\'Antiquité, Rize fut une forteresse côtière à l\'époque romaine et byzantine. Sous l\'Empire ottoman, la culture du thé transforma la région. Aujourd\'hui, Rize est un véritable mosaïque culturelle façonnée par les traditions hémichiennes et lazes.',
+                            'Seit der Antike besiedelt, war Rize in römischer und byzantinischer Zeit eine Küstenfestung. In der osmanischen Ära veränderte der Teeanbau die Region grundlegend. Heute ist Rize ein kulturelles Mosaik, geprägt von den Traditionen der Hemşin und Lazen.'
+                          )}
                         </p>
                         <div className="space-y-3">
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Roman and Byzantine heritage' : 'Roma ve Bizans mirası'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Roman and Byzantine heritage', 'Roma ve Bizans mirası', 'Héritage romain et byzantin', 'Römisches und byzantinisches Erbe')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Ottoman tea transformation' : 'Osmanlı çay dönüşümü'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Ottoman tea transformation', 'Osmanlı çay dönüşümü', 'Transformation ottomane du thé', 'Osmanische Tee-Transformation')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Hemşin and Laz traditions' : 'Hemşin ve Laz gelenekleri'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Hemşin and Laz traditions', 'Hemşin ve Laz gelenekleri', 'Traditions hémichiennes et lazes', 'Hemşin und Laz Traditionen')}</span>
                           </div>
                         </div>
                       </div>
                       <div className="relative">
                         <img 
                           src={getRandomImage(1)}
-                          alt={isEnglish ? 'Rize History and Culture' : 'Rize Tarih ve Kültür'}
+                          alt={getLocalizedContent('Rize History and Culture', 'Rize Tarih ve Kültür', 'Rize Histoire et Culture', 'Rize Geschichte und Kultur')}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
@@ -583,34 +599,36 @@ export default function Home({
                             </svg>
                           </div>
                           <h3 className="text-3xl font-bold text-navy">
-                            {isEnglish ? 'Plateau Wonderland' : 'Yaylaların Diyarı'}
+                            {getLocalizedContent('Plateau Wonderland', 'Yaylaların Diyarı', 'Pays des Merveilles des Plateaux', 'Plateau-Wunderland')}
                           </h3>
                         </div>
                         <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                          {isEnglish 
-                            ? 'At the foot of the Kaçkar Mountains lie hundreds of highland plateaus. Pokut, Ayder, Anzer, Ovit and Elevit are famous for their wooden houses, cloud seas and flower meadows. The tradition of transhumance is still alive today.'
-                            : 'Kaçkar Dağları\'nın eteklerinde yüzlerce yayla bulunur. Pokut, Ayder, Anzer, Ovit ve Elevit yaylaları; ahşap evleri, sis denizleri ve çiçekli çayırlarıyla tanınır. Yaylacılık geleneği bugün hâlâ yaşamaktadır.'
-                          }
+                          {getLocalizedContent(
+                            'At the foot of the Kaçkar Mountains lie hundreds of highland plateaus. Pokut, Ayder, Anzer, Ovit and Elevit are famous for their wooden houses, cloud seas and flower meadows. The tradition of transhumance is still alive today.',
+                            'Kaçkar Dağları\'nın eteklerinde yüzlerce yayla bulunur. Pokut, Ayder, Anzer, Ovit ve Elevit yaylaları; ahşap evleri, sis denizleri ve çiçekli çayırlarıyla tanınır. Yaylacılık geleneği bugün hâlâ yaşamaktadır.',
+                            'Au pied des montagnes du Kaçkar se trouvent des centaines de plateaux. Pokut, Ayder, Anzer, Ovit et Elevit sont célèbres pour leurs maisons en bois, leurs mers de nuages et leurs prairies fleuries. La tradition de la transhumance est encore vivante aujourd\'hui.',
+                            'Am Fuße des Kaçkar-Gebirges liegen Hunderte von Hochplateaus. Pokut, Ayder, Anzer, Ovit und Elevit sind berühmt für ihre Holzhäuser, Wolkenmeere und Blumenwiesen. Die Tradition der Almwirtschaft ist auch heute noch lebendig.'
+                          )}
                         </p>
                         <div className="space-y-3">
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Hundreds of highland plateaus' : 'Yüzlerce yayla'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Hundreds of highland plateaus', 'Yüzlerce yayla', 'Centaines de plateaux', 'Hunderte von Hochplateaus')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Pokut, Ayder, Anzer, Ovit, Elevit' : 'Pokut, Ayder, Anzer, Ovit, Elevit'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Pokut, Ayder, Anzer, Ovit, Elevit', 'Pokut, Ayder, Anzer, Ovit, Elevit', 'Pokut, Ayder, Anzer, Ovit, Elevit', 'Pokut, Ayder, Anzer, Ovit, Elevit')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Living transhumance tradition' : 'Yaşayan yaylacılık geleneği'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Living transhumance tradition', 'Yaşayan yaylacılık geleneği', 'Tradition vivante de transhumance', 'Lebendige Almwirtschaft-Tradition')}</span>
                           </div>
                         </div>
                       </div>
                       <div className="relative">
                         <img 
                           src={getRandomImage(2)}
-                          alt={isEnglish ? 'Rize Plateaus' : 'Rize Yaylaları'}
+                          alt={getLocalizedContent('Rize Plateaus', 'Rize Yaylaları', 'Plateaux de Rize', 'Rize Plateaus')}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
@@ -631,34 +649,36 @@ export default function Home({
                             </svg>
                           </div>
                           <h3 className="text-3xl font-bold text-navy">
-                            {isEnglish ? 'Center of Nature and Adventure' : 'Doğa ve Macera Merkezi'}
+                            {getLocalizedContent('Center of Nature and Adventure', 'Doğa ve Macera Merkezi', 'Centre de Nature et Aventure', 'Zentrum für Natur und Abenteuer')}
                           </h3>
                         </div>
                         <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                          {isEnglish 
-                            ? 'Rize is a year-round destination for outdoor sports: trekking, cycling, rafting in summer, snow trekking and skiing in winter. Glacial lakes, waterfalls and endemic plants make the region unique for nature lovers.'
-                            : 'Rize, yıl boyunca doğa sporları için eşsiz bir merkezdir. Yazın trekking, bisiklet, rafting; kışın kar yürüyüşü ve kayak yapılır. Buzul gölleri, şelaleler ve endemik bitki türleri bölgeyi doğaseverler için benzersiz kılar.'
-                          }
+                          {getLocalizedContent(
+                            'Rize is a year-round destination for outdoor sports: trekking, cycling, rafting in summer, snow trekking and skiing in winter. Glacial lakes, waterfalls and endemic plants make the region unique for nature lovers.',
+                            'Rize, yıl boyunca doğa sporları için eşsiz bir merkezdir. Yazın trekking, bisiklet, rafting; kışın kar yürüyüşü ve kayak yapılır. Buzul gölleri, şelaleler ve endemik bitki türleri bölgeyi doğaseverler için benzersiz kılar.',
+                            'Rize est une destination toute l\'année pour les sports de plein air : trekking, vélo, rafting en été, randonnée dans la neige et ski en hiver. Ses lacs glaciaires, cascades et plantes endémiques rendent la région unique pour les amoureux de la nature.',
+                            'Rize ist ein Ganzjahresziel für Outdoor-Sportarten: Trekking, Radfahren, Rafting im Sommer, Schneewanderungen und Skifahren im Winter. Gletscherseen, Wasserfälle und endemische Pflanzen machen die Region einzigartig für Naturliebhaber.'
+                          )}
                         </p>
                         <div className="space-y-3">
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Year-round outdoor sports' : 'Yıl boyunca doğa sporları'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Year-round outdoor sports', 'Yıl boyunca doğa sporları', 'Sports de plein air toute l\'année', 'Ganzjährige Outdoor-Sportarten')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Glacial lakes and waterfalls' : 'Buzul gölleri ve şelaleler'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Glacial lakes and waterfalls', 'Buzul gölleri ve şelaleler', 'Lacs glaciaires et cascades', 'Gletscherseen und Wasserfälle')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Endemic plant species' : 'Endemik bitki türleri'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Endemic plant species', 'Endemik bitki türleri', 'Espèces végétales endémiques', 'Endemische Pflanzenarten')}</span>
                           </div>
                         </div>
                       </div>
                       <div className="relative">
                         <img 
                           src={getRandomImage(3)}
-                          alt={isEnglish ? 'Rize Nature and Adventure' : 'Rize Doğa ve Macera'}
+                          alt={getLocalizedContent('Rize Nature and Adventure', 'Rize Doğa ve Macera', 'Rize Nature et Aventure', 'Rize Natur und Abenteuer')}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
@@ -679,34 +699,36 @@ export default function Home({
                             </svg>
                           </div>
                           <h3 className="text-3xl font-bold text-navy">
-                            {isEnglish ? 'Capital of Tea' : 'Çayın Başkenti'}
+                            {getLocalizedContent('Capital of Tea', 'Çayın Başkenti', 'Capitale du Thé', 'Hauptstadt des Tees')}
                           </h3>
                         </div>
                         <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                          {isEnglish 
-                            ? 'Tea cultivation, begun in the early 20th century, has become Rize\'s symbol. Today most of Türkiye\'s tea is produced here. Tea gardens stretch from the coast to the mountain slopes, shaping the landscape.'
-                            : '20. yüzyılın başında başlayan çay tarımı, Rize\'nin simgesi oldu. Bugün Türkiye\'nin çay ihtiyacının büyük kısmı buradan karşılanır. Çay bahçeleri kıyıdan dağların zirvelerine kadar uzanır ve manzarayı şekillendirir.'
-                          }
+                          {getLocalizedContent(
+                            'Tea cultivation, begun in the early 20th century, has become Rize\'s symbol. Today most of Türkiye\'s tea is produced here. Tea gardens stretch from the coast to the mountain slopes, shaping the landscape.',
+                            '20. yüzyılın başında başlayan çay tarımı, Rize\'nin simgesi oldu. Bugün Türkiye\'nin çay ihtiyacının büyük kısmı buradan karşılanır. Çay bahçeleri kıyıdan dağların zirvelerine kadar uzanır ve manzarayı şekillendirir.',
+                            'La culture du thé, commencée au début du XXe siècle, est devenue le symbole de Rize. Aujourd\'hui, la majorité du thé turc est produite ici. Les jardins de thé s\'étendent de la côte jusqu\'aux pentes montagneuses, façonnant le paysage.',
+                            'Der Teeanbau, der Anfang des 20. Jahrhunderts begann, ist zum Symbol von Rize geworden. Heute wird der Großteil des türkischen Tees hier produziert. Teegärten ziehen sich von der Küste bis zu den Berghängen und prägen die Landschaft.'
+                          )}
                         </p>
                         <div className="space-y-3">
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Early 20th century tea cultivation' : '20. yüzyıl başı çay tarımı'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Early 20th century tea cultivation', '20. yüzyıl başı çay tarımı', 'Culture du thé début XXe siècle', 'Teeanbau Anfang des 20. Jahrhunderts')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Most of Türkiye\'s tea production' : 'Türkiye\'nin çay üretiminin çoğu'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Most of Türkiye\'s tea production', 'Türkiye\'nin çay üretiminin çoğu', 'Majorité de la production de thé turc', 'Großteil der türkischen Teeproduktion')}</span>
                           </div>
                           <div className="flex items-center space-x-3">
                             <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
-                            <span className="text-gray-600">{isEnglish ? 'Coast to mountain tea gardens' : 'Kıyıdan dağlara çay bahçeleri'}</span>
+                            <span className="text-gray-600">{getLocalizedContent('Coast to mountain tea gardens', 'Kıyıdan dağlara çay bahçeleri', 'Jardins de thé de la côte aux montagnes', 'Teegärten von der Küste zu den Bergen')}</span>
                           </div>
                         </div>
                       </div>
                       <div className="relative">
                         <img 
                           src={getRandomImage(4)}
-                          alt={isEnglish ? 'Rize Tea Capital' : 'Rize Çay Başkenti'}
+                          alt={getLocalizedContent('Rize Tea Capital', 'Rize Çay Başkenti', 'Rize Capitale du Thé', 'Rize Hauptstadt des Tees')}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
