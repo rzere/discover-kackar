@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Process categories data
-    let categories = [];
+    let categories: any[] = [];
     if (categoriesResult.status === 'fulfilled' && !categoriesResult.value.error) {
       categories = categoriesResult.value.data || [];
     }
@@ -194,7 +194,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Process gallery images
-    let galleryImages = [];
+    let galleryImages: any[] = [];
     if (galleryResult.status === 'fulfilled' && !galleryResult.value.error) {
       galleryImages = galleryResult.value.data || [];
     }
