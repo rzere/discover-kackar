@@ -69,6 +69,8 @@ export default function Home({
   const [footerData, setFooterData] = useState<any>(null);
   const [ctaCard, setCtaCard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [openDistrict, setOpenDistrict] = useState<string | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const imageSize = useImageSize();
 
   // Fetch page data and categories from API routes
@@ -387,6 +389,938 @@ export default function Home({
               aria-label={`Go to image ${index + 1}`}
             />
           ))}
+        </div>
+      </section>
+
+      {/* Rize Introduction Carousel */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
+              {isEnglish ? 'Discover Rize' : 'Rize\'yi Keşfedin'}
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {isEnglish 
+                ? 'Located on Türkiye\'s northeastern Black Sea coast, Rize is where steep mountains meet the sea. The province borders Artvin, Trabzon and Erzurum, shaped by deep valleys, rushing rivers and dramatic slopes.'
+                : 'Türkiye\'nin kuzeydoğusunda, Karadeniz\'in kıyısında yer alan Rize; sarp dağların denizle buluştuğu benzersiz bir coğrafyadır. İl, doğudan Artvin, batıdan Trabzon, güneyden Erzurum ile çevrilidir.'
+              }
+            </p>
+          </div>
+
+          {/* Carousel Container */}
+          <div className="relative">
+            {/* Carousel Slides */}
+            <div className="overflow-hidden rounded-2xl">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {/* Slide 1: Gate of Blacksea */}
+                <div className="w-full flex-shrink-0">
+                  <div className="bg-gradient-to-r from-slate-50 to-gray-50 p-12 rounded-2xl border border-slate-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                      <div>
+                        <div className="flex items-center space-x-4 mb-6">
+                          <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
+                            <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </div>
+                          <h3 className="text-3xl font-bold text-navy">
+                            {isEnglish ? 'Gate of Blacksea' : 'Karadeniz\'in Kapısı'}
+                          </h3>
+                        </div>
+                        <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                          {isEnglish 
+                            ? 'Located on Türkiye\'s northeastern Black Sea coast, Rize is where steep mountains meet the sea. The province borders Artvin, Trabzon and Erzurum, shaped by deep valleys, rushing rivers and dramatic slopes.'
+                            : 'Türkiye\'nin kuzeydoğusunda, Karadeniz\'in kıyısında yer alan Rize; sarp dağların denizle buluştuğu benzersiz bir coğrafyadır. İl, doğudan Artvin, batıdan Trabzon, güneyden Erzurum ile çevrilidir. Coğrafi yapısı dik yamaçlar, derin vadiler ve coşkulu derelerden oluşur.'
+                          }
+                        </p>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Northeastern Black Sea coast' : 'Kuzeydoğu Karadeniz kıyısı'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Steep mountains meet the sea' : 'Sarp dağlar denizle buluşur'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Deep valleys and rushing rivers' : 'Derin vadiler ve coşkulu dereler'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <img 
+                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg" 
+                          alt={isEnglish ? 'Rize Gate of Blacksea' : 'Rize Karadeniz Kapısı'}
+                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slide 2: History and Culture */}
+                <div className="w-full flex-shrink-0">
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-12 rounded-2xl border border-blue-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                      <div>
+                        <div className="flex items-center space-x-4 mb-6">
+                          <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                          </div>
+                          <h3 className="text-3xl font-bold text-navy">
+                            {isEnglish ? 'Mosaic of History and Culture' : 'Tarih ve Kültür Mozaiği'}
+                          </h3>
+                        </div>
+                        <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                          {isEnglish 
+                            ? 'Settled since antiquity, Rize was a coastal stronghold in Roman and Byzantine times. In the Ottoman era, tea cultivation transformed the region. Today, Rize is a cultural mosaic shaped by Hemşin and Laz traditions.'
+                            : 'Antik çağlardan beri yerleşim yeri olan Rize, Roma ve Bizans döneminde önemli bir kıyı kalesiydi. Osmanlı döneminde çay tarımıyla büyük bir dönüşüm yaşandı. Bugün Rize, Hemşin ve Laz topluluklarının kültürel izlerini taşıyan bir mozaiktir.'
+                          }
+                        </p>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Roman and Byzantine heritage' : 'Roma ve Bizans mirası'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Ottoman tea transformation' : 'Osmanlı çay dönüşümü'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Hemşin and Laz traditions' : 'Hemşin ve Laz gelenekleri'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <img 
+                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg" 
+                          alt={isEnglish ? 'Rize History and Culture' : 'Rize Tarih ve Kültür'}
+                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slide 2: Plateau Wonderland */}
+                <div className="w-full flex-shrink-0">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-12 rounded-2xl border border-green-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                      <div>
+                        <div className="flex items-center space-x-4 mb-6">
+                          <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
+                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <h3 className="text-3xl font-bold text-navy">
+                            {isEnglish ? 'Plateau Wonderland' : 'Yaylaların Diyarı'}
+                          </h3>
+                        </div>
+                        <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                          {isEnglish 
+                            ? 'At the foot of the Kaçkar Mountains lie hundreds of highland plateaus. Pokut, Ayder, Anzer, Ovit and Elevit are famous for their wooden houses, cloud seas and flower meadows. The tradition of transhumance is still alive today.'
+                            : 'Kaçkar Dağları\'nın eteklerinde yüzlerce yayla bulunur. Pokut, Ayder, Anzer, Ovit ve Elevit yaylaları; ahşap evleri, sis denizleri ve çiçekli çayırlarıyla tanınır. Yaylacılık geleneği bugün hâlâ yaşamaktadır.'
+                          }
+                        </p>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Hundreds of highland plateaus' : 'Yüzlerce yayla'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Pokut, Ayder, Anzer, Ovit, Elevit' : 'Pokut, Ayder, Anzer, Ovit, Elevit'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Living transhumance tradition' : 'Yaşayan yaylacılık geleneği'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <img 
+                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0069-Pano-2.jpg" 
+                          alt={isEnglish ? 'Rize Plateaus' : 'Rize Yaylaları'}
+                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slide 3: Nature and Adventure */}
+                <div className="w-full flex-shrink-0">
+                  <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-12 rounded-2xl border border-purple-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                      <div>
+                        <div className="flex items-center space-x-4 mb-6">
+                          <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center">
+                            <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                          </div>
+                          <h3 className="text-3xl font-bold text-navy">
+                            {isEnglish ? 'Center of Nature and Adventure' : 'Doğa ve Macera Merkezi'}
+                          </h3>
+                        </div>
+                        <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                          {isEnglish 
+                            ? 'Rize is a year-round destination for outdoor sports: trekking, cycling, rafting in summer, snow trekking and skiing in winter. Glacial lakes, waterfalls and endemic plants make the region unique for nature lovers.'
+                            : 'Rize, yıl boyunca doğa sporları için eşsiz bir merkezdir. Yazın trekking, bisiklet, rafting; kışın kar yürüyüşü ve kayak yapılır. Buzul gölleri, şelaleler ve endemik bitki türleri bölgeyi doğaseverler için benzersiz kılar.'
+                          }
+                        </p>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Year-round outdoor sports' : 'Yıl boyunca doğa sporları'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Glacial lakes and waterfalls' : 'Buzul gölleri ve şelaleler'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Endemic plant species' : 'Endemik bitki türleri'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <img 
+                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0043-2.jpg" 
+                          alt={isEnglish ? 'Rize Nature and Adventure' : 'Rize Doğa ve Macera'}
+                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Slide 4: Tea Capital */}
+                <div className="w-full flex-shrink-0">
+                  <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-12 rounded-2xl border border-amber-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                      <div>
+                        <div className="flex items-center space-x-4 mb-6">
+                          <div className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center">
+                            <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                          </div>
+                          <h3 className="text-3xl font-bold text-navy">
+                            {isEnglish ? 'Capital of Tea' : 'Çayın Başkenti'}
+                          </h3>
+                        </div>
+                        <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                          {isEnglish 
+                            ? 'Tea cultivation, begun in the early 20th century, has become Rize\'s symbol. Today most of Türkiye\'s tea is produced here. Tea gardens stretch from the coast to the mountain slopes, shaping the landscape.'
+                            : '20. yüzyılın başında başlayan çay tarımı, Rize\'nin simgesi oldu. Bugün Türkiye\'nin çay ihtiyacının büyük kısmı buradan karşılanır. Çay bahçeleri kıyıdan dağların zirvelerine kadar uzanır ve manzarayı şekillendirir.'
+                          }
+                        </p>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Early 20th century tea cultivation' : '20. yüzyıl başı çay tarımı'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Most of Türkiye\'s tea production' : 'Türkiye\'nin çay üretiminin çoğu'}</span>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+                            <span className="text-gray-600">{isEnglish ? 'Coast to mountain tea gardens' : 'Kıyıdan dağlara çay bahçeleri'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <img 
+                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0050-2.jpg" 
+                          alt={isEnglish ? 'Rize Tea Capital' : 'Rize Çay Başkenti'}
+                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev === 0 ? 4 : prev - 1))}
+              className="absolute -left-12 text-gray-400 hover:text-primary hover:scale-105 transition-all duration-200 z-10"
+              style={{ top: 'calc(50% - 2rem)' }}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev === 4 ? 0 : prev + 1))}
+              className="absolute -right-12 text-gray-400 hover:text-primary hover:scale-105 transition-all duration-200 z-10"
+              style={{ top: 'calc(50% - 2rem)' }}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center space-x-2 mt-8">
+              {[0, 1, 2, 3, 4].map((index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    currentSlide === index ? 'bg-navy scale-125' : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Rize Districts Section */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
+              {isEnglish ? 'Rize Districts' : 'Rize İlçeleri'}
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {isEnglish 
+                ? 'Explore the diverse districts of Rize, each offering unique experiences from coastal towns to mountain retreats.'
+                : 'Rize\'nin çeşitli ilçelerini keşfedin, her biri kıyı kasabalarından dağ inzivalarına kadar benzersiz deneyimler sunar.'
+              }
+            </p>
+          </div>
+
+          {/* Districts Accordion */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            {/* Rize Merkez (City Center) */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'rize_merkez' ? null : 'rize_merkez')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Rize Merkez</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Administrative and Cultural Hub' : 'İdari ve Kültürel Merkez'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'rize_merkez' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'rize_merkez' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg" 
+                        alt="Rize Merkez"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'As the administrative and cultural hub of the region, Rize offers a lifestyle infused with the aroma of tea along the Black Sea coast. The city\'s symbol, Kale-i Bala (Rize Castle), welcomes visitors with a history dating back to the Byzantine era. The Rize Museum and Çaykur Tea Museum showcase the region\'s cultural heritage and the journey of tea.'
+                          : 'Rize\'nin idari ve kültürel merkezi olan şehir, Karadeniz\'in kıyısında çay kokusuyla harmanlanmış bir yaşam sunar. Şehrin simgesi haline gelen Kale-i Bala (Rize Kalesi), Bizans döneminden günümüze uzanan tarihî geçmişiyle ziyaretçilerini karşılar.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Kale-i Bala (Rize Castle)' : 'Kale-i Bala (Rize Kalesi)'}</li>
+                        <li>• {isEnglish ? 'Rize Museum and Tea Museum' : 'Rize Müzesi ve Çay Müzesi'}</li>
+                        <li>• {isEnglish ? 'Coastal promenades and cafés' : 'Sahil yürüyüş yolları ve kafeler'}</li>
+                        <li>• {isEnglish ? 'Tea factory tours' : 'Çay fabrikası turları'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Çamlıhemşin */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'camlihemsin' ? null : 'camlihemsin')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Çamlıhemşin</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Gateway to Kaçkar Mountains' : 'Kaçkar Dağları\'na Açılan Kapı'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'camlihemsin' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'camlihemsin' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0069-Pano-2.jpg" 
+                        alt="Çamlıhemşin"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'The tourism heart of Rize. Ayder Plateau, with its hot springs, festivals and wooden chalets, is the most iconic destination. Çamlıhemşin also offers the Fırtına Valley, historic stone bridges, and access to the Kaçkar Mountains—a hub where nature and culture meet.'
+                          : 'Rize\'nin turizm kalbi. Ayder Yaylası, sıcak kaplıcaları, şenlikleri ve ahşap yayla evleriyle bölgenin en bilinen destinasyonu. Çamlıhemşin aynı zamanda Fırtına Vadisi, tarihi taş kemer köprüleri ve Kaçkar Dağları\'na açılan kapısıyla doğa ve kültürün birleştiği bir merkezdir.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Ayder Plateau with hot springs' : 'Sıcak kaplıcalı Ayder Yaylası'}</li>
+                        <li>• {isEnglish ? 'Fırtına Valley and historic bridges' : 'Fırtına Vadisi ve tarihi köprüler'}</li>
+                        <li>• {isEnglish ? 'Gateway to Kaçkar Mountains' : 'Kaçkar Dağları\'na açılan kapı'}</li>
+                        <li>• {isEnglish ? 'Traditional festivals and culture' : 'Geleneksel şenlikler ve kültür'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Ardeşen */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'ardesen' ? null : 'ardesen')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Ardeşen</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Tea Capital of Turkey' : 'Türkiye\'nin Çay Başkenti'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'ardesen' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'ardesen' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0098-2.jpg" 
+                        alt="Ardeşen"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'One of the most vibrant coastal towns. Known as a rafting hub and for its handmade pita bread. The Tunca Valley with its historic bridges and plateaus adds both cultural and natural richness to the district.'
+                          : 'Karadeniz\'in en hareketli sahil ilçelerinden biridir. Rafting merkezi olarak bilinir ve el yapımı Ardeşen pidesi ile sofralarda yerini alır. Ayrıca Tunca Vadisi üzerindeki tarihi köprüler ve yaylalar, ilçeye kültürel ve doğal bir zenginlik katar.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Rafting center and water sports' : 'Rafting merkezi ve su sporları'}</li>
+                        <li>• {isEnglish ? 'Handmade Ardeşen pita bread' : 'El yapımı Ardeşen pidesi'}</li>
+                        <li>• {isEnglish ? 'Tunca Valley with historic bridges' : 'Tarihi köprülü Tunca Vadisi'}</li>
+                        <li>• {isEnglish ? 'Vibrant coastal atmosphere' : 'Canlı kıyı atmosferi'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Pazar */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'pazar' ? null : 'pazar')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Pazar</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Historic Trading Center' : 'Tarihi Ticaret Merkezi'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'pazar' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'pazar' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg" 
+                        alt="Pazar"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Pazar has a rich history as a trading center and offers a mix of coastal beauty and cultural heritage. The district is known for its vibrant local markets.'
+                          : 'Pazar, ticaret merkezi olarak zengin bir geçmişe sahiptir ve kıyı güzelliği ile kültürel mirasın karışımını sunar. İlçe canlı yerel pazarları ile tanınır.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Historic local markets' : 'Tarihi yerel pazarlar'}</li>
+                        <li>• {isEnglish ? 'Cultural heritage sites' : 'Kültürel miras alanları'}</li>
+                        <li>• {isEnglish ? 'Coastal walking paths' : 'Kıyı yürüyüş yolları'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Fındıklı */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'findikli' ? null : 'findikli')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Fındıklı</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Hazelnut Paradise' : 'Fındık Cenneti'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'findikli' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'findikli' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg" 
+                        alt="Fındıklı"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'As the eastern gateway of Rize, Fındıklı stands out with its varied geography stretching from the Black Sea coast to high plateaus. The Çağlayan River and its historic stone arch bridges reflect the region\'s past. Traditional stone mansions showcase Laz culture in architecture. Fındıklı is also known for kiwi cultivation, offering unique agricultural diversity within the Black Sea region.'
+                          : 'Rize\'nin doğu kapısı olan Fındıklı, deniz kıyısından yüksek yaylalara uzanan farklı coğrafi yapısıyla dikkat çeker. Çağlayan Deresi ve üzerindeki tarihi taş kemer köprüler, bölgenin geçmişini yansıtır. İlçedeki geleneksel taş konaklar, Laz kültürünün mimariye yansımış özgün örnekleridir. Ayrıca Fındıklı, kivi üretimiyle de tanınır ve bu yönüyle Karadeniz\'de farklı bir tarımsal çeşitlilik sunar.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Historic stone arch bridges' : 'Tarihi taş kemer köprüler'}</li>
+                        <li>• {isEnglish ? 'Traditional Laz stone mansions' : 'Geleneksel Laz taş konakları'}</li>
+                        <li>• {isEnglish ? 'Kiwi cultivation and agriculture' : 'Kivi yetiştiriciliği ve tarım'}</li>
+                        <li>• {isEnglish ? 'Eastern gateway to Rize' : 'Rize\'nin doğu kapısı'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Çayeli */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'cayeli' ? null : 'cayeli')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Çayeli</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Tea Gardens and Beautiful Beaches' : 'Çay Bahçeleri ve Güzel Sahiller'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'cayeli' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'cayeli' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0043-2.jpg" 
+                        alt="Çayeli"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Known for tea-covered slopes and some of the Black Sea\'s most beautiful beaches. Its cuisine is highlighted by Çayeli-style beans and seafood. Aşıklar and Başköy Plateaus also attract nature lovers with their hiking opportunities.'
+                          : 'Çay tarlalarıyla kaplı yamaçların yanı sıra Karadeniz\'in en güzel sahillerine sahiptir. Çayeli kuru fasulyesi ve deniz ürünleriyle mutfağı öne çıkar. Ayrıca Aşıklar ve Başköy yaylaları, doğa yürüyüşçüleri için keşfedilmeyi bekleyen güzelliklerdir.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Tea-covered slopes' : 'Çay tarlalarıyla kaplı yamaçlar'}</li>
+                        <li>• {isEnglish ? 'Beautiful Black Sea beaches' : 'Güzel Karadeniz sahilleri'}</li>
+                        <li>• {isEnglish ? 'Çayeli-style beans and seafood' : 'Çayeli kuru fasulyesi ve deniz ürünleri'}</li>
+                        <li>• {isEnglish ? 'Aşıklar and Başköy Plateaus' : 'Aşıklar ve Başköy yaylaları'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Derepazarı */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'derepazari' ? null : 'derepazari')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Derepazarı</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Tea Processing and Coastal Atmosphere' : 'Çay İşleme ve Sahil Atmosferi'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'derepazari' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'derepazari' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0050-2.jpg" 
+                        alt="Derepazarı"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Known for tea processing facilities and its coastal atmosphere with seafood restaurants. Sivrikaya Plateau in the highlands offers a cool climate and natural beauty, popular among locals in summer.'
+                          : 'Çay işleme tesisleriyle bilinir. Ayrıca sahil kasabası atmosferi ve balık lokantalarıyla öne çıkar. İlçenin yükseklerinde yer alan Sivrikaya Yaylası, serin havası ve doğal güzellikleriyle bölge halkının yaz aylarında tercih ettiği bir mekândır.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Tea processing facilities' : 'Çay işleme tesisleri'}</li>
+                        <li>• {isEnglish ? 'Coastal atmosphere and seafood' : 'Sahil atmosferi ve deniz ürünleri'}</li>
+                        <li>• {isEnglish ? 'Sivrikaya Plateau' : 'Sivrikaya Yaylası'}</li>
+                        <li>• {isEnglish ? 'Cool summer climate' : 'Serin yaz iklimi'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Hemşin */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'hemsin' ? null : 'hemsin')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Hemşin</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Cultural Heritage Center' : 'Kültürel Miras Merkezi'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'hemsin' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'hemsin' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg" 
+                        alt="Hemşin"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'A cultural hub with tulum music, horon dances, transhumance, and weaving traditions. Hemşin wool socks are a geographically protected product. The Balcıdere Plateau and surrounding stone bridges combine cultural heritage with nature.'
+                          : 'Tulum ezgileri, horonlar, yaylacılık ve dokuma gelenekleriyle kültürel zenginliğin merkezi. Hemşin çorabı coğrafi işaretli ürünlerindendir. İlçede ayrıca Balcıdere Yaylası ve çevresindeki taş köprüler, kültürel dokuyu ve doğayı bir arada sunar.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Tulum music and horon dances' : 'Tulum ezgileri ve horonlar'}</li>
+                        <li>• {isEnglish ? 'Hemşin wool socks (protected product)' : 'Hemşin çorabı (coğrafi işaretli)'}</li>
+                        <li>• {isEnglish ? 'Balcıdere Plateau' : 'Balcıdere Yaylası'}</li>
+                        <li>• {isEnglish ? 'Traditional weaving and transhumance' : 'Geleneksel dokuma ve yaylacılık'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Güneysu */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'guneysu' ? null : 'guneysu')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Güneysu</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Tea Valleys and Historic Mosques' : 'Çay Vadileri ve Tarihi Camiler'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'guneysu' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'guneysu' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg" 
+                        alt="Güneysu"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Recognized for valleys covered in tea gardens and historic mosques. A balanced reflection of Rize\'s cultural and natural identity. The district is especially famous for Handüzü Plateau, which comes alive in summer with nature hikes and festivals.'
+                          : 'Çay bahçeleriyle çevrili vadileri ve tarihi camileriyle bilinir. Rize\'nin kültürel ve doğal kimliğinin dengeli bir yansımasıdır. İlçe, özellikle Handüzü Yaylası ile ünlüdür; yaz aylarında doğa yürüyüşleri ve yayla şenlikleriyle canlanır.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Tea garden valleys' : 'Çay bahçeli vadiler'}</li>
+                        <li>• {isEnglish ? 'Historic mosques' : 'Tarihi camiler'}</li>
+                        <li>• {isEnglish ? 'Handüzü Plateau' : 'Handüzü Yaylası'}</li>
+                        <li>• {isEnglish ? 'Nature hikes and festivals' : 'Doğa yürüyüşleri ve şenlikler'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* İkizdere */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'ikizdere' ? null : 'ikizdere')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">İkizdere</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Thermal Waters and Anzer Honey' : 'Termal Sular ve Anzer Balı'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'ikizdere' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'ikizdere' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg" 
+                        alt="İkizdere"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Famous for its thermal waters and mountain villages. Anzer Plateau is the homeland of world-famous Anzer Honey, produced thanks to its endemic flora. The Ovit Plateau and tunnel also serve as a strategic gateway connecting the region to Eastern Anatolia.'
+                          : 'Termal suları ve dağ köyleriyle ünlüdür. Özellikle Anzer Yaylası, dünyaca tanınan Anzer Balı\'nın üretildiği yerdir. Endemik bitki çeşitliliği sayesinde bu bal yalnızca burada elde edilir. Ayrıca Ovit Yaylası ve tüneli, bölgeyi Doğu Anadolu\'ya bağlayan stratejik bir geçittir.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'World-famous Anzer Honey' : 'Dünyaca ünlü Anzer Balı'}</li>
+                        <li>• {isEnglish ? 'Thermal waters and spas' : 'Termal sular ve kaplıcalar'}</li>
+                        <li>• {isEnglish ? 'Ovit Plateau and tunnel' : 'Ovit Yaylası ve tüneli'}</li>
+                        <li>• {isEnglish ? 'Endemic flora diversity' : 'Endemik bitki çeşitliliği'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* İyidere */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'iyidere' ? null : 'iyidere')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">İyidere</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Strategic Port and Rize Mandarin' : 'Stratejik Liman ve Rize Mandalinası'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'iyidere' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'iyidere' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg" 
+                        alt="İyidere"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'On the Black Sea coast, known for its strategic port, fishing, and the distinctive Rize mandarin. The district is also notable for the stone bridges over the Taşhane Stream, reflecting its historical character.'
+                          : 'Karadeniz kıyısında stratejik limanı, balıkçılığı ve Rize mandalinası ile tanınır. Rize mandalinası aromasıyla Türkiye\'nin en özel turunçgillerindendir. İlçenin çevresinde bulunan Taşhane Deresi üzerindeki köprüler, tarihi dokusuyla öne çıkar.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Strategic Black Sea port' : 'Stratejik Karadeniz limanı'}</li>
+                        <li>• {isEnglish ? 'Distinctive Rize mandarin' : 'Özel Rize mandalinası'}</li>
+                        <li>• {isEnglish ? 'Fishing and seafood' : 'Balıkçılık ve deniz ürünleri'}</li>
+                        <li>• {isEnglish ? 'Historic stone bridges' : 'Tarihi taş köprüler'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Kalkandere */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'kalkandere' ? null : 'kalkandere')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Kalkandere</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Authentic Rural Life' : 'Otantik Kırsal Yaşam'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'kalkandere' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'kalkandere' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00781-2.jpg" 
+                        alt="Kalkandere"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Kalkandere is known for its calm nature and small-scale tea production, offering some of the most authentic examples of rural life. Its fertile valleys contribute to Rize\'s tea cultivation, while historic mosques, village houses, and traditional farming practices reflect the preserved spirit of the Black Sea\'s past.'
+                          : 'Sakin doğası ve küçük ölçekli çay üretimiyle bilinen Kalkandere, kırsal yaşamın en otantik örneklerini sunar. İlçe, bereketli vadilerinde yetişen çay bahçeleriyle Rize\'nin çay üretimine katkıda bulunur. Tarihî camileri, köy evleri ve geleneksel tarım yöntemleriyle Karadeniz\'in geçmişini bugüne taşıyan bir atmosfere sahiptir.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Small-scale tea production' : 'Küçük ölçekli çay üretimi'}</li>
+                        <li>• {isEnglish ? 'Authentic rural life' : 'Otantik kırsal yaşam'}</li>
+                        <li>• {isEnglish ? 'Historic mosques and village houses' : 'Tarihi camiler ve köy evleri'}</li>
+                        <li>• {isEnglish ? 'Local handicrafts and organic produce' : 'Yöresel el sanatları ve organik ürünler'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Pazar */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <button 
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                onClick={() => setOpenDistrict(openDistrict === 'pazar' ? null : 'pazar')}
+              >
+                <div>
+                  <h3 className="text-xl font-bold text-navy">Pazar</h3>
+                  <p className="text-gray-600 text-sm">
+                    {isEnglish ? 'Historic Kızkalesi and Fishing Culture' : 'Tarihi Kızkalesi ve Balıkçılık Kültürü'}
+                  </p>
+                </div>
+                <div className={`transform transition-transform ${openDistrict === 'pazar' ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+              {openDistrict === 'pazar' && (
+                <div className="px-6 pb-6 animate-fade-in-up">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <img 
+                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_01854-2.jpg" 
+                        alt="Pazar"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-gray-700 mb-4">
+                        {isEnglish 
+                          ? 'Known for the historic Kızkalesi fortress and its fishing culture. Along the coast, tea cultivation and sea life go hand in hand. The Akbucak Plateau is among the most popular summer retreats for locals.'
+                          : 'Tarihi Kızkalesi ve balıkçılığıyla tanınır. Sahil boyunca çay tarımı ve deniz kültürü iç içedir. İlçenin yaylalarından Akbucak Yaylası, yaz aylarında yöre halkının en çok tercih ettiği yaylalardan biridir.'
+                        }
+                      </p>
+                      <ul className="text-sm text-gray-600 space-y-2">
+                        <li>• {isEnglish ? 'Historic Kızkalesi fortress' : 'Tarihi Kızkalesi'}</li>
+                        <li>• {isEnglish ? 'Fishing culture and seafood' : 'Balıkçılık kültürü ve deniz ürünleri'}</li>
+                        <li>• {isEnglish ? 'Akbucak Plateau' : 'Akbucak Yaylası'}</li>
+                        <li>• {isEnglish ? 'Tea cultivation by the sea' : 'Deniz kenarında çay tarımı'}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
