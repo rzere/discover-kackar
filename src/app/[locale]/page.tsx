@@ -77,7 +77,7 @@ export default function Home({
   // Generate random images when gallery images are loaded
   useEffect(() => {
     if (galleryImages && galleryImages.length > 0) {
-      const totalImagesNeeded = 17; // 5 carousel + 12 districts
+      const totalImagesNeeded = 18; // 5 carousel + 13 districts
       const generatedImages: string[] = [];
       
       // If we have fewer images than needed, allow duplicates
@@ -793,7 +793,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg" 
+                        src={getRandomImage(5)}
                         alt="Rize Merkez"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -840,7 +840,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(5)}
+                          src={getRandomImage(6)}
                         alt="Çamlıhemşin"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -887,7 +887,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(6)}
+                          src={getRandomImage(7)}
                         alt="Ardeşen"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -934,7 +934,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(7)}
+                          src={getRandomImage(8)}
                         alt="Pazar"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -980,7 +980,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(8)}
+                          src={getRandomImage(9)}
                         alt="Fındıklı"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1027,7 +1027,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(9)}
+                          src={getRandomImage(10)}
                         alt="Çayeli"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1074,7 +1074,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(10)}
+                          src={getRandomImage(11)}
                         alt="Derepazarı"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1121,7 +1121,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(11)}
+                          src={getRandomImage(12)}
                         alt="Hemşin"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1168,7 +1168,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(12)}
+                          src={getRandomImage(13)}
                         alt="Güneysu"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1215,7 +1215,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(13)}
+                          src={getRandomImage(14)}
                         alt="İkizdere"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1262,7 +1262,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(14)}
+                          src={getRandomImage(15)}
                         alt="İyidere"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1309,7 +1309,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(15)}
+                          src={getRandomImage(16)}
                         alt="Kalkandere"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1356,7 +1356,7 @@ export default function Home({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img 
-                          src={getRandomImage(16)}
+                          src={getRandomImage(17)}
                         alt="Pazar"
                         className="w-full h-48 object-cover rounded-lg"
                       />
