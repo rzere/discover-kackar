@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Process page data
-    let pageData = null;
+    let pageData: any = null;
     if (pageResult.status === 'fulfilled' && !pageResult.value.error) {
       pageData = pageResult.value.data;
     }
@@ -170,13 +170,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Process footer data
-    let footerData = null;
+    let footerData: any = null;
     if (footerResult.status === 'fulfilled' && !footerResult.value.error) {
       footerData = footerResult.value.data;
     }
 
     // Process CTA card data
-    let ctaCard = null;
+    let ctaCard: any = null;
     if (ctaResult.status === 'fulfilled' && !ctaResult.value.error) {
       const ctaCards = ctaResult.value.data || [];
       const planYourTripCard = ctaCards.find((card: any) => card.slug === 'plan-your-trip');
@@ -184,9 +184,9 @@ export async function GET(request: NextRequest) {
         ctaCard = {
           id: planYourTripCard.id,
           slug: planYourTripCard.slug,
-          title: planYourTripCard.title[locale] || planYourTripCard.title.en,
+          title: planYourTripCard.title?.[locale] || planYourTripCard.title?.en,
           description: planYourTripCard.description?.[locale] || planYourTripCard.description?.en,
-          buttonText: planYourTripCard.button_text[locale] || planYourTripCard.button_text.en,
+          buttonText: planYourTripCard.button_text?.[locale] || planYourTripCard.button_text?.en,
           buttonUrl: planYourTripCard.button_url,
           isActive: planYourTripCard.is_active,
         };
