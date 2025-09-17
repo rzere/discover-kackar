@@ -172,7 +172,7 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
               {/* Categories Section */}
               <div className="mb-6">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-2">
+                <h3 className={`text-sm font-semibold text-gray-500 ${locale !== 'tr' ? 'uppercase' : ''} tracking-wide mb-3 px-2`}>
                   {locale === 'tr' ? 'Kategoriler' : 
                    locale === 'fr' ? 'Catégories' : 
                    locale === 'de' ? 'Kategorien' : 
@@ -197,7 +197,7 @@ export default function Navbar() {
               
               {/* Other Menu Items */}
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-2">
+                <h3 className={`text-sm font-semibold text-gray-500 ${locale !== 'tr' ? 'uppercase' : ''} tracking-wide mb-3 px-2`}>
                   {locale === 'tr' ? 'Diğer' : 
                    locale === 'fr' ? 'Autres' : 
                    locale === 'de' ? 'Andere' : 
