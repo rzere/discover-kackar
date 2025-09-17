@@ -54,6 +54,28 @@
   }
 }
 
+/* Enhanced 3D float animation */
+@keyframes float3D {
+  0%, 100% {
+    transform: translateY(0px) translateZ(0px);
+  }
+  50% {
+    transform: translateY(-15px) translateZ(5px);
+  }
+}
+
+/* Trail glow animation */
+@keyframes trailGlow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
 /* Minimal Dark Green Theme */
 body {
   background-color: #fafafa !important; /* Off-white */
