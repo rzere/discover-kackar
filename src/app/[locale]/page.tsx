@@ -780,13 +780,15 @@ export default function Home({
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
-              {isEnglish ? 'Rize Districts' : 'Rize İlçeleri'}
+              {getLocalizedContent('Rize Districts', 'Rize İlçeleri', 'Districts de Rize', 'Rize Bezirke')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {isEnglish 
-                ? 'Explore the diverse districts of Rize, each offering unique experiences from coastal towns to mountain retreats.'
-                : 'Rize\'nin çeşitli ilçelerini keşfedin, her biri kıyı kasabalarından dağ inzivalarına kadar benzersiz deneyimler sunar.'
-              }
+              {getLocalizedContent(
+                'Explore the diverse districts of Rize, each offering unique experiences from coastal towns to mountain retreats.',
+                'Rize\'nin çeşitli ilçelerini keşfedin, her biri kıyı kasabalarından dağ inzivalarına kadar benzersiz deneyimler sunar.',
+                'Explorez les divers districts de Rize, chacun offrant des expériences uniques des villes côtières aux retraites montagnardes.',
+                'Entdecken Sie die vielfältigen Bezirke von Rize, die jeweils einzigartige Erlebnisse von Küstenstädten bis hin zu Bergretreats bieten.'
+              )}
             </p>
           </div>
 
@@ -801,7 +803,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Rize Merkez</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Administrative and Cultural Hub' : 'İdari ve Kültürel Merkez'}
+                    {getLocalizedContent('Administrative and Cultural Hub', 'İdari ve Kültürel Merkez', 'Centre Administratif et Culturel', 'Verwaltungs- und Kulturzentrum')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'rize_merkez' ? 'rotate-180' : ''}`}>
@@ -822,16 +824,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'As the administrative and cultural hub of the region, Rize offers a lifestyle infused with the aroma of tea along the Black Sea coast. The city\'s symbol, Kale-i Bala (Rize Castle), welcomes visitors with a history dating back to the Byzantine era. The Rize Museum and Çaykur Tea Museum showcase the region\'s cultural heritage and the journey of tea.'
-                          : 'Rize\'nin idari ve kültürel merkezi olan şehir, Karadeniz\'in kıyısında çay kokusuyla harmanlanmış bir yaşam sunar. Şehrin simgesi haline gelen Kale-i Bala (Rize Kalesi), Bizans döneminden günümüze uzanan tarihî geçmişiyle ziyaretçilerini karşılar.'
-                        }
+                        {getLocalizedContent(
+                          'As the administrative and cultural hub of the region, Rize offers a lifestyle infused with the aroma of tea along the Black Sea coast. The city\'s symbol, Kale-i Bala (Rize Castle), welcomes visitors with a history dating back to the Byzantine era. The Rize Museum and Çaykur Tea Museum showcase the region\'s cultural heritage and the journey of tea.',
+                          'Rize\'nin idari ve kültürel merkezi olan şehir, Karadeniz\'in kıyısında çay kokusuyla harmanlanmış bir yaşam sunar. Şehrin simgesi haline gelen Kale-i Bala (Rize Kalesi), Bizans döneminden günümüze uzanan tarihî geçmişiyle ziyaretçilerini karşılar.',
+                          'En tant que centre administratif et culturel de la région, Rize offre un mode de vie imprégné de l\'arôme du thé le long de la côte de la mer Noire. Le symbole de la ville, Kale-i Bala (Château de Rize), accueille les visiteurs avec une histoire remontant à l\'ère byzantine. Le Musée de Rize et le Musée du Thé Çaykur présentent le patrimoine culturel de la région et le voyage du thé.',
+                          'Als Verwaltungs- und Kulturzentrum der Region bietet Rize einen Lebensstil, der vom Aroma des Tees entlang der Schwarzmeerküste durchdrungen ist. Das Symbol der Stadt, Kale-i Bala (Rize-Burg), begrüßt Besucher mit einer Geschichte, die bis in die byzantinische Ära zurückreicht. Das Rize-Museum und das Çaykur-Tee-Museum zeigen das kulturelle Erbe der Region und die Reise des Tees.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Kale-i Bala (Rize Castle)' : 'Kale-i Bala (Rize Kalesi)'}</li>
-                        <li>• {isEnglish ? 'Rize Museum and Tea Museum' : 'Rize Müzesi ve Çay Müzesi'}</li>
-                        <li>• {isEnglish ? 'Coastal promenades and cafés' : 'Sahil yürüyüş yolları ve kafeler'}</li>
-                        <li>• {isEnglish ? 'Tea factory tours' : 'Çay fabrikası turları'}</li>
+                        <li>• {getLocalizedContent('Kale-i Bala (Rize Castle)', 'Kale-i Bala (Rize Kalesi)', 'Kale-i Bala (Château de Rize)', 'Kale-i Bala (Rize-Burg)')}</li>
+                        <li>• {getLocalizedContent('Rize Museum and Tea Museum', 'Rize Müzesi ve Çay Müzesi', 'Musée de Rize et Musée du Thé', 'Rize-Museum und Tee-Museum')}</li>
+                        <li>• {getLocalizedContent('Coastal promenades and cafés', 'Sahil yürüyüş yolları ve kafeler', 'Promenades côtières et cafés', 'Küstenpromenaden und Cafés')}</li>
+                        <li>• {getLocalizedContent('Tea factory tours', 'Çay fabrikası turları', 'Visites d\'usines de thé', 'Tee-Fabrikführungen')}</li>
                       </ul>
                     </div>
                   </div>
@@ -848,7 +852,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Çamlıhemşin</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Gateway to Kaçkar Mountains' : 'Kaçkar Dağları\'na Açılan Kapı'}
+                    {getLocalizedContent('Gateway to Kaçkar Mountains', 'Kaçkar Dağları\'na Açılan Kapı', 'Porte d\'Entrée vers les Montagnes Kaçkar', 'Tor zu den Kaçkar-Bergen')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'camlihemsin' ? 'rotate-180' : ''}`}>
@@ -869,16 +873,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'The tourism heart of Rize. Ayder Plateau, with its hot springs, festivals and wooden chalets, is the most iconic destination. Çamlıhemşin also offers the Fırtına Valley, historic stone bridges, and access to the Kaçkar Mountains—a hub where nature and culture meet.'
-                          : 'Rize\'nin turizm kalbi. Ayder Yaylası, sıcak kaplıcaları, şenlikleri ve ahşap yayla evleriyle bölgenin en bilinen destinasyonu. Çamlıhemşin aynı zamanda Fırtına Vadisi, tarihi taş kemer köprüleri ve Kaçkar Dağları\'na açılan kapısıyla doğa ve kültürün birleştiği bir merkezdir.'
-                        }
+                        {getLocalizedContent(
+                          'The tourism heart of Rize. Ayder Plateau, with its hot springs, festivals and wooden chalets, is the most iconic destination. Çamlıhemşin also offers the Fırtına Valley, historic stone bridges, and access to the Kaçkar Mountains—a hub where nature and culture meet.',
+                          'Rize\'nin turizm kalbi. Ayder Yaylası, sıcak kaplıcaları, şenlikleri ve ahşap yayla evleriyle bölgenin en bilinen destinasyonu. Çamlıhemşin aynı zamanda Fırtına Vadisi, tarihi taş kemer köprüleri ve Kaçkar Dağları\'na açılan kapısıyla doğa ve kültürün birleştiği bir merkezdir.',
+                          'Le cœur touristique de Rize. Le Plateau d\'Ayder, avec ses sources chaudes, festivals et chalets en bois, est la destination la plus emblématique. Çamlıhemşin offre également la Vallée de Fırtına, des ponts de pierre historiques et l\'accès aux Montagnes Kaçkar—un centre où la nature et la culture se rencontrent.',
+                          'Das touristische Herz von Rize. Das Ayder-Plateau mit seinen heißen Quellen, Festivals und Holzhäusern ist das ikonischste Reiseziel. Çamlıhemşin bietet auch das Fırtına-Tal, historische Steinbrücken und Zugang zu den Kaçkar-Bergen—ein Zentrum, wo Natur und Kultur aufeinandertreffen.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Ayder Plateau with hot springs' : 'Sıcak kaplıcalı Ayder Yaylası'}</li>
-                        <li>• {isEnglish ? 'Fırtına Valley and historic bridges' : 'Fırtına Vadisi ve tarihi köprüler'}</li>
-                        <li>• {isEnglish ? 'Gateway to Kaçkar Mountains' : 'Kaçkar Dağları\'na açılan kapı'}</li>
-                        <li>• {isEnglish ? 'Traditional festivals and culture' : 'Geleneksel şenlikler ve kültür'}</li>
+                        <li>• {getLocalizedContent('Ayder Plateau with hot springs', 'Sıcak kaplıcalı Ayder Yaylası', 'Plateau d\'Ayder avec sources chaudes', 'Ayder-Plateau mit heißen Quellen')}</li>
+                        <li>• {getLocalizedContent('Fırtına Valley and historic bridges', 'Fırtına Vadisi ve tarihi köprüler', 'Vallée de Fırtına et ponts historiques', 'Fırtına-Tal und historische Brücken')}</li>
+                        <li>• {getLocalizedContent('Gateway to Kaçkar Mountains', 'Kaçkar Dağları\'na açılan kapı', 'Porte d\'entrée vers les Montagnes Kaçkar', 'Tor zu den Kaçkar-Bergen')}</li>
+                        <li>• {getLocalizedContent('Traditional festivals and culture', 'Geleneksel şenlikler ve kültür', 'Festivals traditionnels et culture', 'Traditionelle Feste und Kultur')}</li>
                       </ul>
                     </div>
                   </div>
@@ -895,7 +901,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Ardeşen</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Tea Capital of Turkey' : 'Türkiye\'nin Çay Başkenti'}
+                    {getLocalizedContent('Tea Capital of Turkey', 'Türkiye\'nin Çay Başkenti', 'Capitale du Thé de Turquie', 'Tee-Hauptstadt der Türkei')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'ardesen' ? 'rotate-180' : ''}`}>
@@ -916,16 +922,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'One of the most vibrant coastal towns. Known as a rafting hub and for its handmade pita bread. The Tunca Valley with its historic bridges and plateaus adds both cultural and natural richness to the district.'
-                          : 'Karadeniz\'in en hareketli sahil ilçelerinden biridir. Rafting merkezi olarak bilinir ve el yapımı Ardeşen pidesi ile sofralarda yerini alır. Ayrıca Tunca Vadisi üzerindeki tarihi köprüler ve yaylalar, ilçeye kültürel ve doğal bir zenginlik katar.'
-                        }
+                        {getLocalizedContent(
+                          'One of the most vibrant coastal towns. Known as a rafting hub and for its handmade pita bread. The Tunca Valley with its historic bridges and plateaus adds both cultural and natural richness to the district.',
+                          'Karadeniz\'in en hareketli sahil ilçelerinden biridir. Rafting merkezi olarak bilinir ve el yapımı Ardeşen pidesi ile sofralarda yerini alır. Ayrıca Tunca Vadisi üzerindeki tarihi köprüler ve yaylalar, ilçeye kültürel ve doğal bir zenginlik katar.',
+                          'L\'une des villes côtières les plus dynamiques. Connue comme centre de rafting et pour son pain pita artisanal. La Vallée de Tunca avec ses ponts historiques et plateaux ajoute richesse culturelle et naturelle au district.',
+                          'Eine der lebendigsten Küstenstädte. Bekannt als Rafting-Zentrum und für ihr handgemachtes Pita-Brot. Das Tunca-Tal mit seinen historischen Brücken und Plateaus verleiht dem Bezirk sowohl kulturelle als auch natürliche Reichtümer.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Rafting center and water sports' : 'Rafting merkezi ve su sporları'}</li>
-                        <li>• {isEnglish ? 'Handmade Ardeşen pita bread' : 'El yapımı Ardeşen pidesi'}</li>
-                        <li>• {isEnglish ? 'Tunca Valley with historic bridges' : 'Tarihi köprülü Tunca Vadisi'}</li>
-                        <li>• {isEnglish ? 'Vibrant coastal atmosphere' : 'Canlı kıyı atmosferi'}</li>
+                        <li>• {getLocalizedContent('Rafting center and water sports', 'Rafting merkezi ve su sporları', 'Centre de rafting et sports nautiques', 'Rafting-Zentrum und Wassersport')}</li>
+                        <li>• {getLocalizedContent('Handmade Ardeşen pita bread', 'El yapımı Ardeşen pidesi', 'Pain pita artisanal d\'Ardeşen', 'Handgemachtes Ardeşen-Pita-Brot')}</li>
+                        <li>• {getLocalizedContent('Tunca Valley with historic bridges', 'Tarihi köprülü Tunca Vadisi', 'Vallée de Tunca avec ponts historiques', 'Tunca-Tal mit historischen Brücken')}</li>
+                        <li>• {getLocalizedContent('Vibrant coastal atmosphere', 'Canlı kıyı atmosferi', 'Atmosphère côtière dynamique', 'Lebendige Küstenatmosphäre')}</li>
                       </ul>
                     </div>
                   </div>
@@ -942,7 +950,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Pazar</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Historic Trading Center' : 'Tarihi Ticaret Merkezi'}
+                    {getLocalizedContent('Historic Trading Center', 'Tarihi Ticaret Merkezi', 'Centre Commercial Historique', 'Historisches Handelszentrum')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'pazar' ? 'rotate-180' : ''}`}>
@@ -963,15 +971,17 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'Pazar has a rich history as a trading center and offers a mix of coastal beauty and cultural heritage. The district is known for its vibrant local markets.'
-                          : 'Pazar, ticaret merkezi olarak zengin bir geçmişe sahiptir ve kıyı güzelliği ile kültürel mirasın karışımını sunar. İlçe canlı yerel pazarları ile tanınır.'
-                        }
+                        {getLocalizedContent(
+                          'Pazar has a rich history as a trading center and offers a mix of coastal beauty and cultural heritage. The district is known for its vibrant local markets.',
+                          'Pazar, ticaret merkezi olarak zengin bir geçmişe sahiptir ve kıyı güzelliği ile kültürel mirasın karışımını sunar. İlçe canlı yerel pazarları ile tanınır.',
+                          'Pazar a une riche histoire en tant que centre commercial et offre un mélange de beauté côtière et de patrimoine culturel. Le district est connu pour ses marchés locaux dynamiques.',
+                          'Pazar hat eine reiche Geschichte als Handelszentrum und bietet eine Mischung aus Küstenschönheit und kulturellem Erbe. Der Bezirk ist für seine lebendigen lokalen Märkte bekannt.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Historic local markets' : 'Tarihi yerel pazarlar'}</li>
-                        <li>• {isEnglish ? 'Cultural heritage sites' : 'Kültürel miras alanları'}</li>
-                        <li>• {isEnglish ? 'Coastal walking paths' : 'Kıyı yürüyüş yolları'}</li>
+                        <li>• {getLocalizedContent('Historic local markets', 'Tarihi yerel pazarlar', 'Marchés locaux historiques', 'Historische lokale Märkte')}</li>
+                        <li>• {getLocalizedContent('Cultural heritage sites', 'Kültürel miras alanları', 'Sites du patrimoine culturel', 'Kulturerbestätten')}</li>
+                        <li>• {getLocalizedContent('Coastal walking paths', 'Kıyı yürüyüş yolları', 'Sentiers de promenade côtière', 'Küstenspazierwege')}</li>
                       </ul>
                     </div>
                   </div>
@@ -988,7 +998,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Fındıklı</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Hazelnut Paradise' : 'Fındık Cenneti'}
+                    {getLocalizedContent('Hazelnut Paradise', 'Fındık Cenneti', 'Paradis de la Noisette', 'Haselnuss-Paradies')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'findikli' ? 'rotate-180' : ''}`}>
@@ -1009,16 +1019,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'As the eastern gateway of Rize, Fındıklı stands out with its varied geography stretching from the Black Sea coast to high plateaus. The Çağlayan River and its historic stone arch bridges reflect the region\'s past. Traditional stone mansions showcase Laz culture in architecture. Fındıklı is also known for kiwi cultivation, offering unique agricultural diversity within the Black Sea region.'
-                          : 'Rize\'nin doğu kapısı olan Fındıklı, deniz kıyısından yüksek yaylalara uzanan farklı coğrafi yapısıyla dikkat çeker. Çağlayan Deresi ve üzerindeki tarihi taş kemer köprüler, bölgenin geçmişini yansıtır. İlçedeki geleneksel taş konaklar, Laz kültürünün mimariye yansımış özgün örnekleridir. Ayrıca Fındıklı, kivi üretimiyle de tanınır ve bu yönüyle Karadeniz\'de farklı bir tarımsal çeşitlilik sunar.'
-                        }
+                        {getLocalizedContent(
+                          'As the eastern gateway of Rize, Fındıklı stands out with its varied geography stretching from the Black Sea coast to high plateaus. The Çağlayan River and its historic stone arch bridges reflect the region\'s past. Traditional stone mansions showcase Laz culture in architecture. Fındıklı is also known for kiwi cultivation, offering unique agricultural diversity within the Black Sea region.',
+                          'Rize\'nin doğu kapısı olan Fındıklı, deniz kıyısından yüksek yaylalara uzanan farklı coğrafi yapısıyla dikkat çeker. Çağlayan Deresi ve üzerindeki tarihi taş kemer köprüler, bölgenin geçmişini yansıtır. İlçedeki geleneksel taş konaklar, Laz kültürünün mimariye yansımış özgün örnekleridir. Ayrıca Fındıklı, kivi üretimiyle de tanınır ve bu yönüyle Karadeniz\'de farklı bir tarımsal çeşitlilik sunar.',
+                          'En tant que porte d\'entrée orientale de Rize, Fındıklı se distingue par sa géographie variée s\'étendant de la côte de la mer Noire aux hauts plateaux. La rivière Çağlayan et ses ponts de pierre historiques reflètent le passé de la région. Les manoirs de pierre traditionnels mettent en valeur la culture laze dans l\'architecture. Fındıklı est également connue pour la culture du kiwi, offrant une diversité agricole unique dans la région de la mer Noire.',
+                          'Als östliches Tor zu Rize sticht Fındıklı mit seiner vielfältigen Geografie hervor, die sich von der Schwarzmeerküste bis zu hohen Plateaus erstreckt. Der Çağlayan-Fluss und seine historischen Steinbogenbrücken spiegeln die Vergangenheit der Region wider. Traditionelle Steinhäuser zeigen die Laz-Kultur in der Architektur. Fındıklı ist auch für den Kiwi-Anbau bekannt und bietet eine einzigartige landwirtschaftliche Vielfalt in der Schwarzmeerregion.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Historic stone arch bridges' : 'Tarihi taş kemer köprüler'}</li>
-                        <li>• {isEnglish ? 'Traditional Laz stone mansions' : 'Geleneksel Laz taş konakları'}</li>
-                        <li>• {isEnglish ? 'Kiwi cultivation and agriculture' : 'Kivi yetiştiriciliği ve tarım'}</li>
-                        <li>• {isEnglish ? 'Eastern gateway to Rize' : 'Rize\'nin doğu kapısı'}</li>
+                        <li>• {getLocalizedContent('Historic stone arch bridges', 'Tarihi taş kemer köprüler', 'Ponts de pierre historiques', 'Historische Steinbogenbrücken')}</li>
+                        <li>• {getLocalizedContent('Traditional Laz stone mansions', 'Geleneksel Laz taş konakları', 'Manoirs de pierre lazes traditionnels', 'Traditionelle Laz-Steinhäuser')}</li>
+                        <li>• {getLocalizedContent('Kiwi cultivation and agriculture', 'Kivi yetiştiriciliği ve tarım', 'Culture du kiwi et agriculture', 'Kiwi-Anbau und Landwirtschaft')}</li>
+                        <li>• {getLocalizedContent('Eastern gateway to Rize', 'Rize\'nin doğu kapısı', 'Porte d\'entrée orientale de Rize', 'Östliches Tor zu Rize')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1035,7 +1047,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Çayeli</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Tea Gardens and Beautiful Beaches' : 'Çay Bahçeleri ve Güzel Sahiller'}
+                    {getLocalizedContent('Tea Gardens and Beautiful Beaches', 'Çay Bahçeleri ve Güzel Sahiller', 'Jardins de Thé et Belles Plages', 'Teegärten und Schöne Strände')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'cayeli' ? 'rotate-180' : ''}`}>
@@ -1082,7 +1094,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Derepazarı</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Tea Processing and Coastal Atmosphere' : 'Çay İşleme ve Sahil Atmosferi'}
+                    {getLocalizedContent('Tea Processing and Coastal Atmosphere', 'Çay İşleme ve Sahil Atmosferi', 'Traitement du Thé et Atmosphère Côtière', 'Tee-Verarbeitung und Küstenatmosphäre')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'derepazari' ? 'rotate-180' : ''}`}>
@@ -1103,16 +1115,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'Known for tea processing facilities and its coastal atmosphere with seafood restaurants. Sivrikaya Plateau in the highlands offers a cool climate and natural beauty, popular among locals in summer.'
-                          : 'Çay işleme tesisleriyle bilinir. Ayrıca sahil kasabası atmosferi ve balık lokantalarıyla öne çıkar. İlçenin yükseklerinde yer alan Sivrikaya Yaylası, serin havası ve doğal güzellikleriyle bölge halkının yaz aylarında tercih ettiği bir mekândır.'
-                        }
+                        {getLocalizedContent(
+                          'Known for tea processing facilities and its coastal atmosphere with seafood restaurants. Sivrikaya Plateau in the highlands offers a cool climate and natural beauty, popular among locals in summer.',
+                          'Çay işleme tesisleriyle bilinir. Ayrıca sahil kasabası atmosferi ve balık lokantalarıyla öne çıkar. İlçenin yükseklerinde yer alan Sivrikaya Yaylası, serin havası ve doğal güzellikleriyle bölge halkının yaz aylarında tercih ettiği bir mekândır.',
+                          'Connu pour ses installations de traitement du thé et son atmosphère côtière avec restaurants de fruits de mer. Le Plateau de Sivrikaya dans les hautes terres offre un climat frais et une beauté naturelle, populaire parmi les habitants en été.',
+                          'Bekannt für Tee-Verarbeitungsanlagen und seine Küstenatmosphäre mit Meeresfrüchte-Restaurants. Das Sivrikaya-Plateau in den Hochländern bietet ein kühles Klima und natürliche Schönheit, beliebt bei Einheimischen im Sommer.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Tea processing facilities' : 'Çay işleme tesisleri'}</li>
-                        <li>• {isEnglish ? 'Coastal atmosphere and seafood' : 'Sahil atmosferi ve deniz ürünleri'}</li>
-                        <li>• {isEnglish ? 'Sivrikaya Plateau' : 'Sivrikaya Yaylası'}</li>
-                        <li>• {isEnglish ? 'Cool summer climate' : 'Serin yaz iklimi'}</li>
+                        <li>• {getLocalizedContent('Tea processing facilities', 'Çay işleme tesisleri', 'Installations de traitement du thé', 'Tee-Verarbeitungsanlagen')}</li>
+                        <li>• {getLocalizedContent('Coastal atmosphere and seafood', 'Sahil atmosferi ve deniz ürünleri', 'Atmosphère côtière et fruits de mer', 'Küstenatmosphäre und Meeresfrüchte')}</li>
+                        <li>• {getLocalizedContent('Sivrikaya Plateau', 'Sivrikaya Yaylası', 'Plateau de Sivrikaya', 'Sivrikaya-Plateau')}</li>
+                        <li>• {getLocalizedContent('Cool summer climate', 'Serin yaz iklimi', 'Climat estival frais', 'Kühles Sommerklima')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1129,7 +1143,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Hemşin</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Cultural Heritage Center' : 'Kültürel Miras Merkezi'}
+                    {getLocalizedContent('Cultural Heritage Center', 'Kültürel Miras Merkezi', 'Centre du Patrimoine Culturel', 'Kulturerbe-Zentrum')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'hemsin' ? 'rotate-180' : ''}`}>
@@ -1150,16 +1164,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'A cultural hub with tulum music, horon dances, transhumance, and weaving traditions. Hemşin wool socks are a geographically protected product. The Balcıdere Plateau and surrounding stone bridges combine cultural heritage with nature.'
-                          : 'Tulum ezgileri, horonlar, yaylacılık ve dokuma gelenekleriyle kültürel zenginliğin merkezi. Hemşin çorabı coğrafi işaretli ürünlerindendir. İlçede ayrıca Balcıdere Yaylası ve çevresindeki taş köprüler, kültürel dokuyu ve doğayı bir arada sunar.'
-                        }
+                        {getLocalizedContent(
+                          'A cultural hub with tulum music, horon dances, transhumance, and weaving traditions. Hemşin wool socks are a geographically protected product. The Balcıdere Plateau and surrounding stone bridges combine cultural heritage with nature.',
+                          'Tulum ezgileri, horonlar, yaylacılık ve dokuma gelenekleriyle kültürel zenginliğin merkezi. Hemşin çorabı coğrafi işaretli ürünlerindendir. İlçede ayrıca Balcıdere Yaylası ve çevresindeki taş köprüler, kültürel dokuyu ve doğayı bir arada sunar.',
+                          'Un centre culturel avec musique tulum, danses horon, transhumance et traditions de tissage. Les chaussettes en laine Hemşin sont un produit géographiquement protégé. Le Plateau de Balcıdere et les ponts de pierre environnants combinent patrimoine culturel et nature.',
+                          'Ein kulturelles Zentrum mit Tulum-Musik, Horon-Tänzen, Almwirtschaft und Webtraditionen. Hemşin-Wollsocken sind ein geografisch geschütztes Produkt. Das Balcıdere-Plateau und die umliegenden Steinbrücken verbinden kulturelles Erbe mit Natur.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Tulum music and horon dances' : 'Tulum ezgileri ve horonlar'}</li>
-                        <li>• {isEnglish ? 'Hemşin wool socks (protected product)' : 'Hemşin çorabı (coğrafi işaretli)'}</li>
-                        <li>• {isEnglish ? 'Balcıdere Plateau' : 'Balcıdere Yaylası'}</li>
-                        <li>• {isEnglish ? 'Traditional weaving and transhumance' : 'Geleneksel dokuma ve yaylacılık'}</li>
+                        <li>• {getLocalizedContent('Tulum music and horon dances', 'Tulum ezgileri ve horonlar', 'Musique tulum et danses horon', 'Tulum-Musik und Horon-Tänze')}</li>
+                        <li>• {getLocalizedContent('Hemşin wool socks (protected product)', 'Hemşin çorabı (coğrafi işaretli)', 'Chaussettes en laine Hemşin (produit protégé)', 'Hemşin-Wollsocken (geschütztes Produkt)')}</li>
+                        <li>• {getLocalizedContent('Balcıdere Plateau', 'Balcıdere Yaylası', 'Plateau de Balcıdere', 'Balcıdere-Plateau')}</li>
+                        <li>• {getLocalizedContent('Traditional weaving and transhumance', 'Geleneksel dokuma ve yaylacılık', 'Tissage traditionnel et transhumance', 'Traditionelles Weben und Almwirtschaft')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1176,7 +1192,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Güneysu</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Tea Valleys and Historic Mosques' : 'Çay Vadileri ve Tarihi Camiler'}
+                    {getLocalizedContent('Tea Valleys and Historic Mosques', 'Çay Vadileri ve Tarihi Camiler', 'Vallées de Thé et Mosquées Historiques', 'Teetäler und Historische Moscheen')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'guneysu' ? 'rotate-180' : ''}`}>
@@ -1197,16 +1213,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'Recognized for valleys covered in tea gardens and historic mosques. A balanced reflection of Rize\'s cultural and natural identity. The district is especially famous for Handüzü Plateau, which comes alive in summer with nature hikes and festivals.'
-                          : 'Çay bahçeleriyle çevrili vadileri ve tarihi camileriyle bilinir. Rize\'nin kültürel ve doğal kimliğinin dengeli bir yansımasıdır. İlçe, özellikle Handüzü Yaylası ile ünlüdür; yaz aylarında doğa yürüyüşleri ve yayla şenlikleriyle canlanır.'
-                        }
+                        {getLocalizedContent(
+                          'Recognized for valleys covered in tea gardens and historic mosques. A balanced reflection of Rize\'s cultural and natural identity. The district is especially famous for Handüzü Plateau, which comes alive in summer with nature hikes and festivals.',
+                          'Çay bahçeleriyle çevrili vadileri ve tarihi camileriyle bilinir. Rize\'nin kültürel ve doğal kimliğinin dengeli bir yansımasıdır. İlçe, özellikle Handüzü Yaylası ile ünlüdür; yaz aylarında doğa yürüyüşleri ve yayla şenlikleriyle canlanır.',
+                          'Reconnu pour ses vallées couvertes de jardins de thé et ses mosquées historiques. Un reflet équilibré de l\'identité culturelle et naturelle de Rize. Le district est particulièrement célèbre pour le Plateau de Handüzü, qui s\'anime en été avec randonnées nature et festivals.',
+                          'Bekannt für Täler, die mit Teegärten bedeckt sind, und historische Moscheen. Ein ausgewogenes Spiegelbild der kulturellen und natürlichen Identität von Rize. Der Bezirk ist besonders berühmt für das Handüzü-Plateau, das im Sommer mit Naturwanderungen und Festivals zum Leben erwacht.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Tea garden valleys' : 'Çay bahçeli vadiler'}</li>
-                        <li>• {isEnglish ? 'Historic mosques' : 'Tarihi camiler'}</li>
-                        <li>• {isEnglish ? 'Handüzü Plateau' : 'Handüzü Yaylası'}</li>
-                        <li>• {isEnglish ? 'Nature hikes and festivals' : 'Doğa yürüyüşleri ve şenlikler'}</li>
+                        <li>• {getLocalizedContent('Tea garden valleys', 'Çay bahçeli vadiler', 'Vallées de jardins de thé', 'Teegarten-Täler')}</li>
+                        <li>• {getLocalizedContent('Historic mosques', 'Tarihi camiler', 'Mosquées historiques', 'Historische Moscheen')}</li>
+                        <li>• {getLocalizedContent('Handüzü Plateau', 'Handüzü Yaylası', 'Plateau de Handüzü', 'Handüzü-Plateau')}</li>
+                        <li>• {getLocalizedContent('Nature hikes and festivals', 'Doğa yürüyüşleri ve şenlikler', 'Randonnées nature et festivals', 'Naturwanderungen und Feste')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1223,7 +1241,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">İkizdere</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Thermal Waters and Anzer Honey' : 'Termal Sular ve Anzer Balı'}
+                    {getLocalizedContent('Thermal Waters and Anzer Honey', 'Termal Sular ve Anzer Balı', 'Eaux Thermales et Miel d\'Anzer', 'Thermalwasser und Anzer-Honig')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'ikizdere' ? 'rotate-180' : ''}`}>
@@ -1244,16 +1262,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'Famous for its thermal waters and mountain villages. Anzer Plateau is the homeland of world-famous Anzer Honey, produced thanks to its endemic flora. The Ovit Plateau and tunnel also serve as a strategic gateway connecting the region to Eastern Anatolia.'
-                          : 'Termal suları ve dağ köyleriyle ünlüdür. Özellikle Anzer Yaylası, dünyaca tanınan Anzer Balı\'nın üretildiği yerdir. Endemik bitki çeşitliliği sayesinde bu bal yalnızca burada elde edilir. Ayrıca Ovit Yaylası ve tüneli, bölgeyi Doğu Anadolu\'ya bağlayan stratejik bir geçittir.'
-                        }
+                        {getLocalizedContent(
+                          'Famous for its thermal waters and mountain villages. Anzer Plateau is the homeland of world-famous Anzer Honey, produced thanks to its endemic flora. The Ovit Plateau and tunnel also serve as a strategic gateway connecting the region to Eastern Anatolia.',
+                          'Termal suları ve dağ köyleriyle ünlüdür. Özellikle Anzer Yaylası, dünyaca tanınan Anzer Balı\'nın üretildiği yerdir. Endemik bitki çeşitliliği sayesinde bu bal yalnızca burada elde edilir. Ayrıca Ovit Yaylası ve tüneli, bölgeyi Doğu Anadolu\'ya bağlayan stratejik bir geçittir.',
+                          'Célèbre pour ses eaux thermales et ses villages de montagne. Le Plateau d\'Anzer est la patrie du miel d\'Anzer mondialement connu, produit grâce à sa flore endémique. Le Plateau d\'Ovit et son tunnel servent également de porte d\'entrée stratégique reliant la région à l\'Anatolie orientale.',
+                          'Berühmt für seine Thermalwasser und Bergdörfer. Das Anzer-Plateau ist die Heimat des weltberühmten Anzer-Honigs, der dank seiner endemischen Flora produziert wird. Das Ovit-Plateau und der Tunnel dienen auch als strategisches Tor, das die Region mit Ostanatolien verbindet.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'World-famous Anzer Honey' : 'Dünyaca ünlü Anzer Balı'}</li>
-                        <li>• {isEnglish ? 'Thermal waters and spas' : 'Termal sular ve kaplıcalar'}</li>
-                        <li>• {isEnglish ? 'Ovit Plateau and tunnel' : 'Ovit Yaylası ve tüneli'}</li>
-                        <li>• {isEnglish ? 'Endemic flora diversity' : 'Endemik bitki çeşitliliği'}</li>
+                        <li>• {getLocalizedContent('World-famous Anzer Honey', 'Dünyaca ünlü Anzer Balı', 'Miel d\'Anzer mondialement connu', 'Weltberühmter Anzer-Honig')}</li>
+                        <li>• {getLocalizedContent('Thermal waters and spas', 'Termal sular ve kaplıcalar', 'Eaux thermales et spas', 'Thermalwasser und Spas')}</li>
+                        <li>• {getLocalizedContent('Ovit Plateau and tunnel', 'Ovit Yaylası ve tüneli', 'Plateau d\'Ovit et tunnel', 'Ovit-Plateau und Tunnel')}</li>
+                        <li>• {getLocalizedContent('Endemic flora diversity', 'Endemik bitki çeşitliliği', 'Diversité de la flore endémique', 'Endemische Flora-Vielfalt')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1270,7 +1290,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">İyidere</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Strategic Port and Rize Mandarin' : 'Stratejik Liman ve Rize Mandalinası'}
+                    {getLocalizedContent('Strategic Port and Rize Mandarin', 'Stratejik Liman ve Rize Mandalinası', 'Port Stratégique et Mandarin de Rize', 'Strategischer Hafen und Rize-Mandarine')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'iyidere' ? 'rotate-180' : ''}`}>
@@ -1291,16 +1311,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'On the Black Sea coast, known for its strategic port, fishing, and the distinctive Rize mandarin. The district is also notable for the stone bridges over the Taşhane Stream, reflecting its historical character.'
-                          : 'Karadeniz kıyısında stratejik limanı, balıkçılığı ve Rize mandalinası ile tanınır. Rize mandalinası aromasıyla Türkiye\'nin en özel turunçgillerindendir. İlçenin çevresinde bulunan Taşhane Deresi üzerindeki köprüler, tarihi dokusuyla öne çıkar.'
-                        }
+                        {getLocalizedContent(
+                          'On the Black Sea coast, known for its strategic port, fishing, and the distinctive Rize mandarin. The district is also notable for the stone bridges over the Taşhane Stream, reflecting its historical character.',
+                          'Karadeniz kıyısında stratejik limanı, balıkçılığı ve Rize mandalinası ile tanınır. Rize mandalinası aromasıyla Türkiye\'nin en özel turunçgillerindendir. İlçenin çevresinde bulunan Taşhane Deresi üzerindeki köprüler, tarihi dokusuyla öne çıkar.',
+                          'Sur la côte de la mer Noire, connue pour son port stratégique, sa pêche et la mandarine distinctive de Rize. Le district est également remarquable pour les ponts de pierre sur le ruisseau Taşhane, reflétant son caractère historique.',
+                          'An der Schwarzmeerküste bekannt für seinen strategischen Hafen, Fischerei und die charakteristische Rize-Mandarine. Der Bezirk ist auch bemerkenswert für die Steinbrücken über den Taşhane-Bach, die seinen historischen Charakter widerspiegeln.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Strategic Black Sea port' : 'Stratejik Karadeniz limanı'}</li>
-                        <li>• {isEnglish ? 'Distinctive Rize mandarin' : 'Özel Rize mandalinası'}</li>
-                        <li>• {isEnglish ? 'Fishing and seafood' : 'Balıkçılık ve deniz ürünleri'}</li>
-                        <li>• {isEnglish ? 'Historic stone bridges' : 'Tarihi taş köprüler'}</li>
+                        <li>• {getLocalizedContent('Strategic Black Sea port', 'Stratejik Karadeniz limanı', 'Port stratégique de la mer Noire', 'Strategischer Schwarzmeerhafen')}</li>
+                        <li>• {getLocalizedContent('Distinctive Rize mandarin', 'Özel Rize mandalinası', 'Mandarine distinctive de Rize', 'Charakteristische Rize-Mandarine')}</li>
+                        <li>• {getLocalizedContent('Fishing and seafood', 'Balıkçılık ve deniz ürünleri', 'Pêche et fruits de mer', 'Fischerei und Meeresfrüchte')}</li>
+                        <li>• {getLocalizedContent('Historic stone bridges', 'Tarihi taş köprüler', 'Ponts de pierre historiques', 'Historische Steinbrücken')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1317,7 +1339,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Kalkandere</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Authentic Rural Life' : 'Otantik Kırsal Yaşam'}
+                    {getLocalizedContent('Authentic Rural Life', 'Otantik Kırsal Yaşam', 'Vie Rurale Authentique', 'Authentisches Landleben')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'kalkandere' ? 'rotate-180' : ''}`}>
@@ -1338,16 +1360,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'Kalkandere is known for its calm nature and small-scale tea production, offering some of the most authentic examples of rural life. Its fertile valleys contribute to Rize\'s tea cultivation, while historic mosques, village houses, and traditional farming practices reflect the preserved spirit of the Black Sea\'s past.'
-                          : 'Sakin doğası ve küçük ölçekli çay üretimiyle bilinen Kalkandere, kırsal yaşamın en otantik örneklerini sunar. İlçe, bereketli vadilerinde yetişen çay bahçeleriyle Rize\'nin çay üretimine katkıda bulunur. Tarihî camileri, köy evleri ve geleneksel tarım yöntemleriyle Karadeniz\'in geçmişini bugüne taşıyan bir atmosfere sahiptir.'
-                        }
+                        {getLocalizedContent(
+                          'Kalkandere is known for its calm nature and small-scale tea production, offering some of the most authentic examples of rural life. Its fertile valleys contribute to Rize\'s tea cultivation, while historic mosques, village houses, and traditional farming practices reflect the preserved spirit of the Black Sea\'s past.',
+                          'Sakin doğası ve küçük ölçekli çay üretimiyle bilinen Kalkandere, kırsal yaşamın en otantik örneklerini sunar. İlçe, bereketli vadilerinde yetişen çay bahçeleriyle Rize\'nin çay üretimine katkıda bulunur. Tarihî camileri, köy evleri ve geleneksel tarım yöntemleriyle Karadeniz\'in geçmişini bugüne taşıyan bir atmosfere sahiptir.',
+                          'Kalkandere est connue pour sa nature calme et sa production de thé à petite échelle, offrant quelques-uns des exemples les plus authentiques de la vie rurale. Ses vallées fertiles contribuent à la culture du thé de Rize, tandis que les mosquées historiques, les maisons de village et les pratiques agricoles traditionnelles reflètent l\'esprit préservé du passé de la mer Noire.',
+                          'Kalkandere ist bekannt für seine ruhige Natur und kleinskalige Teeproduktion und bietet einige der authentischsten Beispiele des ländlichen Lebens. Seine fruchtbaren Täler tragen zur Teekultivierung von Rize bei, während historische Moscheen, Dorfhäuser und traditionelle Landwirtschaftspraktiken den bewahrten Geist der Vergangenheit des Schwarzen Meeres widerspiegeln.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Small-scale tea production' : 'Küçük ölçekli çay üretimi'}</li>
-                        <li>• {isEnglish ? 'Authentic rural life' : 'Otantik kırsal yaşam'}</li>
-                        <li>• {isEnglish ? 'Historic mosques and village houses' : 'Tarihi camiler ve köy evleri'}</li>
-                        <li>• {isEnglish ? 'Local handicrafts and organic produce' : 'Yöresel el sanatları ve organik ürünler'}</li>
+                        <li>• {getLocalizedContent('Small-scale tea production', 'Küçük ölçekli çay üretimi', 'Production de thé à petite échelle', 'Kleinskalige Teeproduktion')}</li>
+                        <li>• {getLocalizedContent('Authentic rural life', 'Otantik kırsal yaşam', 'Vie rurale authentique', 'Authentisches Landleben')}</li>
+                        <li>• {getLocalizedContent('Historic mosques and village houses', 'Tarihi camiler ve köy evleri', 'Mosquées historiques et maisons de village', 'Historische Moscheen und Dorfhäuser')}</li>
+                        <li>• {getLocalizedContent('Local handicrafts and organic produce', 'Yöresel el sanatları ve organik ürünler', 'Artisanat local et produits biologiques', 'Lokales Handwerk und Bio-Produkte')}</li>
                       </ul>
                     </div>
                   </div>
@@ -1364,7 +1388,7 @@ export default function Home({
                 <div>
                   <h3 className="text-xl font-bold text-navy">Pazar</h3>
                   <p className="text-gray-600 text-sm">
-                    {isEnglish ? 'Historic Kızkalesi and Fishing Culture' : 'Tarihi Kızkalesi ve Balıkçılık Kültürü'}
+                    {getLocalizedContent('Historic Kızkalesi and Fishing Culture', 'Tarihi Kızkalesi ve Balıkçılık Kültürü', 'Kızkalesi Historique et Culture de la Pêche', 'Historische Kızkalesi und Fischereikultur')}
                   </p>
                 </div>
                 <div className={`transform transition-transform ${openDistrict === 'pazar' ? 'rotate-180' : ''}`}>
@@ -1385,16 +1409,18 @@ export default function Home({
                     </div>
                     <div>
                       <p className="text-gray-700 mb-4">
-                        {isEnglish 
-                          ? 'Known for the historic Kızkalesi fortress and its fishing culture. Along the coast, tea cultivation and sea life go hand in hand. The Akbucak Plateau is among the most popular summer retreats for locals.'
-                          : 'Tarihi Kızkalesi ve balıkçılığıyla tanınır. Sahil boyunca çay tarımı ve deniz kültürü iç içedir. İlçenin yaylalarından Akbucak Yaylası, yaz aylarında yöre halkının en çok tercih ettiği yaylalardan biridir.'
-                        }
+                        {getLocalizedContent(
+                          'Known for the historic Kızkalesi fortress and its fishing culture. Along the coast, tea cultivation and sea life go hand in hand. The Akbucak Plateau is among the most popular summer retreats for locals.',
+                          'Tarihi Kızkalesi ve balıkçılığıyla tanınır. Sahil boyunca çay tarımı ve deniz kültürü iç içedir. İlçenin yaylalarından Akbucak Yaylası, yaz aylarında yöre halkının en çok tercih ettiği yaylalardan biridir.',
+                          'Connu pour la forteresse historique de Kızkalesi et sa culture de la pêche. Le long de la côte, la culture du thé et la vie marine vont de pair. Le Plateau d\'Akbucak est parmi les retraites d\'été les plus populaires pour les habitants.',
+                          'Bekannt für die historische Kızkalesi-Festung und ihre Fischereikultur. Entlang der Küste gehen Teeanbau und Meeresleben Hand in Hand. Das Akbucak-Plateau gehört zu den beliebtesten Sommerretreats für Einheimische.'
+                        )}
                       </p>
                       <ul className="text-sm text-gray-600 space-y-2">
-                        <li>• {isEnglish ? 'Historic Kızkalesi fortress' : 'Tarihi Kızkalesi'}</li>
-                        <li>• {isEnglish ? 'Fishing culture and seafood' : 'Balıkçılık kültürü ve deniz ürünleri'}</li>
-                        <li>• {isEnglish ? 'Akbucak Plateau' : 'Akbucak Yaylası'}</li>
-                        <li>• {isEnglish ? 'Tea cultivation by the sea' : 'Deniz kenarında çay tarımı'}</li>
+                        <li>• {getLocalizedContent('Historic Kızkalesi fortress', 'Tarihi Kızkalesi', 'Forteresse historique de Kızkalesi', 'Historische Kızkalesi-Festung')}</li>
+                        <li>• {getLocalizedContent('Fishing culture and seafood', 'Balıkçılık kültürü ve deniz ürünleri', 'Culture de la pêche et fruits de mer', 'Fischereikultur und Meeresfrüchte')}</li>
+                        <li>• {getLocalizedContent('Akbucak Plateau', 'Akbucak Yaylası', 'Plateau d\'Akbucak', 'Akbucak-Plateau')}</li>
+                        <li>• {getLocalizedContent('Tea cultivation by the sea', 'Deniz kenarında çay tarımı', 'Culture du thé au bord de la mer', 'Teeanbau am Meer')}</li>
                       </ul>
                     </div>
                   </div>
