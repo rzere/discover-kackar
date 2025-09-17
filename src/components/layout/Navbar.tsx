@@ -29,6 +29,25 @@ export default function Navbar() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
 
+  // Scroll to Discover Rize section
+  const scrollToAbout = () => {
+    const element = document.getElementById('discover-rize');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
+
+  // Get About text based on locale
+  const getAboutText = () => {
+    switch (locale) {
+      case 'tr': return 'Hakkımızda';
+      case 'fr': return 'À propos';
+      case 'de': return 'Über uns';
+      default: return 'About';
+    }
+  };
+
   // Fetch categories from API
   useEffect(() => {
     const fetchCategories = async () => {
@@ -85,8 +104,17 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Right side: Hamburger + Language Selector */}
+          {/* Right side: About + Hamburger + Language Selector */}
           <div className="flex items-center space-x-4">
+            {/* About Button - Desktop Only */}
+            <div className="hidden md:block">
+              <button
+                onClick={scrollToAbout}
+                className="text-navy hover:text-primary transition-colors font-medium"
+              >
+                {getAboutText()}
+              </button>
+            </div>
             {/* Hamburger Menu Button */}
             <button
               onClick={toggleMenu}

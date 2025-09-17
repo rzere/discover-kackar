@@ -462,7 +462,7 @@ export default function Home({
       </section>
 
       {/* Rize Introduction Carousel */}
-      <section className="py-20 px-4 bg-white">
+      <section id="discover-rize" className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
