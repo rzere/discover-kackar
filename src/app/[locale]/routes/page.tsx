@@ -297,6 +297,7 @@ export default function RoutesPage({
         return {
           title: "Rotaları Takip Edin",
           description: "Kaçkar Dağları, doğa yürüyüşü, koşu ve bisiklet için Türkiye'nin en özel rotalarını sunuyor. Orman içi patikalar, taş döşeli yollar, buzul gölleri ve yaylalar arasında ilerleyen parkurlar; hem doğa hem de kültürle iç içe, ilham verici bir deneyim vadediyor. Rotalarda; tarihi taş köprüler, bulut denizi manzaraları, şenlikler ve yerel mutfak tatları sizi karşılıyor.",
+          description2: "Her rota farklı bir seviyeye hitap ediyor: kısa günlük yürüyüşlerden zorlu çok günlük parkurlara, ailelere uygun keşiflerden deneyimli dağcı ve koşuculara yönelik yüksek irtifa etaplarına kadar birçok seçenek mevcut. Yaz aylarında yürüyüş ve bisiklet için ideal olan bu rotalar, kışın ise kar yürüyüşü ve macera fırsatları sunuyor.",
           hikingTrails: {
             title: "🚶‍♂️ Yürüyüş Rotaları (12)",
             trails: [
@@ -305,7 +306,13 @@ export default function RoutesPage({
               { id: "Y03", name: "Ayder – Huser – Ayder", distance: "14 km" },
               { id: "Y04", name: "Ayder – Huser – Çamyatak – Peryatak – Çise – Kuntz – Ayder", distance: "19 km" },
               { id: "Y05", name: "Kavrun – Göller – Öküzyatağı – Kavrun", distance: "12,5 km" },
-              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" }
+              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" },
+              { id: "Y07", name: "Amlakit – Kotençur – Palovit – Amlakit", distance: "11 km" },
+              { id: "Y08", name: "Amlakit – Samistal – Hazindak – Amlakit", distance: "15 km" },
+              { id: "Y09", name: "Şimşir Ormanı – Meydanköy – Gito – Şimşir Ormanı", distance: "22 km" },
+              { id: "Y10", name: "Cinciva – Ülkü Köyü – Cinciva", distance: "8,5 km" },
+              { id: "Y11", name: "Ayder – Huser – A.Kaçkar – Didingola – Dadala – Avusor – Ayder", distance: "40 km" },
+              { id: "Y12", name: "Ayder – Hazindak – Ayder", distance: "9 km" }
             ]
           },
           runningCyclingTrails: {
@@ -324,6 +331,7 @@ export default function RoutesPage({
         return {
           title: "Suivez les Sentiers",
           description: "Les montagnes Kaçkar offrent certains des sentiers les plus remarquables de Turquie pour la randonnée, la course et le vélo. À travers des chemins forestiers, des pistes pavées, des lacs glaciaires et des plateaux, chaque itinéraire promet une expérience inspirante où la nature et la culture se rencontrent. En chemin, vous découvrirez des ponts de pierre historiques, des mers de nuages, des festivals et la cuisine locale.",
+          description2: "Chaque parcours s'adresse à un niveau différent : des promenades quotidiennes aux treks de plusieurs jours, des explorations familiales aux itinéraires en altitude pour les alpinistes et coureurs expérimentés. Idéal pour la randonnée et le vélo en été, les sentiers offrent également des possibilités de randonnée sur neige et d'aventure en hiver.",
           hikingTrails: {
             title: "Itinéraires de randonnée (12)",
             trails: [
@@ -332,7 +340,13 @@ export default function RoutesPage({
               { id: "Y03", name: "Ayder – Huser – Ayder", distance: "14 km" },
               { id: "Y04", name: "Ayder – Huser – Çamyatak – Peryatak – Çise – Kuntz – Ayder", distance: "19 km" },
               { id: "Y05", name: "Kavrun – Göller – Öküzyatağı – Kavrun", distance: "12,5 km" },
-              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" }
+              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" },
+              { id: "Y07", name: "Amlakit – Kotençur – Palovit – Amlakit", distance: "11 km" },
+              { id: "Y08", name: "Amlakit – Samistal – Hazindak – Amlakit", distance: "15 km" },
+              { id: "Y09", name: "Şimşir Ormanı – Meydanköy – Gito – Şimşir Ormanı", distance: "22 km" },
+              { id: "Y10", name: "Cinciva – Ülkü Köyü – Cinciva", distance: "8,5 km" },
+              { id: "Y11", name: "Ayder – Huser – A.Kaçkar – Didingola – Dadala – Avusor – Ayder", distance: "40 km" },
+              { id: "Y12", name: "Ayder – Hazindak – Ayder", distance: "9 km" }
             ]
           },
           runningCyclingTrails: {
@@ -351,6 +365,7 @@ export default function RoutesPage({
         return {
           title: "Folgen Sie den Pfaden",
           description: "Das Kaçkar-Gebirge bietet einige der bemerkenswertesten Routen der Türkei zum Wandern, Laufen und Radfahren. Durch Waldpfade, gepflasterte Wege, Gletscherseen und Hochplateaus verspricht jede Route ein inspirierendes Erlebnis, bei dem sich Natur und Kultur begegnen. Unterwegs stoßen Sie auf historische Steinbrücken, Wolkenmeere, Feste und regionale Küche.",
+          description2: "Jede Strecke richtet sich an ein anderes Niveau: von kurzen Tageswanderungen bis zu anspruchsvollen Mehrtagestouren, von familienfreundlichen Erkundungen bis zu Hochgebirgsrouten für erfahrene Bergsteiger und Läufer. Im Sommer ideal zum Wandern und Radfahren, im Winter bieten die Wege auch Möglichkeiten für Schneewanderungen und Abenteuer.",
           hikingTrails: {
             title: "Wanderwege (12)",
             trails: [
@@ -359,7 +374,13 @@ export default function RoutesPage({
               { id: "Y03", name: "Ayder – Huser – Ayder", distance: "14 km" },
               { id: "Y04", name: "Ayder – Huser – Çamyatak – Peryatak – Çise – Kuntz – Ayder", distance: "19 km" },
               { id: "Y05", name: "Kavrun – Göller – Öküzyatağı – Kavrun", distance: "12,5 km" },
-              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" }
+              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" },
+              { id: "Y07", name: "Amlakit – Kotençur – Palovit – Amlakit", distance: "11 km" },
+              { id: "Y08", name: "Amlakit – Samistal – Hazindak – Amlakit", distance: "15 km" },
+              { id: "Y09", name: "Şimşir Ormanı – Meydanköy – Gito – Şimşir Ormanı", distance: "22 km" },
+              { id: "Y10", name: "Cinciva – Ülkü Köyü – Cinciva", distance: "8,5 km" },
+              { id: "Y11", name: "Ayder – Huser – A.Kaçkar – Didingola – Dadala – Avusor – Ayder", distance: "40 km" },
+              { id: "Y12", name: "Ayder – Hazindak – Ayder", distance: "9 km" }
             ]
           },
           runningCyclingTrails: {
@@ -378,6 +399,7 @@ export default function RoutesPage({
         return {
           title: "Follow the Trails",
           description: "The Kaçkar Mountains offer some of Türkiye's most remarkable trails for hiking, running and cycling. Through forest paths, cobblestone tracks, glacial lakes and high plateaus, each route promises an inspiring experience where nature and culture meet. Along the way, you'll find historic stone bridges, sea-of-cloud views, festivals, and local cuisine.",
+          description2: "Each trail caters to a different level: from short daily hikes to challenging multi-day treks, from family-friendly explorations to high-altitude routes for experienced mountaineers and runners. Ideal for hiking and cycling in summer, the routes also open doors to snow trekking and adventure in winter.",
           hikingTrails: {
             title: "Hiking Trails (12)",
             trails: [
@@ -386,7 +408,13 @@ export default function RoutesPage({
               { id: "Y03", name: "Ayder – Huser – Ayder", distance: "14 km" },
               { id: "Y04", name: "Ayder – Huser – Çamyatak – Peryatak – Çise – Kuntz – Ayder", distance: "19 km" },
               { id: "Y05", name: "Kavrun – Göller – Öküzyatağı – Kavrun", distance: "12,5 km" },
-              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" }
+              { id: "Y06", name: "Kavrun – Asit – Apivanak – Palovit – Amlakit – Samistal – Kavrun", distance: "27 km" },
+              { id: "Y07", name: "Amlakit – Kotençur – Palovit – Amlakit", distance: "11 km" },
+              { id: "Y08", name: "Amlakit – Samistal – Hazindak – Amlakit", distance: "15 km" },
+              { id: "Y09", name: "Şimşir Ormanı – Meydanköy – Gito – Şimşir Ormanı", distance: "22 km" },
+              { id: "Y10", name: "Cinciva – Ülkü Köyü – Cinciva", distance: "8,5 km" },
+              { id: "Y11", name: "Ayder – Huser – A.Kaçkar – Didingola – Dadala – Avusor – Ayder", distance: "40 km" },
+              { id: "Y12", name: "Ayder – Hazindak – Ayder", distance: "9 km" }
             ]
           },
           runningCyclingTrails: {
@@ -419,9 +447,34 @@ export default function RoutesPage({
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6">
             {routeData.title}
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed">
-            {routeData.description}
-          </p>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-base sm:text-lg md:text-xl leading-relaxed">
+              {routeData.description}
+            </p>
+            {routeData.description2 && (
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 shadow-sm">
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-blue-800 mb-2">
+                      {locale === 'tr' ? 'Rota Seviyeleri' : 
+                       locale === 'fr' ? 'Niveaux de Parcours' :
+                       locale === 'de' ? 'Routen-Niveaus' : 'Trail Levels'}
+                    </h3>
+                    <p className="text-sm sm:text-base md:text-lg leading-relaxed text-gray-700">
+                      {routeData.description2}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
