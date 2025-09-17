@@ -499,7 +499,7 @@ export default function Home({
                             </svg>
                           </div>
                           <h3 className="text-3xl font-bold text-navy">
-                            {getLocalizedContent('Between Mountains and the Sea', 'Karadeniz\'in Kapısı', 'Entre Montagnes et Mer', 'Zwischen Bergen und Meer')}
+                            {getLocalizedContent('Between Mountains and the Sea', 'Dağ ve Deniz Arasında', 'Entre Montagnes et Mer', 'Zwischen Bergen und Meer')}
                           </h3>
                         </div>
                         <p className="text-lg text-gray-700 leading-relaxed mb-6">
