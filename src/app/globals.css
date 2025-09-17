@@ -54,6 +54,20 @@
   }
 }
 
+/* Scrolling animation for image carousel */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
 /* Enhanced 3D float animation */
 @keyframes float3D {
   0%, 100% {

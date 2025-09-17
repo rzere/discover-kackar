@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import { FacebookLogo, InstagramLogo, TwitterLogo, MapPin, Envelope, Phone } from '@phosphor-icons/react';
-import { getTranslation, type Locale } from '@/lib/utils/translations';
 
 export default function Footer() {
-  const t = useTranslations();
-  const locale = useLocale();
+  const pathname = usePathname();
+  const locale = pathname.startsWith('/en') ? 'en' : pathname.startsWith('/fr') ? 'fr' : pathname.startsWith('/de') ? 'de' : 'tr';
 
   return (
     <footer className="bg-navy text-white mt-20">
@@ -65,32 +64,47 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-6 text-white">
-              {getTranslation('categories.exploreButton', locale as Locale)}
+{locale === 'tr' ? 'Keşfet' : locale === 'fr' ? 'Explorer' : locale === 'de' ? 'Entdecken' : 'Explore'}
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link href={`/${locale}/category/nature`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Doğa & Macera' : 'Nature & Adventure'}
+{locale === 'tr' ? 'Doğa & Macera' : 
+                 locale === 'fr' ? 'Nature & Aventure' : 
+                 locale === 'de' ? 'Natur & Abenteuer' : 
+                 'Nature & Adventure'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/culture`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Kültür & Yerel Hayat' : 'Culture & Local Life'}
+{locale === 'tr' ? 'Kültür & Yerel Hayat' : 
+                 locale === 'fr' ? 'Culture & Vie Locale' : 
+                 locale === 'de' ? 'Kultur & Lokales Leben' : 
+                 'Culture & Local Life'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/gastronomy`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Gastronomi & Yerel Lezzetler' : 'Gastronomy & Local Flavours'}
+{locale === 'tr' ? 'Gastronomi & Yerel Lezzetler' : 
+                 locale === 'fr' ? 'Gastronomie & Saveurs Locales' : 
+                 locale === 'de' ? 'Gastronomie & Lokale Aromen' : 
+                 'Gastronomy & Local Flavours'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/music-dance`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Müzik & Dans' : 'Music & Dance'}
+{locale === 'tr' ? 'Müzik & Dans' : 
+                 locale === 'fr' ? 'Musique & Danse' : 
+                 locale === 'de' ? 'Musik & Tanz' : 
+                 'Music & Dance'}
                 </Link>
               </li>
               <li>
                 <Link href={`/${locale}/category/sustainable-tourism`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {locale === 'tr' ? 'Sürdürülebilir Turizm' : 'Sustainable Tourism'}
+{locale === 'tr' ? 'Sürdürülebilir Turizm' : 
+                 locale === 'fr' ? 'Tourisme Durable' : 
+                 locale === 'de' ? 'Nachhaltiger Tourismus' : 
+                 'Sustainable Tourism'}
                 </Link>
               </li>
             </ul>
@@ -99,7 +113,7 @@ export default function Footer() {
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-semibold mb-6 text-white">
-              {getTranslation('contact.contact', locale as Locale)}
+{locale === 'tr' ? 'İletişim' : locale === 'fr' ? 'Contact' : locale === 'de' ? 'Kontakt' : 'Contact'}
             </h3>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
@@ -132,10 +146,16 @@ export default function Footer() {
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
               <p className="text-gray-300 text-sm">
-                © 2024 Discover Kaçkar. {locale === 'tr' ? 'Tüm hakları saklıdır.' : 'All rights reserved.'}
+© 2024 Discover Kaçkar. {locale === 'tr' ? 'Tüm hakları saklıdır.' : 
+                 locale === 'fr' ? 'Tous droits réservés.' : 
+                 locale === 'de' ? 'Alle Rechte vorbehalten.' : 
+                 'All rights reserved.'}
               </p>
               <div className="flex items-center space-x-4 text-xs text-gray-400">
-                <span>{getTranslation('footer.subtitle', locale as Locale)}</span>
+<span>{locale === 'tr' ? 'Doğa ve macera tutkunları için' : 
+                 locale === 'fr' ? 'Pour les amateurs de nature et d\'aventure' : 
+                 locale === 'de' ? 'Für Natur- und Abenteuerliebhaber' : 
+                 'For nature and adventure enthusiasts'}</span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -143,7 +163,7 @@ export default function Footer() {
                 href={`/${locale}/contact`} 
                 className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"
               >
-                {getTranslation('contact.contactUs', locale as Locale)}
+{locale === 'tr' ? 'İletişim' : locale === 'fr' ? 'Contact' : locale === 'de' ? 'Kontakt' : 'Contact Us'}
               </Link>
               <div className="flex space-x-6">
                 <Link href="#" className="text-gray-300 hover:text-white transition-colors text-sm">

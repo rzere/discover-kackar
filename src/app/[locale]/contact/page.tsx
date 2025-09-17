@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import ContactForm from '@/components/sections/ContactForm';
 import { getImageUrl } from '@/lib/utils/imageUtils';
 import { getLocalizedText, getTranslation, type Locale } from '@/lib/utils/translations';
-import SimpleNavbar from '@/components/layout/SimpleNavbar';
+import Navbar from '@/components/layout/Navbar';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { 
   MapPin, 
@@ -95,7 +95,7 @@ export default function ContactPage({ params }: ContactPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <SimpleNavbar locale={params.locale} />
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative py-20 px-4">

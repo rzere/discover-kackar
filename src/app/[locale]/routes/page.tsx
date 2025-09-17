@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
+import { MapPin, Envelope, Phone, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
 
 // Enhanced 3D route visualization with traveling trail effects
 function RoutesScene() {
@@ -17,10 +18,10 @@ function RoutesScene() {
   }, []);
 
   return (
-    <div className="relative h-64 sm:h-80 md:h-96 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden" style={{ perspective: '1000px' }}>
+    <div className="relative h-64 sm:h-80 md:h-96 bg-primary overflow-hidden" style={{ perspective: '1000px' }}>
       {/* Enhanced 3D container with multiple layers */}
       <div className="absolute inset-0 transform-gpu" style={{ 
-        transform: `rotateX(15deg) rotateY(${animationPhase * 0.1}deg)`,
+        transform: `rotateX(15deg) rotateY(${animationPhase * 0.05}deg)`,
         transformStyle: 'preserve-3d'
       }}>
         
@@ -95,7 +96,7 @@ function RoutesScene() {
             {/* Route Points with enhanced 3D effect */}
             {[
               { x: 100, y: 200, label: "Ayder", z: 25 },
-              { x: 200, y: 100, label: "Hazindak", z: 35 },
+              { x: 200, y: 137, label: "Hazindak", z: 35 },
               { x: 300, y: 150, label: "Pokut", z: 30 },
               { x: 500, y: 120, label: "Makrevis", z: 40 },
               { x: 700, y: 150, label: "Çamlıhemşin", z: 20 }
@@ -109,7 +110,7 @@ function RoutesScene() {
                   fill="#000"
                   opacity="0.2"
                   className="sm:r-8 sm:cx-[calc(var(--x)+2px)] sm:cy-[calc(var(--y)+2px)]"
-                  style={{ transform: 'translateZ(-5px)', '--x': point.x, '--y': point.y }}
+                  style={{ transform: 'translateZ(-5px)', '--x': point.x, '--y': point.y } as React.CSSProperties}
                 />
                 {/* Main point */}
                 <circle
@@ -135,12 +136,12 @@ function RoutesScene() {
                 />
                 <text
                   x={point.x}
-                  y={point.y - 12}
+                  y={point.y - 20}
                   textAnchor="middle"
-                  className="text-[10px] sm:text-xs font-semibold fill-slate-800"
+                  className="text-[10px] sm:text-xs font-semibold fill-white"
                   style={{ 
                     transform: 'translateZ(10px)',
-                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))'
+                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))'
                   }}
                 >
                   {point.label}
@@ -203,7 +204,7 @@ function RoutesScene() {
             {/* Route Points with enhanced 3D effect */}
             {[
               { x: 100, y: 250, label: "Ayder", z: 15 },
-              { x: 250, y: 300, label: "Kavrun", z: 25 },
+              { x: 250, y: 282, label: "Kavrun", z: 25 },
               { x: 400, y: 280, label: "Çat", z: 20 },
               { x: 700, y: 300, label: "Şenyuva", z: 10 }
             ].map((point, index) => (
@@ -216,7 +217,7 @@ function RoutesScene() {
                   fill="#000"
                   opacity="0.2"
                   className="sm:r-8 sm:cx-[calc(var(--x)+2px)] sm:cy-[calc(var(--y)+2px)]"
-                  style={{ transform: 'translateZ(-5px)', '--x': point.x, '--y': point.y }}
+                  style={{ transform: 'translateZ(-5px)', '--x': point.x, '--y': point.y } as React.CSSProperties}
                 />
                 {/* Main point */}
                 <circle
@@ -242,12 +243,12 @@ function RoutesScene() {
                 />
                 <text
                   x={point.x}
-                  y={point.y - 12}
+                  y={point.y - 20}
                   textAnchor="middle"
-                  className="text-[10px] sm:text-xs font-semibold fill-slate-800"
+                  className="text-[10px] sm:text-xs font-semibold fill-white"
                   style={{ 
                     transform: 'translateZ(10px)',
-                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))'
+                    filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))'
                   }}
                 >
                   {point.label}
@@ -257,25 +258,6 @@ function RoutesScene() {
           </svg>
         </div>
 
-        {/* Atmospheric depth elements - hidden on mobile for performance */}
-        <div className="hidden sm:block absolute top-16 left-16 w-3 h-3 bg-green-300 rounded-full opacity-40" 
-             style={{ 
-               animation: `float3D 4s ease-in-out infinite`,
-               transform: 'translateZ(50px)',
-               filter: 'blur(1px)'
-             }}></div>
-        <div className="hidden sm:block absolute top-24 right-24 w-2 h-2 bg-blue-300 rounded-full opacity-40" 
-             style={{ 
-               animation: `float3D 5s ease-in-out infinite 1.5s`,
-               transform: 'translateZ(45px)',
-               filter: 'blur(1px)'
-             }}></div>
-        <div className="hidden sm:block absolute bottom-24 left-1/3 w-1.5 h-1.5 bg-slate-300 rounded-full opacity-40" 
-             style={{ 
-               animation: `float3D 6s ease-in-out infinite 3s`,
-               transform: 'translateZ(40px)',
-               filter: 'blur(1px)'
-             }}></div>
       </div>
     </div>
   );
@@ -287,6 +269,27 @@ export default function RoutesPage({
   params: { locale: string };
 }) {
   const locale = params.locale;
+  const [footerData, setFooterData] = useState<any>(null);
+  const isEnglish = locale === 'en';
+
+  // Fetch footer data
+  useEffect(() => {
+    const fetchFooterData = async () => {
+      try {
+        const response = await fetch(`/api/public/footer?locale=${locale}`);
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            setFooterData(result.data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching footer data:', error);
+      }
+    };
+    
+    fetchFooterData();
+  }, [locale]);
 
   const getRouteData = () => {
     switch (locale) {
@@ -411,7 +414,7 @@ export default function RoutesPage({
       <RoutesScene />
       
       {/* Hero Section */}
-      <div className="bg-slate-100 text-slate-800 py-12 sm:py-20">
+      <div className="bg-white text-slate-800 py-12 sm:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6">
             {routeData.title}
@@ -458,6 +461,199 @@ export default function RoutesPage({
                   <span className="text-slate-700 font-bold text-sm sm:text-base">{trail.distance}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Dynamic Footer */}
+      <footer className="bg-navy text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            {/* Company Info */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center mb-4">
+                <img
+                  src="/logos/logo-main.png"
+                  alt="Discover Kaçkar"
+                  className="h-12 w-auto mr-3"
+                  onError={(e) => {
+                    console.log('Footer logo failed to load, trying UTMB logo');
+                    e.currentTarget.src = '/logos/logo-UTMB.png';
+                  }}
+                />
+                <h3 className="text-xl font-bold">
+                  {footerData?.company_name || 'Discover Kaçkar'}
+                </h3>
+              </div>
+              <p className="text-gray-300 mb-6 max-w-md">
+                {footerData?.company_description || (isEnglish 
+                  ? 'Discover the breathtaking beauty of the Kaçkar Mountains through our comprehensive travel guide.' 
+                  : 'Kapsamlı seyahat rehberimiz aracılığıyla Kaçkar Dağları\'nın nefes kesen güzelliğini keşfedin.')}
+              </p>
+              <div className="flex space-x-4">
+                {footerData?.social_links?.facebook && (
+                  <a href={footerData.social_links.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Facebook">
+                    <FacebookLogo size={20} />
+                  </a>
+                )}
+                {footerData?.social_links?.instagram && (
+                  <a href={footerData.social_links.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Instagram">
+                    <InstagramLogo size={20} />
+                  </a>
+                )}
+                {footerData?.social_links?.twitter && (
+                  <a href={footerData.social_links.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="Twitter">
+                    <TwitterLogo size={20} />
+                  </a>
+                )}
+                {footerData?.social_links?.youtube && (
+                  <a href={footerData.social_links.youtube} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors p-1.5 sm:p-2 rounded-lg hover:bg-white/10" title="YouTube">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4">
+                {isEnglish ? 'Quick Links' : 'Hızlı Bağlantılar'}
+              </h4>
+              <ul className="space-y-2">
+                {footerData?.quick_links && footerData.quick_links.length > 0 ? (
+                  footerData.quick_links.map((link: any, index: number) => (
+                    <li key={index}>
+                      <a 
+                        href={link.url} 
+                        className="text-gray-300 hover:text-white transition-colors text-sm"
+                      >
+                        {isEnglish ? link.title_en : link.title_tr}
+                      </a>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li><a href={`/${locale}`} className="text-gray-300 hover:text-white transition-colors text-sm">{isEnglish ? 'Home' : 'Ana Sayfa'}</a></li>
+                    <li><a href={`/${locale}/contact`} className="text-gray-300 hover:text-white transition-colors text-sm">{isEnglish ? 'Contact' : 'İletişim'}</a></li>
+                  </>
+                )}
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h4 className="text-lg font-semibold mb-4">
+                {isEnglish ? 'Contact Info' : 'İletişim Bilgileri'}
+              </h4>
+              <div className="space-y-3">
+                {footerData?.address && (
+                  <div className="flex items-start space-x-2">
+                    <MapPin size={16} className="text-gray-400 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-300 text-sm">
+                      {footerData.address}
+                    </span>
+                  </div>
+                )}
+                {footerData?.email && (
+                  <div className="flex items-center space-x-2">
+                    <Envelope size={16} className="text-gray-400 flex-shrink-0" />
+                    <a href={`mailto:${footerData.email}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {footerData.email}
+                    </a>
+                  </div>
+                )}
+                {footerData?.phone && (
+                  <div className="flex items-center space-x-2">
+                    <Phone size={16} className="text-gray-400 flex-shrink-0" />
+                    <a href={`tel:${footerData.phone}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                      {footerData.phone}
+                    </a>
+                  </div>
+                )}
+                {!footerData && (
+                  <div className="text-gray-300 text-sm">
+                    <p>{isEnglish ? 'Contact us for more information' : 'Daha fazla bilgi için bizimle iletişime geçin'}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Footer */}
+          <div className="border-t border-gray-700 pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+              <div className="text-sm text-gray-400">
+                {footerData?.copyright_text || `© ${new Date().getFullYear()} Discover Kaçkar. ${isEnglish ? 'All rights reserved.' : 'Tüm hakları saklıdır.'}`}
+              </div>
+              <div className="flex flex-wrap justify-center lg:justify-end space-x-4 sm:space-x-6">
+                {footerData?.legal_links && footerData.legal_links.length > 0 ? (
+                  footerData.legal_links.map((link: any, index: number) => (
+                    <a 
+                      key={index}
+                      href={link.url} 
+                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                    >
+                      {isEnglish ? link.title_en : link.title_tr}
+                    </a>
+                  ))
+                ) : (
+                  <>
+                    <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">{isEnglish ? 'Privacy Policy' : 'Gizlilik Politikası'}</a>
+                    <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">{isEnglish ? 'Terms of Service' : 'Hizmet Şartları'}</a>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Partner Logos Strip */}
+      <div className="bg-white py-6 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 lg:space-x-12">
+            {/* Rize Valiliği Logo */}
+            <div className="flex items-center justify-center">
+              <img 
+                src="/logos/logo_rizevaliligi.png" 
+                alt="Rize Valiliği" 
+                className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ maxWidth: '150px' }}
+                onError={(e) => {
+                  console.log('Rize Valiliği logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+            {/* Çamlıhemşin Kaymakamlığı Logo */}
+            <div className="flex items-center justify-center">
+              <img 
+                src="/logos/logo_camlihemsin_kaymakam.png" 
+                alt="Çamlıhemşin Kaymakamlığı" 
+                className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ maxWidth: '150px' }}
+                onError={(e) => {
+                  console.log('Çamlıhemşin Kaymakamlığı logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            </div>
+            {/* DOKA Logo */}
+            <div className="flex items-center justify-center">
+              <img 
+                src="/logos/logo_doka.png" 
+                alt="DOKA" 
+                className="h-12 sm:h-14 lg:h-16 w-auto"
+                style={{ maxWidth: '150px' }}
+                onError={(e) => {
+                  console.log('DOKA logo failed to load');
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
             </div>
           </div>
         </div>

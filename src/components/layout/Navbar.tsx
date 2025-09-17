@@ -29,12 +29,8 @@ export default function Navbar() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
 
-  // Scroll to About Rize section
-  const scrollToAbout = () => {
-    const element = document.getElementById('about-rize');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  // Navigate to About page
+  const navigateToAbout = () => {
     setIsMenuOpen(false);
   };
 
@@ -127,12 +123,12 @@ export default function Navbar() {
             </div>
             {/* About Button - Desktop Only */}
             <div className="hidden md:block">
-              <button
-                onClick={scrollToAbout}
+              <Link
+                href={`/${locale}/about`}
                 className="text-navy hover:text-primary transition-colors font-medium"
               >
                 {getAboutText()}
-              </button>
+              </Link>
             </div>
             {/* Hamburger Menu Button */}
             <button
@@ -172,19 +168,41 @@ export default function Navbar() {
 
         {/* Hamburger Menu Dropdown */}
         {isMenuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white border-b border-secondary/20 shadow-lg z-40">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {!loading && categories.map((category) => (
-                  <Link
-                    key={category.id}
-                    href={`/${locale}/category/${category.slug}`}
-                    className="block py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {category.name}
-                  </Link>
-                ))}
+          <div className="absolute top-full left-0 right-0 bg-white border-b border-secondary/20 shadow-lg z-40 max-h-[calc(100vh-5rem)] overflow-y-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              {/* Categories Section */}
+              <div className="mb-6">
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-2">
+                  {locale === 'tr' ? 'Kategoriler' : 
+                   locale === 'fr' ? 'Catégories' : 
+                   locale === 'de' ? 'Kategorien' : 
+                   'Categories'}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {!loading && categories.map((category) => (
+                    <Link
+                      key={category.id}
+                      href={`/${locale}/category/${category.slug}`}
+                      className="block py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {category.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Divider */}
+              <div className="border-t border-gray-200 my-4"></div>
+              
+              {/* Other Menu Items */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-2">
+                  {locale === 'tr' ? 'Diğer' : 
+                   locale === 'fr' ? 'Autres' : 
+                   locale === 'de' ? 'Andere' : 
+                   'Other'}
+                </h3>
                 
                 {/* Routes Link */}
                 <Link
@@ -196,12 +214,13 @@ export default function Navbar() {
                 </Link>
                 
                 {/* About Link */}
-                <button
-                  onClick={scrollToAbout}
-                  className="block w-full text-left py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
+                <Link
+                  href={`/${locale}/about`}
+                  className="block py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {getAboutText()}
-                </button>
+                </Link>
                 
                 {/* Contact Link - Primary CTA */}
                 <Link
