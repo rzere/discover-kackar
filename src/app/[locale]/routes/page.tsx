@@ -465,6 +465,24 @@ export default function RoutesPage({
           </div>
         </div>
       </div>
+
+      {/* Trails Image Section */}
+      <div className="bg-white py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <img 
+              src="/trails.jpg" 
+              alt="Kaçkar Trails" 
+              className="w-full h-auto rounded-lg shadow-lg max-w-4xl mx-auto"
+              style={{ maxHeight: '500px', objectFit: 'cover' }}
+              onError={(e) => {
+                console.log('Trails image failed to load');
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
+        </div>
+      </div>
       
       {/* Dynamic Footer */}
       <footer className="bg-navy text-white">
