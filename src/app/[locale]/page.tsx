@@ -71,6 +71,47 @@ export default function Home({
   const [loading, setLoading] = useState(true);
   const [openDistrict, setOpenDistrict] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [galleryImages, setGalleryImages] = useState<any[]>([]);
+  const [randomImages, setRandomImages] = useState<string[]>([]);
+  
+  // Generate random images when gallery images are loaded
+  useEffect(() => {
+    if (galleryImages && galleryImages.length > 0) {
+      const totalImagesNeeded = 17; // 5 carousel + 12 districts
+      const generatedImages: string[] = [];
+      
+      // If we have fewer images than needed, allow duplicates
+      if (galleryImages.length < totalImagesNeeded) {
+        for (let i = 0; i < totalImagesNeeded; i++) {
+          const randomIndex = Math.floor(Math.random() * galleryImages.length);
+          const image = galleryImages[randomIndex];
+          generatedImages.push(image?.file_path || '/images/placeholder.jpg');
+        }
+      } else {
+        // We have enough images, ensure uniqueness
+        const usedIndices = new Set<number>();
+        for (let i = 0; i < totalImagesNeeded; i++) {
+          let randomIndex;
+          do {
+            randomIndex = Math.floor(Math.random() * galleryImages.length);
+          } while (usedIndices.has(randomIndex));
+          
+          usedIndices.add(randomIndex);
+          const image = galleryImages[randomIndex];
+          generatedImages.push(image?.file_path || '/images/placeholder.jpg');
+        }
+      }
+      
+      setRandomImages(generatedImages);
+    }
+  }, [galleryImages]);
+  
+  const getRandomImage = (index: number): string => {
+    if (randomImages.length === 0) {
+      return '/images/placeholder.jpg';
+    }
+    return randomImages[index % randomImages.length];
+  };
   const imageSize = useImageSize();
 
   // Fetch page data and categories from API routes
@@ -181,6 +222,24 @@ export default function Home({
 
     fetchData();
   }, [params.locale]);
+
+  // Fetch visible gallery images for dynamic usage in carousel and districts
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        const res = await fetch('/api/public/images');
+        const json = await res.json();
+        if (res.ok && Array.isArray(json.data)) {
+          setGalleryImages(json.data);
+        } else {
+          setGalleryImages([]);
+        }
+      } catch (e) {
+        setGalleryImages([]);
+      }
+    };
+    fetchGalleryImages();
+  }, []);
   
   // OPTIMIZED: Get hero images with lazy loading
   const heroImages = [
@@ -454,7 +513,7 @@ export default function Home({
                       </div>
                       <div className="relative">
                         <img 
-                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg" 
+                          src={getRandomImage(0)}
                           alt={isEnglish ? 'Rize Gate of Blacksea' : 'Rize Karadeniz Kapısı'}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
@@ -502,7 +561,7 @@ export default function Home({
                       </div>
                       <div className="relative">
                         <img 
-                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg" 
+                          src={getRandomImage(1)}
                           alt={isEnglish ? 'Rize History and Culture' : 'Rize Tarih ve Kültür'}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
@@ -550,7 +609,7 @@ export default function Home({
                       </div>
                       <div className="relative">
                         <img 
-                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0069-Pano-2.jpg" 
+                          src={getRandomImage(2)}
                           alt={isEnglish ? 'Rize Plateaus' : 'Rize Yaylaları'}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
@@ -598,7 +657,7 @@ export default function Home({
                       </div>
                       <div className="relative">
                         <img 
-                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0043-2.jpg" 
+                          src={getRandomImage(3)}
                           alt={isEnglish ? 'Rize Nature and Adventure' : 'Rize Doğa ve Macera'}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
@@ -646,7 +705,7 @@ export default function Home({
                       </div>
                       <div className="relative">
                         <img 
-                          src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0050-2.jpg" 
+                          src={getRandomImage(4)}
                           alt={isEnglish ? 'Rize Tea Capital' : 'Rize Çay Başkenti'}
                           className="w-full h-96 object-cover rounded-xl shadow-lg"
                         />
@@ -780,8 +839,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0069-Pano-2.jpg" 
+                        <img 
+                          src={getRandomImage(5)}
                         alt="Çamlıhemşin"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -827,8 +886,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0098-2.jpg" 
+                        <img 
+                          src={getRandomImage(6)}
                         alt="Ardeşen"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -874,8 +933,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg" 
+                        <img 
+                          src={getRandomImage(7)}
                         alt="Pazar"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -920,8 +979,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00174-2.jpg" 
+                        <img 
+                          src={getRandomImage(8)}
                         alt="Fındıklı"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -967,8 +1026,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0043-2.jpg" 
+                        <img 
+                          src={getRandomImage(9)}
                         alt="Çayeli"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1014,8 +1073,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-DJI_0050-2.jpg" 
+                        <img 
+                          src={getRandomImage(10)}
                         alt="Derepazarı"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1061,8 +1120,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00159-2.jpg" 
+                        <img 
+                          src={getRandomImage(11)}
                         alt="Hemşin"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1108,8 +1167,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00219-2.jpg" 
+                        <img 
+                          src={getRandomImage(12)}
                         alt="Güneysu"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1155,8 +1214,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00230-2.jpg" 
+                        <img 
+                          src={getRandomImage(13)}
                         alt="İkizdere"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1202,8 +1261,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00439-2.jpg" 
+                        <img 
+                          src={getRandomImage(14)}
                         alt="İyidere"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1249,8 +1308,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_00781-2.jpg" 
+                        <img 
+                          src={getRandomImage(15)}
                         alt="Kalkandere"
                         className="w-full h-48 object-cover rounded-lg"
                       />
@@ -1296,8 +1355,8 @@ export default function Home({
                 <div className="px-6 pb-6 animate-fade-in-up">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <img 
-                        src="/images/Kackar_HiRes-nodumsports_moritzklee-MK_01854-2.jpg" 
+                        <img 
+                          src={getRandomImage(16)}
                         alt="Pazar"
                         className="w-full h-48 object-cover rounded-lg"
                       />
