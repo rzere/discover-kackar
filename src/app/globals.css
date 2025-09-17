@@ -44,6 +44,16 @@
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
+/* Float animation for 3D-like effects */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 /* Minimal Dark Green Theme */
 body {
   background-color: #fafafa !important; /* Off-white */

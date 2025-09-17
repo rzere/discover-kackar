@@ -48,6 +48,16 @@ export default function Navbar() {
     }
   };
 
+  // Get Routes text based on locale
+  const getRoutesText = () => {
+    switch (locale) {
+      case 'tr': return 'Rotalar';
+      case 'fr': return 'Itinéraires';
+      case 'de': return 'Routen';
+      default: return 'Routes';
+    }
+  };
+
   // Fetch categories from API
   useEffect(() => {
     const fetchCategories = async () => {
@@ -104,8 +114,17 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Right side: About + Hamburger + Language Selector */}
+          {/* Right side: Routes + About + Hamburger + Language Selector */}
           <div className="flex items-center space-x-4">
+            {/* Routes Button - Desktop Only */}
+            <div className="hidden md:block">
+              <Link
+                href={`/${locale}/routes`}
+                className="text-navy hover:text-primary transition-colors font-medium"
+              >
+                {getRoutesText()}
+              </Link>
+            </div>
             {/* About Button - Desktop Only */}
             <div className="hidden md:block">
               <button
@@ -166,6 +185,15 @@ export default function Navbar() {
                     {category.name}
                   </Link>
                 ))}
+                
+                {/* Routes Link */}
+                <Link
+                  href={`/${locale}/routes`}
+                  className="block py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {getRoutesText()}
+                </Link>
                 
                 {/* About Link */}
                 <button
