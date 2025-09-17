@@ -124,50 +124,130 @@ export default function Home({
   };
   const imageSize = useImageSize();
 
-  // ULTRA-OPTIMIZED: Single API call for all homepage data with progressive loading
+  // Fetch page data and categories from API routes
   useEffect(() => {
-    const fetchHomepageData = async () => {
+    const fetchData = async () => {
       try {
-        // Single optimized API call that fetches all data server-side
-        const response = await fetch(`/api/public/homepage-data?locale=${params.locale}`, {
-          // Add request optimization headers
-          headers: {
-            'Accept': 'application/json',
-            'Accept-Encoding': 'gzip, deflate, br',
-          },
-          // Enable keep-alive for faster subsequent requests
-          keepalive: true,
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          const { page, categories, footer, ctaCard, galleryImages } = result.data;
-          
-          // Set critical data first for faster perceived loading
-          if (page) setPageData(page);
-          if (categories) setCategories(categories);
-          
-          // Set secondary data immediately after
-          if (footer) setFooterData(footer);
-          if (ctaCard) setCtaCard(ctaCard);
-          if (galleryImages) setGalleryImages(galleryImages);
-          
-          // Stop loading as soon as critical data is set
-          setLoading(false);
-        } else {
-          console.error('Failed to fetch homepage data:', response.status);
-          setGalleryImages([]);
-          setLoading(false);
+        // Fetch all data in parallel for faster loading
+        const [pageResponse, categoriesResponse, footerResponse, ctaResponse] = await Promise.all([
+          fetch(`/api/admin/pages`), // Use admin API since public API is not working
+          fetch(`/api/public/categories?locale=${params.locale}`), // Use correct locale
+          fetch(`/api/public/footer?locale=${params.locale}`), // Use correct locale
+          fetch(`/api/admin/cta-cards`) // Fetch CTA card data from admin API
+        ]);
+
+        // Process page data
+        if (pageResponse.ok) {
+          const pageResult = await pageResponse.json();
+          if (pageResult.data) {
+            // Admin API returns array, find the home page for current locale
+            const homePage = pageResult.data.find((page: any) => 
+              page.slug === 'home' && page.locale === params.locale
+            );
+            if (homePage) {
+              setPageData(homePage);
+            }
+          }
         }
+
+        // Process categories data
+        if (categoriesResponse.ok) {
+          const categoriesResult = await categoriesResponse.json();
+          let categoriesData = categoriesResult.data || [];
+          
+          // Apply Turkish translations if needed
+          if (params.locale === 'tr') {
+            const turkishTranslations: Record<string, { name: string; description: string }> = {
+              'nature': { name: 'Doğa & Macera', description: 'Kaçkar\'ın vadilerinden zirvelerine uzanan patikalarda doğanın saf gücünü keşfedin.' },
+              'culture': { name: 'Kültür & Yerel Hayat', description: 'Yaylaların, konakların ve köklü geleneklerin içten hikâyesine tanık olun.' },
+              'gastronomy': { name: 'Gastronomi & Yerel Lezzetler', description: 'Coğrafi işaretli ürünler ve unutulmaz lezzetlerle Kaçkar\'ın tadına varın.' },
+              'adventure': { name: 'Macera', description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin dolu aktiviteler' },
+              'accommodation': { name: 'Konaklama', description: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri' },
+              'transportation': { name: 'Ulaşım', description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler' },
+              'music-dance': { name: 'Müzik & Dans', description: 'Tulumun sesi ve horonun ritmiyle Karadeniz\'in ruhunu hissedin.' },
+              'sustainable-tourism': { name: 'Sürdürülebilir Turizm', description: 'Doğaya saygılı, yerel halka faydalı bir keşif yolculuğu.' },
+              'health-wellness': { name: 'Sağlık & Wellness', description: 'Yaylaların temiz havasında ruhunuzu ve bedeninizi yenileyin.' },
+              'photography-art': { name: 'Fotoğraf & Sanat', description: 'Mevsimlerin ışığıyla şekillenen eşsiz manzaraları yakalayın.' },
+              'educational-research': { name: 'Eğitim & Araştırma Turizmi', description: 'Endemik bitkilerden buzul göllerine uzanan canlı bir laboratuvar.' },
+              'events-festivals': { name: 'Etkinlik & Festivaller', description: 'Yayla şenliklerinden çay hasadına, coşkulu kutlamalara katılın.' }
+            };
+            
+            categoriesData = categoriesData.map((cat: Category) => {
+              if (turkishTranslations[cat.slug]) {
+                const translation = turkishTranslations[cat.slug];
+                return {
+                  ...cat,
+                  name: translation.name,
+                  description: translation.description,
+                  locale: 'tr'
+                };
+              }
+              return cat;
+            });
+          }
+          
+          setCategories(categoriesData);
+        }
+
+        // Process footer data
+        if (footerResponse.ok) {
+          const footerResult = await footerResponse.json();
+          if (footerResult.data) {
+            setFooterData(footerResult.data);
+          }
+        }
+
+        // Process CTA card data
+        if (ctaResponse.ok) {
+          const ctaResult = await ctaResponse.json();
+          if (ctaResult.data && ctaResult.data.length > 0) {
+            // Find the plan-your-trip card from the admin API response
+            const planYourTripCard = ctaResult.data.find((card: any) => card.slug === 'plan-your-trip');
+            if (planYourTripCard) {
+              // Transform admin API format to frontend format
+              const transformedCard = {
+                id: planYourTripCard.id,
+                slug: planYourTripCard.slug,
+                title: planYourTripCard.title[params.locale] || planYourTripCard.title.en,
+                description: planYourTripCard.description?.[params.locale] || planYourTripCard.description?.en,
+                buttonText: planYourTripCard.button_text[params.locale] || planYourTripCard.button_text.en,
+                buttonUrl: planYourTripCard.button_url,
+                isActive: planYourTripCard.is_active,
+              };
+              setCtaCard(transformedCard);
+            }
+          }
+        } else {
+          console.error('CTA API Error:', ctaResponse.status, await ctaResponse.text());
+        }
+
       } catch (error) {
-        console.error('Error fetching homepage data:', error);
-        setGalleryImages([]);
+        console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchHomepageData();
+    fetchData();
   }, [params.locale]);
+
+  // Fetch visible gallery images for dynamic usage in carousel and districts
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        const res = await fetch('/api/public/images');
+        const json = await res.json();
+        if (res.ok && Array.isArray(json.data)) {
+          setGalleryImages(json.data);
+        } else {
+          setGalleryImages([]);
+        }
+      } catch (e) {
+        setGalleryImages([]);
+      }
+    };
+    fetchGalleryImages();
+  }, []);
   
   // OPTIMIZED: Get hero images with lazy loading
   const heroImages = [
