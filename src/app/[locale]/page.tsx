@@ -462,7 +462,7 @@ export default function Home({
       </section>
 
       {/* Rize Introduction Carousel */}
-      <section id="discover-rize" className="py-20 px-4 bg-white">
+      <section id="about-rize" className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
@@ -1795,28 +1795,23 @@ export default function Home({
                 </h4>
                 <ul className="space-y-2 sm:space-y-3">
                   {footerData?.quick_links && footerData.quick_links.length > 0 ? (
-                    footerData.quick_links.map((link: any, index: number) => {
-                      // Disable About and Blog links but keep them visible
-                      const isDisabled = link.title?.toLowerCase().includes('about') || 
-                                       link.title?.toLowerCase().includes('blog') ||
-                                       link.title?.toLowerCase().includes('hakkında') ||
-                                       link.title?.toLowerCase().includes('hakkımızda') ||
-                                       link.title?.toLowerCase().includes('blok');
-                      
-                      return (
+                    footerData.quick_links
+                      .filter((link: any) => {
+                        // Filter out Blog and About links completely
+                        const title = link.title?.toLowerCase() || '';
+                        return !title.includes('blog') && 
+                               !title.includes('blok') &&
+                               !title.includes('about') && 
+                               !title.includes('hakkında') &&
+                               !title.includes('hakkımızda');
+                      })
+                      .map((link: any, index: number) => (
                         <li key={index}>
-                          {isDisabled ? (
-                            <span className="text-gray-300 text-sm cursor-not-allowed opacity-60">
-                              {link.title}
-                            </span>
-                          ) : (
-                            <Link href={`/${params.locale}${link.url}`} className="text-gray-300 hover:text-white transition-colors text-sm">
-                              {link.title}
-                            </Link>
-                          )}
+                          <Link href={`/${params.locale}${link.url}`} className="text-gray-300 hover:text-white transition-colors text-sm">
+                            {link.title}
+                          </Link>
                         </li>
-                      );
-                    })
+                      ))
                   ) : (
                     <>
                       <li>
@@ -1923,6 +1918,17 @@ export default function Home({
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('about-rize');
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-white transition-colors text-sm font-medium px-6 py-2 rounded-lg border border-gray-600 hover:border-white"
+                >
+                  {isEnglish ? 'About' : 'Hakkımızda'}
+                </button>
                 <Link 
                   href={`/${params.locale}/contact`} 
                   className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm"

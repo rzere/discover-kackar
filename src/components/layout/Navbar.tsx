@@ -29,9 +29,9 @@ export default function Navbar() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
 
-  // Scroll to Discover Rize section
+  // Scroll to About Rize section
   const scrollToAbout = () => {
-    const element = document.getElementById('discover-rize');
+    const element = document.getElementById('about-rize');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -166,6 +166,14 @@ export default function Navbar() {
                     {category.name}
                   </Link>
                 ))}
+                
+                {/* About Link */}
+                <button
+                  onClick={scrollToAbout}
+                  className="block w-full text-left py-3 px-4 text-gray-800 hover:text-primary hover:bg-primary/5 transition-colors rounded-lg font-medium"
+                >
+                  {getAboutText()}
+                </button>
                 
                 {/* Contact Link - Primary CTA */}
                 <Link
