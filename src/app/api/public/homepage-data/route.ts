@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
 
     // Process subcategories and images
     if (subcategoriesResult.status === 'fulfilled' && !subcategoriesResult.value.error) {
-      const subcategoriesData = subcategoriesResult.value.data || [];
+      const subcategoriesData: any[] = subcategoriesResult.value.data || [];
       
       // Create a map of subcategories by category slug
       const subcategoriesMap = new Map();
@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
           .in('id', Array.from(allImageIds));
         
         if (images) {
-          images.forEach(img => imagesMap.set(img.id, img));
+          images.forEach((img: any) => imagesMap.set(img.id, img));
         }
       }
 
@@ -178,8 +178,8 @@ export async function GET(request: NextRequest) {
     // Process CTA card data
     let ctaCard: any = null;
     if (ctaResult.status === 'fulfilled' && !ctaResult.value.error) {
-      const ctaCards = ctaResult.value.data || [];
-      const planYourTripCard = ctaCards.find((card: any) => card.slug === 'plan-your-trip');
+      const ctaCards: any[] = ctaResult.value.data || [];
+      const planYourTripCard: any = ctaCards.find((card: any) => card.slug === 'plan-your-trip');
       if (planYourTripCard) {
         ctaCard = {
           id: planYourTripCard.id,
