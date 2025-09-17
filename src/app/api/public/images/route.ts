@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('images')
       .select('*')
-      .eq('is_visible', true) // Only return visible images
+      .eq('is_visible', true) // Only return images explicitly marked as visible
       .order('created_at', { ascending: false });
 
     // Filter by category if provided and valid
