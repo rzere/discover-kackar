@@ -476,6 +476,265 @@ export default function Home({
         </div>
       </section>
 
+            {/* Categories Section */}
+            <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
+              {content.categories_title || getTranslation('categories.title', locale)}
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {content.categories_description || getTranslation('categories.description', locale)}
+            </p>
+          </div>
+
+          {/* Category Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <Link key={category.id} href={`/${params.locale}/category/${category.slug}`} className="group">
+                  <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                    {/* Header with category image */}
+                    <div className="relative h-48 overflow-hidden">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                        style={{
+                          backgroundImage: `url(${category.hero_image?.file_path || getImageUrl(getCategoryImage(category.slug))})`
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Category Title Below Image */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-serif font-bold text-navy mb-3">
+                        {category.name}
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed">
+                        {category.description}
+                      </p>
+                      <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                        {getTranslation('categories.exploreButtonWithArrow', locale)}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              // Fallback categories if no data from Supabase
+              <>
+            <Link href={`/${params.locale}/category/nature`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                  <Leaf size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Nature' : 'Doğa'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'Pristine nature of Kaçkar Mountains, glacial lakes, endemic flora and breathtaking landscapes'
+                      : 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları'
+                    }
+                  </p>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Culture Category */}
+            <Link href={`/${params.locale}/category/culture`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                  <Users size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Culture' : 'Kültür'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'Multicultural heritage, historic villages, traditional architecture and ancient traditions'
+                      : 'Çok kültürlü miras, tarihi köyler, geleneksel mimarisi ve kadim gelenekler'
+                    }
+                  </p>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Historic Villages' : 'Tarihi Köyler'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Traditional Architecture' : 'Geleneksel Mimarisi'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Cultural Festivals' : 'Kültürel Festivaller'}
+                    </div>
+                  </div>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Gastronomy Category */}
+            <Link href={`/${params.locale}/category/gastronomy`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center">
+                  <ForkKnife size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Gastronomy' : 'Gastronomi'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'Flavors of Black Sea cuisine, local products, traditional dishes and organic tastes'
+                      : 'Karadeniz mutfağının lezzetleri, yerel ürünler, geleneksel yemekler ve organik tatlar'
+                    }
+                  </p>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Black Sea Cuisine' : 'Karadeniz Mutfağı'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Organic Products' : 'Organik Ürünler'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Traditional Flavors' : 'Geleneksel Tatlar'}
+                    </div>
+                  </div>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Adventure Category */}
+            <Link href={`/${params.locale}/category/adventure`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                  <Mountains size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Adventure' : 'Macera'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'Trekking, mountaineering, highland tours, camping experiences and adrenaline activities'
+                      : 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin dolu aktiviteler'
+                    }
+                  </p>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Trekking Routes' : 'Trekking Rotaları'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Mountaineering' : 'Dağcılık'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Highland Tours' : 'Yayla Turları'}
+                    </div>
+                  </div>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Accommodation Category */}
+            <Link href={`/${params.locale}/category/accommodation`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
+                  <House size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Accommodation' : 'Konaklama'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'Traditional guesthouses, highland houses, camping sites and comfortable accommodation options'
+                      : 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri'
+                    }
+                  </p>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Traditional Guesthouses' : 'Geleneksel Pansiyonlar'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Highland Houses' : 'Yayla Evleri'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Camping Sites' : 'Kamp Alanları'}
+                    </div>
+                  </div>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            {/* Transportation Category */}
+            <Link href={`/${params.locale}/category/transportation`} className="group">
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
+                <div className="h-32 bg-gradient-to-br from-gray-500 to-slate-600 flex items-center justify-center">
+                  <Car size={48} className="text-white" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
+                    {isEnglish ? 'Transportation' : 'Ulaşım'}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {isEnglish 
+                      ? 'How to reach Kaçkar, local transportation, transfer services and practical information'
+                      : 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler'
+                    }
+                  </p>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Flight Connections' : 'Havayolu Bağlantıları'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Bus Services' : 'Otobüs Seferleri'}
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
+                      {isEnglish ? 'Local Transfers' : 'Yerel Transfer'}
+                    </div>
+                  </div>
+                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
+                    {getTranslation('categories.exploreButtonWithArrow', locale)}
+                  </div>
+                </div>
+              </div>
+            </Link>
+              </>
+            )}
+          </div>
+
+        </div>
+      </section>
+
       {/* Rize Introduction Carousel */}
       <section id="about-rize" className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -1549,264 +1808,13 @@ export default function Home({
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-gray-50">
+      {/* Image Gallery Section */}
+      <ImageGallery />
+
+      {/* Call to Action */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">
-              {content.categories_title || getTranslation('categories.title', locale)}
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {content.categories_description || getTranslation('categories.description', locale)}
-            </p>
-          </div>
-
-          {/* Category Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <Link key={category.id} href={`/${params.locale}/category/${category.slug}`} className="group">
-                  <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                    {/* Header with category image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                        style={{
-                          backgroundImage: `url(${category.hero_image?.file_path || getImageUrl(getCategoryImage(category.slug))})`
-                        }}
-                      />
-                    </div>
-                    
-                    {/* Category Title Below Image */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-serif font-bold text-navy mb-3">
-                        {category.name}
-                      </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed">
-                        {category.description}
-                      </p>
-                      <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                        {getTranslation('categories.exploreButtonWithArrow', locale)}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              // Fallback categories if no data from Supabase
-              <>
-            <Link href={`/${params.locale}/category/nature`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                  <Leaf size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Nature' : 'Doğa'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'Pristine nature of Kaçkar Mountains, glacial lakes, endemic flora and breathtaking landscapes'
-                      : 'Kaçkar Dağları\'nın pristine doğası, buzul gölleri, endemik bitki örtüsü ve muhteşem manzaraları'
-                    }
-                  </p>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {getTranslation('categories.exploreButtonWithArrow', locale)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Culture Category */}
-            <Link href={`/${params.locale}/category/culture`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                  <Users size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Culture' : 'Kültür'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'Multicultural heritage, historic villages, traditional architecture and ancient traditions'
-                      : 'Çok kültürlü miras, tarihi köyler, geleneksel mimarisi ve kadim gelenekler'
-                    }
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Historic Villages' : 'Tarihi Köyler'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Traditional Architecture' : 'Geleneksel Mimarisi'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Cultural Festivals' : 'Kültürel Festivaller'}
-                    </div>
-                  </div>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {getTranslation('categories.exploreButtonWithArrow', locale)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Gastronomy Category */}
-            <Link href={`/${params.locale}/category/gastronomy`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center">
-                  <ForkKnife size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Gastronomy' : 'Gastronomi'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'Flavors of Black Sea cuisine, local products, traditional dishes and organic tastes'
-                      : 'Karadeniz mutfağının lezzetleri, yerel ürünler, geleneksel yemekler ve organik tatlar'
-                    }
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Black Sea Cuisine' : 'Karadeniz Mutfağı'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Organic Products' : 'Organik Ürünler'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Traditional Flavors' : 'Geleneksel Tatlar'}
-                    </div>
-                  </div>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {getTranslation('categories.exploreButtonWithArrow', locale)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Adventure Category */}
-            <Link href={`/${params.locale}/category/adventure`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                  <Mountains size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Adventure' : 'Macera'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'Trekking, mountaineering, highland tours, camping experiences and adrenaline activities'
-                      : 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin dolu aktiviteler'
-                    }
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Trekking Routes' : 'Trekking Rotaları'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Mountaineering' : 'Dağcılık'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Highland Tours' : 'Yayla Turları'}
-                    </div>
-                  </div>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {getTranslation('categories.exploreButtonWithArrow', locale)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Accommodation Category */}
-            <Link href={`/${params.locale}/category/accommodation`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
-                  <House size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Accommodation' : 'Konaklama'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'Traditional guesthouses, highland houses, camping sites and comfortable accommodation options'
-                      : 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri'
-                    }
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Traditional Guesthouses' : 'Geleneksel Pansiyonlar'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Highland Houses' : 'Yayla Evleri'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Camping Sites' : 'Kamp Alanları'}
-                    </div>
-                  </div>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {getTranslation('categories.exploreButtonWithArrow', locale)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-
-            {/* Transportation Category */}
-            <Link href={`/${params.locale}/category/transportation`} className="group">
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 group-hover:border-primary/30">
-                <div className="h-32 bg-gradient-to-br from-gray-500 to-slate-600 flex items-center justify-center">
-                  <Car size={48} className="text-white" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-serif text-navy mb-3 group-hover:text-primary transition-colors">
-                    {isEnglish ? 'Transportation' : 'Ulaşım'}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {isEnglish 
-                      ? 'How to reach Kaçkar, local transportation, transfer services and practical information'
-                      : 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler'
-                    }
-                  </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Flight Connections' : 'Havayolu Bağlantıları'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Bus Services' : 'Otobüs Seferleri'}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <div className="w-2 h-2 bg-primary/60 rounded-full mr-3"></div>
-                      {isEnglish ? 'Local Transfers' : 'Yerel Transfer'}
-                    </div>
-                  </div>
-                  <div className="text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
-                    {getTranslation('categories.exploreButtonWithArrow', locale)}
-                  </div>
-                </div>
-              </div>
-            </Link>
-              </>
-            )}
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center mt-16">
+          <div className="text-center">
             <div className="bg-white rounded-2xl shadow-xl p-8 max-w-4xl mx-auto border border-gray-100">
               <div className="flex justify-center mb-6">
                 <Heart size={48} className="text-primary" />
@@ -1836,9 +1844,6 @@ export default function Home({
           </div>
         </div>
       </section>
-
-      {/* Image Gallery Section */}
-      <ImageGallery />
 
       {/* Professional Footer */}
       <footer className="bg-navy text-white">
