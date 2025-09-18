@@ -264,7 +264,7 @@ export default function Home({
       // Preload first 3 hero images in parallel
       const preloadPromises = heroImages.slice(0, 3).map(image => {
         return new Promise<void>((resolve) => {
-          const img = new window.Image();
+      const img = new window.Image();
           img.onload = () => resolve();
           img.onerror = () => resolve(); // Don't fail on image load errors
           img.src = getImageUrl(image, imageSize);
@@ -288,9 +288,9 @@ export default function Home({
         // Preload next 2 images in background for smooth transitions
         [nextIndex, nextNextIndex].forEach(index => {
           if (heroImages[index]) {
-            const img = new window.Image();
+          const img = new window.Image();
             img.src = getImageUrl(heroImages[index], imageSize);
-          }
+        }
         });
         
         return nextIndex;
@@ -762,17 +762,17 @@ export default function Home({
               >
                 {/* Slide 1: Gate of Blacksea */}
                 <div className="w-full flex-shrink-0">
-                  <div className="bg-gradient-to-r from-slate-50 to-gray-50 p-12 rounded-2xl border border-slate-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="bg-gradient-to-r from-slate-50 to-gray-50 p-6 sm:p-8 lg:p-12 rounded-2xl border border-slate-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
                       <div>
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="w-16 h-16 bg-slate-100 rounded-xl flex items-center justify-center">
-                            <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-slate-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                           </div>
-                          <h3 className="text-3xl font-bold text-navy">
+                          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-navy">
                             {getLocalizedContent('Between Mountains and the Sea', 'Dağ ve Deniz Arasında', 'Entre Montagnes et Mer', 'Zwischen Bergen und Meer')}
                           </h3>
                         </div>
@@ -803,7 +803,7 @@ export default function Home({
                         <img 
                           src="/1.jpg"
                           alt={getLocalizedContent('Rize Between Mountains and Sea', 'Rize Karadeniz Kapısı', 'Rize Entre Montagnes et Mer', 'Rize Zwischen Bergen und Meer')}
-                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
                       </div>
@@ -813,16 +813,16 @@ export default function Home({
 
                 {/* Slide 2: History and Culture */}
                 <div className="w-full flex-shrink-0">
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-12 rounded-2xl border border-blue-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 sm:p-8 lg:p-12 rounded-2xl border border-blue-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
                       <div>
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                           </div>
-                          <h3 className="text-3xl font-bold text-navy">
+                          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-navy">
                             {getLocalizedContent('Mosaic of History and Culture', 'Tarih ve Kültür Mozaiği', 'Mosaïque d\'Histoire et Culture', 'Mosaik aus Geschichte und Kultur')}
                           </h3>
                         </div>
@@ -853,7 +853,7 @@ export default function Home({
                         <img 
                           src="/2.jpg"
                           alt={getLocalizedContent('Rize History and Culture', 'Rize Tarih ve Kültür', 'Rize Histoire et Culture', 'Rize Geschichte und Kultur')}
-                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
                       </div>
@@ -863,16 +863,16 @@ export default function Home({
 
                 {/* Slide 2: Plateau Wonderland */}
                 <div className="w-full flex-shrink-0">
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-12 rounded-2xl border border-green-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 sm:p-8 lg:p-12 rounded-2xl border border-green-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
                       <div>
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
-                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                           </div>
-                          <h3 className="text-3xl font-bold text-navy">
+                          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-navy">
                             {getLocalizedContent('Plateau Wonderland', 'Yaylaların Diyarı', 'Pays des Merveilles des Plateaux', 'Plateau-Wunderland')}
                           </h3>
                         </div>
@@ -903,7 +903,7 @@ export default function Home({
                         <img 
                           src="/3.jpg"
                           alt={getLocalizedContent('Rize Plateaus', 'Rize Yaylaları', 'Plateaux de Rize', 'Rize Plateaus')}
-                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
                       </div>
@@ -913,16 +913,16 @@ export default function Home({
 
                 {/* Slide 3: Nature and Adventure */}
                 <div className="w-full flex-shrink-0">
-                  <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-12 rounded-2xl border border-purple-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-6 sm:p-8 lg:p-12 rounded-2xl border border-purple-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
                       <div>
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center">
-                            <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                           </div>
-                          <h3 className="text-3xl font-bold text-navy">
+                          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-navy">
                             {getLocalizedContent('Center of Nature and Adventure', 'Doğa ve Macera Merkezi', 'Centre de Nature et Aventure', 'Zentrum für Natur und Abenteuer')}
                           </h3>
                         </div>
@@ -953,7 +953,7 @@ export default function Home({
                         <img 
                           src="/4.jpg"
                           alt={getLocalizedContent('Rize Nature and Adventure', 'Rize Doğa ve Macera', 'Rize Nature et Aventure', 'Rize Natur und Abenteuer')}
-                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
                       </div>
@@ -963,16 +963,16 @@ export default function Home({
 
                 {/* Slide 4: Tea Capital */}
                 <div className="w-full flex-shrink-0">
-                  <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-12 rounded-2xl border border-amber-100">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 sm:p-8 lg:p-12 rounded-2xl border border-amber-100">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
                       <div>
-                        <div className="flex items-center space-x-4 mb-6">
-                          <div className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center">
-                            <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                             </svg>
                           </div>
-                          <h3 className="text-3xl font-bold text-navy">
+                          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-navy">
                             {getLocalizedContent('Capital of Tea', 'Çayın Başkenti', 'Capitale du Thé', 'Hauptstadt des Tees')}
                           </h3>
                         </div>
@@ -1003,7 +1003,7 @@ export default function Home({
                         <img 
                           src="/5.jpg"
                           alt={getLocalizedContent('Rize Tea Capital', 'Rize Çay Başkenti', 'Rize Capitale du Thé', 'Rize Hauptstadt des Tees')}
-                          className="w-full h-96 object-cover rounded-xl shadow-lg"
+                          className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-xl shadow-lg"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl"></div>
                       </div>
@@ -1811,7 +1811,7 @@ export default function Home({
       {/* Image Gallery Section */}
       <ImageGallery />
 
-      {/* Call to Action */}
+          {/* Call to Action */}
       <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
