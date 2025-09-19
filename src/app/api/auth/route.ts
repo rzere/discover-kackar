@@ -5,10 +5,13 @@ export async function POST(request: Request) {
   const { email, password } = body;
 
   // Mock authentication - in production this would validate against Supabase
-  if (email === 'admin@discoverkackar.com' && password === 'admin123') {
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@discoverkackar.com';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  
+  if (email === adminEmail && password === adminPassword) {
     const user = {
       id: '1',
-      email: 'admin@discoverkackar.com',
+      email: adminEmail,
       role: 'admin' as const,
       createdAt: new Date()
     };
@@ -27,10 +30,11 @@ export async function POST(request: Request) {
 
 export async function GET() {
   // Mock getting current user
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@discoverkackar.com';
   return NextResponse.json({
     user: {
       id: '1',
-      email: 'admin@discoverkackar.com',
+      email: adminEmail,
       role: 'admin',
       createdAt: new Date()
     }
