@@ -180,13 +180,13 @@ export const translations = {
     }
   },
 
-  // Event banner
+  // Routes banner
   event: {
-    utmbBanner: {
-      tr: 'Kaçkar by UTMB 26-28 Eylül 2025',
-      en: 'Kaçkar by UTMB 26-28 September 2025',
-      fr: 'Kaçkar by UTMB 26-28 Septembre 2025',
-      de: 'Kaçkar by UTMB 26-28 September 2025'
+    routesBanner: {
+      tr: 'Rotaları Keşfedin!',
+      en: 'Explore Routes!',
+      fr: 'Explorez les Itinéraires!',
+      de: 'Entdecken Sie die Routen!'
     }
   },
 

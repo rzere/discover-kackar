@@ -374,10 +374,10 @@ export default function Home({
           <div className="absolute -bottom-10 -left-20 w-24 h-24 bg-teal/20 rounded-full blur-xl animate-pulse delay-2000 hidden sm:block"></div>
           
           
-          {/* UTMB Banner */}
+          {/* Routes Banner - Links to discoverkackarroutes.com */}
           <div className="mb-8 sm:mb-10 flex justify-center">
             <a 
-              href="http://kackarbyutmb.com/" 
+              href="https://discoverkackarroutes.com/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 border border-white/30 shadow-lg hover:bg-white/30 hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"
@@ -386,7 +386,7 @@ export default function Home({
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
               </svg>
               <span className="text-white font-semibold text-sm sm:text-base">
-                <span className="font-bold">Kaçkar by UTMB</span> {getTranslation('event.utmbBanner', locale).replace('Kaçkar by UTMB ', '')}
+                {getTranslation('event.routesBanner', locale)}
               </span>
             </a>
           </div>
