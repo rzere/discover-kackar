@@ -183,10 +183,10 @@ export const translations = {
   // Routes banner
   event: {
     routesBanner: {
-      tr: 'Rotaları Keşfedin!',
-      en: 'Explore Routes!',
-      fr: 'Explorez les Itinéraires!',
-      de: 'Entdecken Sie die Routen!'
+      tr: 'Kaçkar by UTMB Rotaları',
+      en: 'Discover Kaçkar Routes',
+      fr: 'Découvrez les Routes de Kaçkar',
+      de: 'Entdecken Sie die Kaçkar Routen'
     }
   },
 
