@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
-import { MapPin, Envelope, Phone, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
+import { MapPin, Envelope, Phone, FacebookLogo, InstagramLogo, TwitterLogo, ArrowSquareOut } from '@phosphor-icons/react';
+
+const DISCOVER_KACKAR_ROUTES_URL = 'https://www.discoverkackarroutes.com/';
 
 // Enhanced 3D route visualization with traveling trail effects
 function RoutesScene() {
@@ -298,6 +300,7 @@ export default function RoutesPage({
           title: "Rotaları Takip Edin",
           description: "Kaçkar Dağları, doğa yürüyüşü, koşu ve bisiklet için Türkiye'nin en özel rotalarını sunuyor. Orman içi patikalar, taş döşeli yollar, buzul gölleri ve yaylalar arasında ilerleyen parkurlar; hem doğa hem de kültürle iç içe, ilham verici bir deneyim vadediyor. Rotalarda; tarihi taş köprüler, bulut denizi manzaraları, şenlikler ve yerel mutfak tatları sizi karşılıyor.",
           description2: "Her rota farklı bir seviyeye hitap ediyor: kısa günlük yürüyüşlerden zorlu çok günlük parkurlara, ailelere uygun keşiflerden deneyimli dağcı ve koşuculara yönelik yüksek irtifa etaplarına kadar birçok seçenek mevcut. Yaz aylarında yürüyüş ve bisiklet için ideal olan bu rotalar, kışın ise kar yürüyüşü ve macera fırsatları sunuyor.",
+          externalRoutesCtaLabel: 'Discover Kaçkar Rotaları',
           hikingTrails: {
             title: "🚶‍♂️ Yürüyüş Rotaları (12)",
             trails: [
@@ -332,6 +335,7 @@ export default function RoutesPage({
           title: "Suivez les Sentiers",
           description: "Les montagnes Kaçkar offrent certains des sentiers les plus remarquables de Turquie pour la randonnée, la course et le vélo. À travers des chemins forestiers, des pistes pavées, des lacs glaciaires et des plateaux, chaque itinéraire promet une expérience inspirante où la nature et la culture se rencontrent. En chemin, vous découvrirez des ponts de pierre historiques, des mers de nuages, des festivals et la cuisine locale.",
           description2: "Chaque parcours s'adresse à un niveau différent : des promenades quotidiennes aux treks de plusieurs jours, des explorations familiales aux itinéraires en altitude pour les alpinistes et coureurs expérimentés. Idéal pour la randonnée et le vélo en été, les sentiers offrent également des possibilités de randonnée sur neige et d'aventure en hiver.",
+          externalRoutesCtaLabel: 'Itinéraires Discover Kaçkar',
           hikingTrails: {
             title: "Itinéraires de randonnée (12)",
             trails: [
@@ -366,6 +370,7 @@ export default function RoutesPage({
           title: "Folgen Sie den Pfaden",
           description: "Das Kaçkar-Gebirge bietet einige der bemerkenswertesten Routen der Türkei zum Wandern, Laufen und Radfahren. Durch Waldpfade, gepflasterte Wege, Gletscherseen und Hochplateaus verspricht jede Route ein inspirierendes Erlebnis, bei dem sich Natur und Kultur begegnen. Unterwegs stoßen Sie auf historische Steinbrücken, Wolkenmeere, Feste und regionale Küche.",
           description2: "Jede Strecke richtet sich an ein anderes Niveau: von kurzen Tageswanderungen bis zu anspruchsvollen Mehrtagestouren, von familienfreundlichen Erkundungen bis zu Hochgebirgsrouten für erfahrene Bergsteiger und Läufer. Im Sommer ideal zum Wandern und Radfahren, im Winter bieten die Wege auch Möglichkeiten für Schneewanderungen und Abenteuer.",
+          externalRoutesCtaLabel: 'Discover Kaçkar Routen',
           hikingTrails: {
             title: "Wanderwege (12)",
             trails: [
@@ -400,6 +405,7 @@ export default function RoutesPage({
           title: "Follow the Trails",
           description: "The Kaçkar Mountains offer some of Türkiye's most remarkable trails for hiking, running and cycling. Through forest paths, cobblestone tracks, glacial lakes and high plateaus, each route promises an inspiring experience where nature and culture meet. Along the way, you'll find historic stone bridges, sea-of-cloud views, festivals, and local cuisine.",
           description2: "Each trail caters to a different level: from short daily hikes to challenging multi-day treks, from family-friendly explorations to high-altitude routes for experienced mountaineers and runners. Ideal for hiking and cycling in summer, the routes also open doors to snow trekking and adventure in winter.",
+          externalRoutesCtaLabel: 'Discover Kaçkar Routes',
           hikingTrails: {
             title: "Hiking Trails (12)",
             trails: [
@@ -474,6 +480,17 @@ export default function RoutesPage({
                 </div>
               </div>
             )}
+            <div className="mt-8 flex justify-center">
+              <a
+                href={DISCOVER_KACKAR_ROUTES_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg text-base font-semibold hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg"
+              >
+                <ArrowSquareOut className="w-5 h-5 shrink-0" weight="bold" aria-hidden />
+                {routeData.externalRoutesCtaLabel}
+              </a>
+            </div>
           </div>
         </div>
       </div>
