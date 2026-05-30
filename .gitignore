@@ -55,6 +55,16 @@ next-env.d.ts
 /public/images/*.webp
 /public/images/*.mp4
 
+# Static site images (downloaded from Supabase — commit these)
+!/public/images/static/
+!/public/images/static/**
+
+# Hero carousel optimized AVIFs (commit these — used by home page)
+!/public/images/optimized/
+!/public/images/optimized/*DJI*
+!/public/images/optimized/*discover_over*
+!/public/images/optimized/*ayder_plateau*
+
 # Keep essential images for production deployment
 !/public/images/placeholder.jpg
 !/public/images/logo.*

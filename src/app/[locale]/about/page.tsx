@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import Navbar from '@/components/layout/Navbar';
+import { getFooter, getGalleryImages } from '@/lib/data/siteContent';
+import type { Locale } from '@/lib/utils/translations';
 import { Mountains, MapPin, Envelope, Phone, FacebookLogo, InstagramLogo, TwitterLogo } from '@phosphor-icons/react';
 
 interface Image {
@@ -22,10 +23,6 @@ interface Image {
 
 // Scrolling Image Carousel Component
 function ScrollingImageCarousel() {
-  const [images, setImages] = useState<Image[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  // Fallback images from public folder
   const fallbackImages = [
     '/images/aa-01_edited.jpg',
     '/images/ayder_plateau_3_58bd958670.avif',
@@ -44,93 +41,27 @@ function ScrollingImageCarousel() {
     '/images/Kackar_HiRes-nodumsports_moritzklee-MK_01854-2.jpg',
     '/images/Kackar_HiRes-nodumsports_moritzklee-MK_01928-2.jpg'
   ];
-  
-  // Fetch images from API
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await fetch('/api/public/images');
-        const result = await response.json();
-        
-        if (response.ok && result.data && result.data.length > 0) {
-          console.log('API returned images:', result.data.length);
-          // Use any visible images, not just gallery category
-          const visibleImages = result.data
-            .filter((img: Image) => img.is_visible)
-            .slice(0, 16);
-          
-          console.log('Visible images found:', visibleImages.length);
-          
-          if (visibleImages.length > 0) {
-            setImages(visibleImages);
-          } else {
-            console.log('No visible images, using fallback');
-            // Use fallback images if no API images
-            setImages(fallbackImages.map((path, index) => ({
-              id: `fallback-${index}`,
-              filename: path.split('/').pop() || `image-${index}.jpg`,
-              original_filename: path.split('/').pop() || `image-${index}.jpg`,
-              file_path: path,
-              file_size: 0,
-              mime_type: 'image/jpeg',
-              alt_text: `Kaçkar ${index + 1}`,
-              category: 'gallery',
-              is_optimized: true,
-              is_visible: true,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            })));
-          }
-        } else {
-          console.log('API failed or no data, using fallback images');
-          // Use fallback images if API fails
-          setImages(fallbackImages.map((path, index) => ({
-            id: `fallback-${index}`,
-            filename: path.split('/').pop() || `image-${index}.jpg`,
-            original_filename: path.split('/').pop() || `image-${index}.jpg`,
-            file_path: path,
-            file_size: 0,
-            mime_type: 'image/jpeg',
-            alt_text: `Kaçkar ${index + 1}`,
-            category: 'gallery',
-            is_optimized: true,
-            is_visible: true,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })));
-        }
-      } catch (error) {
-        console.error('Error fetching images:', error);
-        // Use fallback images on error
-        setImages(fallbackImages.map((path, index) => ({
-          id: `fallback-${index}`,
-          filename: path.split('/').pop() || `image-${index}.jpg`,
-          original_filename: path.split('/').pop() || `image-${index}.jpg`,
-          file_path: path,
-          file_size: 0,
-          mime_type: 'image/jpeg',
-          alt_text: `Kaçkar ${index + 1}`,
-          category: 'gallery',
-          is_optimized: true,
-          is_visible: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        })));
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchImages();
-  }, []);
 
-  if (loading) {
-    return (
-      <div className="h-64 bg-gray-200 animate-pulse flex items-center justify-center">
-        <div className="text-gray-500">Loading images...</div>
-      </div>
-    );
-  }
+  const toFallbackImage = (path: string, index: number): Image => ({
+    id: `fallback-${index}`,
+    filename: path.split('/').pop() || `image-${index}.jpg`,
+    original_filename: path.split('/').pop() || `image-${index}.jpg`,
+    file_path: path,
+    file_size: 0,
+    mime_type: 'image/jpeg',
+    alt_text: `Kaçkar ${index + 1}`,
+    category: 'gallery',
+    is_optimized: true,
+    is_visible: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  });
+
+  const images = useMemo(() => {
+    const fromStatic = getGalleryImages().slice(0, 16) as Image[];
+    if (fromStatic.length > 0) return fromStatic;
+    return fallbackImages.map(toFallbackImage);
+  }, []);
 
   if (images.length === 0) {
     return (
@@ -182,28 +113,9 @@ export default function AboutPage({
   params: { locale: string };
 }) {
   const locale = params.locale;
-  const [footerData, setFooterData] = useState<any>(null);
+  const footerData = getFooter(locale as Locale);
   const isEnglish = locale === 'en';
 
-  // Fetch footer data
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        const response = await fetch(`/api/public/footer?locale=${locale}`);
-        if (response.ok) {
-          const result = await response.json();
-          if (result.data) {
-            setFooterData(result.data);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching footer data:', error);
-      }
-    };
-    
-    fetchFooterData();
-  }, [locale]);
-  
   // Hardcoded content based on locale
   const content = (() => {
     switch (locale) {

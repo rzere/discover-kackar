@@ -1,30 +1,35 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './types/database';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables. Please check your .env.local file.');
+function assertSupabaseConfigured() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables. The public site uses static content; Supabase is only needed for the admin panel.');
+  }
 }
 
-// Client-side Supabase client (use supabase-client.ts for client components)
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+// Client-side Supabase client (admin panel only — public site uses static data)
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true
   }
-});
+})
+  : (null as unknown as ReturnType<typeof createClient<Database>>);
 
 // Admin client with service role key (server-side only)
 // This should only be imported in API routes or server components
 export const getSupabaseAdmin = () => {
+  assertSupabaseConfigured();
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!serviceRoleKey) {
     throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable.');
   }
-  
+
   return createClient<Database>(
     supabaseUrl,
     serviceRoleKey,
@@ -39,6 +44,7 @@ export const getSupabaseAdmin = () => {
 
 // Helper function to get current user
 export const getCurrentUser = async () => {
+  assertSupabaseConfigured();
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error) throw error;
   return user;

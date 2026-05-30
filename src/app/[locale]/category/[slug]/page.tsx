@@ -1,13 +1,11 @@
 'use client';
 
 import { notFound } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getCategoryImage, getImageUrl } from '@/lib/utils/imageUtils';
 import { useImageSize } from '@/hooks/useResponsiveImage';
-import { useState, useEffect } from 'react';
 import { getTranslation, type Locale } from '@/lib/utils/translations';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { getCategoryBySlug, getFooter } from '@/lib/data/siteContent';
 import { 
   Leaf, 
   Users, 
@@ -335,78 +333,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const { locale, slug } = params;
   const isEnglish = locale === 'en';
   const imageSize = useImageSize();
-  const router = useRouter();
-  const [category, setCategory] = useState<Category | null>(null);
-  const [footerData, setFooterData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  
+  const category = getCategoryBySlug(slug, locale as Locale) as Category | null;
+  const footerData = getFooter(locale as Locale);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // Removed minimum loading time for fastest possible loading
-      
-      try {
-        setLoading(true);
-        console.log('Fetching category for slug:', slug, 'locale:', locale);
-        
-        const [categoryResponse, footerResponse] = await Promise.all([
-          fetch(`/api/public/categories/${slug}?locale=${locale}`),
-          fetch(`/api/public/footer?locale=${locale}`)
-        ]);
-        
-        console.log('Category response status:', categoryResponse.status);
-        console.log('Category response ok:', categoryResponse.ok);
-        
-        if (categoryResponse.ok) {
-          const result = await categoryResponse.json();
-          console.log('Category fetched:', result.data);
-          console.log('Subcategories:', result.data?.subcategories);
-          
-          if (result.data) {
-            setCategory(result.data);
-          }
-        }
-        
-        if (footerResponse.ok) {
-          const footerResult = await footerResponse.json();
-          if (footerResult.data) {
-            setFooterData(footerResult.data);
-          }
-        }
-        
-        if (!categoryResponse.ok) {
-          console.log('Category not found for slug:', slug, 'locale:', locale);
-          console.log('Response status:', categoryResponse.status);
-          const errorText = await categoryResponse.text();
-          console.log('Response text:', errorText);
-          router.push(`/${locale}`);
-          return;
-        }
-        
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching category:', error);
-        router.push(`/${locale}`);
-        return;
-      }
-    };
-
-    if (slug && locale) {
-      fetchData();
-    }
-  }, [slug, locale]);
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <LoadingSpinner size="xl" />
-      </div>
-    );
-  }
-  
   if (!category) {
-    router.push(`/${locale}`);
-    return null;
+    notFound();
   }
 
   const backgroundImage = category?.hero_image?.file_path || categoryImageMap[slug as keyof typeof categoryImageMap];

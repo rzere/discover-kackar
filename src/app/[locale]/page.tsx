@@ -8,8 +8,13 @@ import { useResponsiveImage, useImageSize } from '@/hooks/useResponsiveImage';
 import { useState, useEffect } from 'react';
 import { getTranslation, getLocaleFromPathname, type Locale } from '@/lib/utils/translations';
 import Navbar from '@/components/layout/Navbar';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
-// Using API routes instead of direct Supabase calls
+import {
+  getHomePage,
+  getCategories,
+  getFooter,
+  getCtaCard,
+  getGalleryImages,
+} from '@/lib/data/siteContent';
 import { 
   Mountains, 
   Heart, 
@@ -66,14 +71,13 @@ export default function Home({
   const isGerman = params.locale === 'de';
   const locale = params.locale as Locale;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [pageData, setPageData] = useState<PageData | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [footerData, setFooterData] = useState<any>(null);
-  const [ctaCard, setCtaCard] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const pageData = getHomePage(locale);
+  const categories = getCategories(locale) as Category[];
+  const footerData = getFooter(locale);
+  const ctaCard = getCtaCard('plan-your-trip', locale);
+  const galleryImages = getGalleryImages();
   const [openDistrict, setOpenDistrict] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [galleryImages, setGalleryImages] = useState<any[]>([]);
   const [randomImages, setRandomImages] = useState<string[]>([]);
   
   // Generate random images when gallery images are loaded
@@ -124,138 +128,13 @@ export default function Home({
   };
   const imageSize = useImageSize();
 
-  // Fetch page data and categories from API routes
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch all data in parallel for faster loading
-        const [pageResponse, categoriesResponse, footerResponse, ctaResponse] = await Promise.all([
-          fetch(`/api/admin/pages`), // Use admin API since public API is not working
-          fetch(`/api/public/categories?locale=${params.locale}`), // Use correct locale
-          fetch(`/api/public/footer?locale=${params.locale}`), // Use correct locale
-          fetch(`/api/admin/cta-cards`) // Fetch CTA card data from admin API
-        ]);
-
-        // Process page data
-        if (pageResponse.ok) {
-          const pageResult = await pageResponse.json();
-          if (pageResult.data) {
-            // Admin API returns array, find the home page for current locale
-            const homePage = pageResult.data.find((page: any) => 
-              page.slug === 'home' && page.locale === params.locale
-            );
-            if (homePage) {
-              setPageData(homePage);
-            }
-          }
-        }
-
-        // Process categories data
-        if (categoriesResponse.ok) {
-          const categoriesResult = await categoriesResponse.json();
-          let categoriesData = categoriesResult.data || [];
-          
-          // Apply Turkish translations if needed
-          if (params.locale === 'tr') {
-            const turkishTranslations: Record<string, { name: string; description: string }> = {
-              'nature': { name: 'Doğa & Macera', description: 'Kaçkar\'ın vadilerinden zirvelerine uzanan patikalarda doğanın saf gücünü keşfedin.' },
-              'culture': { name: 'Kültür & Yerel Hayat', description: 'Yaylaların, konakların ve köklü geleneklerin içten hikâyesine tanık olun.' },
-              'gastronomy': { name: 'Gastronomi & Yerel Lezzetler', description: 'Coğrafi işaretli ürünler ve unutulmaz lezzetlerle Kaçkar\'ın tadına varın.' },
-              'adventure': { name: 'Macera', description: 'Trekking, dağcılık, yayla turları, kamp deneyimleri ve adrenalin dolu aktiviteler' },
-              'accommodation': { name: 'Konaklama', description: 'Geleneksel ev pansiyonları, yayla evleri, kamp alanları ve konforlu konaklama seçenekleri' },
-              'transportation': { name: 'Ulaşım', description: 'Kaçkar\'a nasıl ulaşılır, yerel ulaşım, transfer hizmetleri ve pratik bilgiler' },
-              'music-dance': { name: 'Müzik & Dans', description: 'Tulumun sesi ve horonun ritmiyle Karadeniz\'in ruhunu hissedin.' },
-              'sustainable-tourism': { name: 'Sürdürülebilir Turizm', description: 'Doğaya saygılı, yerel halka faydalı bir keşif yolculuğu.' },
-              'health-wellness': { name: 'Sağlık & Wellness', description: 'Yaylaların temiz havasında ruhunuzu ve bedeninizi yenileyin.' },
-              'photography-art': { name: 'Fotoğraf & Sanat', description: 'Mevsimlerin ışığıyla şekillenen eşsiz manzaraları yakalayın.' },
-              'educational-research': { name: 'Eğitim & Araştırma Turizmi', description: 'Endemik bitkilerden buzul göllerine uzanan canlı bir laboratuvar.' },
-              'events-festivals': { name: 'Etkinlik & Festivaller', description: 'Yayla şenliklerinden çay hasadına, coşkulu kutlamalara katılın.' }
-            };
-            
-            categoriesData = categoriesData.map((cat: Category) => {
-              if (turkishTranslations[cat.slug]) {
-                const translation = turkishTranslations[cat.slug];
-                return {
-                  ...cat,
-                  name: translation.name,
-                  description: translation.description,
-                  locale: 'tr'
-                };
-              }
-              return cat;
-            });
-          }
-          
-          setCategories(categoriesData);
-        }
-
-        // Process footer data
-        if (footerResponse.ok) {
-          const footerResult = await footerResponse.json();
-          if (footerResult.data) {
-            setFooterData(footerResult.data);
-          }
-        }
-
-        // Process CTA card data
-        if (ctaResponse.ok) {
-          const ctaResult = await ctaResponse.json();
-          if (ctaResult.data && ctaResult.data.length > 0) {
-            // Find the plan-your-trip card from the admin API response
-            const planYourTripCard = ctaResult.data.find((card: any) => card.slug === 'plan-your-trip');
-            if (planYourTripCard) {
-              // Transform admin API format to frontend format
-              const transformedCard = {
-                id: planYourTripCard.id,
-                slug: planYourTripCard.slug,
-                title: planYourTripCard.title[params.locale] || planYourTripCard.title.en,
-                description: planYourTripCard.description?.[params.locale] || planYourTripCard.description?.en,
-                buttonText: planYourTripCard.button_text[params.locale] || planYourTripCard.button_text.en,
-                buttonUrl: planYourTripCard.button_url,
-                isActive: planYourTripCard.is_active,
-              };
-              setCtaCard(transformedCard);
-            }
-          }
-        } else {
-          console.error('CTA API Error:', ctaResponse.status, await ctaResponse.text());
-        }
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [params.locale]);
-
-  // Fetch visible gallery images for dynamic usage in carousel and districts
-  useEffect(() => {
-    const fetchGalleryImages = async () => {
-      try {
-        const res = await fetch('/api/public/images');
-        const json = await res.json();
-        if (res.ok && Array.isArray(json.data)) {
-          setGalleryImages(json.data);
-        } else {
-          setGalleryImages([]);
-        }
-      } catch (e) {
-        setGalleryImages([]);
-      }
-    };
-    fetchGalleryImages();
-  }, []);
-  
-  // OPTIMIZED: Get hero images with lazy loading
+  // Original HiRes DJI hero carousel (same as live site — not the CMS gallery)
   const heroImages = [
     getImageFromCategory('hero', 0),
     getImageFromCategory('hero', 1),
     getImageFromCategory('hero', 2),
     getImageFromCategory('hero', 3),
-    getImageFromCategory('hero', 4)
+    getImageFromCategory('hero', 4),
   ];
 
   // OPTIMIZED: Preload critical images for faster initial load
@@ -316,17 +195,9 @@ export default function Home({
     ]
   };
 
-  // Use dynamic data or fallback
-  const content = pageData?.content || fallbackContent;
+  // Use static CMS export or fallback
+  const content = (pageData?.content as typeof fallbackContent & Record<string, string>) || fallbackContent;
   const pageTitle = pageData?.h1 || fallbackContent.title;
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <LoadingSpinner size="xl" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">

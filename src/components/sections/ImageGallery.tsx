@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
+import { getGalleryImages } from '@/lib/data/siteContent';
 import { useLocale } from 'next-intl';
 import { X, CaretLeft, CaretRight } from '@phosphor-icons/react';
 import { getTranslation, type Locale } from '@/lib/utils/translations';
@@ -25,35 +26,9 @@ export default function ImageGallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
-  const [images, setImages] = useState<Image[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  // Fetch all images from API
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await fetch('/api/public/images');
-        const result = await response.json();
-        
-        if (response.ok && result.data) {
-          // Deduplicate images by grouping by base name and selecting the largest version
-          const deduplicatedImages = deduplicateImages(result.data);
-          setImages(deduplicatedImages);
-        } else {
-          console.error('Error fetching images:', result.error);
-        }
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchImages();
-  }, []);
+  const images = useMemo(() => deduplicateImages(getGalleryImages() as Image[]), []);
 
-  // Function to deduplicate images by base name and select the largest version
-  const deduplicateImages = (imageList: Image[]) => {
+  function deduplicateImages(imageList: Image[]) {
     const imageGroups: { [key: string]: Image[] } = {};
     
     // Group images by their base name (without size suffix)
@@ -88,7 +63,7 @@ export default function ImageGallery() {
     return deduplicatedImages.sort((a, b) => 
       new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
-  };
+  }
   
   // Show only first 12 images initially, or all if showAll is true
   const displayedImages = showAll ? images : images.slice(0, 12);
@@ -123,14 +98,7 @@ export default function ImageGallery() {
         </div>
 
         {/* Gallery Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {[...Array(12)].map((_, index) => (
-              <div key={index} className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {displayedImages.map((image, index) => (
               <div
                 key={image.id}
@@ -157,11 +125,10 @@ export default function ImageGallery() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
+        </div>
 
         {/* View More/Less Button */}
-        {!loading && images.length > 12 && (
+        {images.length > 12 && (
           <div className="text-center mt-12">
             <button 
               onClick={() => setShowAll(!showAll)}

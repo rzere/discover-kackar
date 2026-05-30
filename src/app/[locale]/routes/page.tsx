@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
+import { getFooter } from '@/lib/data/siteContent';
+import type { Locale } from '@/lib/utils/translations';
 import { MapPin, Envelope, Phone, FacebookLogo, InstagramLogo, TwitterLogo, ArrowSquareOut } from '@phosphor-icons/react';
 
 const DISCOVER_KACKAR_ROUTES_URL = 'https://www.discoverkackarroutes.com/';
@@ -271,27 +273,8 @@ export default function RoutesPage({
   params: { locale: string };
 }) {
   const locale = params.locale;
-  const [footerData, setFooterData] = useState<any>(null);
+  const footerData = getFooter(locale as Locale);
   const isEnglish = locale === 'en';
-
-  // Fetch footer data
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        const response = await fetch(`/api/public/footer?locale=${locale}`);
-        if (response.ok) {
-          const result = await response.json();
-          if (result.data) {
-            setFooterData(result.data);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching footer data:', error);
-      }
-    };
-    
-    fetchFooterData();
-  }, [locale]);
 
   const getRouteData = () => {
     switch (locale) {

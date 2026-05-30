@@ -1,25 +1,25 @@
 // Utility functions for handling images in the Discover Kaçkar website
 
 export function getImageUrl(imagePath: string, size: 'mobile' | 'tablet' | 'desktop' = 'desktop'): string {
-  // Handle empty or invalid paths
   if (!imagePath) return '/images/placeholder.jpg';
-  
-  // If it's already a full URL (CDN, external), return as-is
-  if (imagePath.startsWith('http')) {
+
+  if (imagePath.startsWith('http') || imagePath.startsWith('/')) {
+    // Full CDN URL or already a site path (e.g. /images/static/...)
+    if (imagePath.startsWith('/') && imagePath.includes('_mobile.') && size !== 'mobile') {
+      return imagePath.replace('_mobile.', `_${size}.`);
+    }
+    if (imagePath.startsWith('/') && imagePath.includes('_tablet.') && size === 'desktop') {
+      return imagePath.replace('_tablet.', '_desktop.');
+    }
     return imagePath;
   }
-  
-  // For AVIF files, return as-is
+
   if (imagePath.endsWith('.avif')) {
     return `/images/${imagePath}`;
   }
-  
-  // For optimized images, use the responsive versions
+
   const baseName = imagePath.replace(/\.(jpg|jpeg|png)$/i, '');
-  const optimizedPath = `/images/optimized/${baseName}_${size}.avif`;
-  
-  // Return optimized path (browser will fallback to original if optimized doesn't exist)
-  return optimizedPath;
+  return `/images/optimized/${baseName}_${size}.avif`;
 }
 
 // Get responsive image URL based on screen size
@@ -57,7 +57,6 @@ export const imageCategories = {
 export type ImageCategory = typeof imageCategories[keyof typeof imageCategories];
 
 export function getImagesByCategory(category: ImageCategory): string[] {
-  // Only use images that actually exist in the public/images directory
   const categoryImages = {
     hero: [
       'Kackar_HiRes-nodumsports_moritzklee-DJI_0028-2.jpg',

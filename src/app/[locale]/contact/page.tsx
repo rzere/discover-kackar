@@ -1,11 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import ContactForm from '@/components/sections/ContactForm';
 import { getImageUrl } from '@/lib/utils/imageUtils';
-import { getLocalizedText, getTranslation, type Locale } from '@/lib/utils/translations';
+import { getTranslation, type Locale } from '@/lib/utils/translations';
 import Navbar from '@/components/layout/Navbar';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import {
+  getFooter,
+  getContactPage,
+  getLocalizedField,
+} from '@/lib/data/siteContent';
 import { 
   MapPin, 
   Envelope,
@@ -22,76 +25,13 @@ interface ContactPageProps {
 }
 
 export default function ContactPage({ params }: ContactPageProps) {
-  const [footerData, setFooterData] = useState<any>(null);
-  const [contactPageData, setContactPageData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const isEnglish = params.locale === 'en';
   const locale = params.locale as Locale;
+  const footerData = getFooter(locale);
+  const contactPageData = getContactPage(locale);
 
-  // Helper function to get localized text from JSONB field
-  const getLocalizedText = (jsonbField: any, fallback: string = '') => {
-    if (!jsonbField) return fallback;
-    if (typeof jsonbField === 'string') return jsonbField;
-    return jsonbField[params.locale] || jsonbField['en'] || fallback;
-  };
-
-  const fetchData = async () => {
-    // Removed minimum loading time for fastest possible loading
-    setLoading(true);
-
-    try {
-      const [footerResponse, contactPageResponse] = await Promise.all([
-        fetch(`/api/public/footer?locale=${params.locale}`),
-        fetch(`/api/admin/contact-pages?locale=${params.locale}`)
-      ]);
-
-      if (footerResponse.ok) {
-        const footerResult = await footerResponse.json();
-        if (footerResult.data) {
-          setFooterData(footerResult.data);
-        }
-      }
-
-      if (contactPageResponse.ok) {
-        const contactPageResult = await contactPageResponse.json();
-        console.log('Contact page API response:', contactPageResult);
-        if (contactPageResult.data && contactPageResult.data.length > 0) {
-          setContactPageData(contactPageResult.data[0]); // Admin API returns array, we want first item
-          console.log('Set contact page data:', contactPageResult.data[0]);
-        }
-      } else {
-        console.error('Contact page API error:', contactPageResponse.status, contactPageResponse.statusText);
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [params.locale]);
-
-  // Refresh data when page becomes visible (in case admin made changes)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        fetchData();
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [params.locale]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <LoadingSpinner size="xl" />
-      </div>
-    );
-  }
+  const getLocalizedText = (jsonbField: Parameters<typeof getLocalizedField>[0], fallback = '') =>
+    getLocalizedField(jsonbField, locale, fallback);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">

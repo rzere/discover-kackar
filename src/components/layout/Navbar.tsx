@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { getCategories } from '@/lib/data/siteContent';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from '@/lib/simple-translations';
@@ -20,11 +21,10 @@ interface Category {
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
   const t = useTranslations();
   const pathname = usePathname();
   const locale = pathname.startsWith('/en') ? 'en' : pathname.startsWith('/fr') ? 'fr' : pathname.startsWith('/de') ? 'de' : 'tr';
+  const categories = getCategories(locale as Locale);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen(!isLangMenuOpen);
@@ -53,29 +53,6 @@ export default function Navbar() {
       default: return 'Routes';
     }
   };
-
-  // Fetch categories from API
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('/api/admin/categories');
-        if (response.ok) {
-          const result = await response.json();
-          // Filter categories by current locale and active status
-          const filteredCategories = (result.data || []).filter(
-            (category: Category) => category.locale === locale && category.is_active
-          );
-          setCategories(filteredCategories);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, [locale]);
 
   // Create language switcher URLs that preserve the current path
   const getLanguageUrl = (targetLocale: string) => {
@@ -179,7 +156,7 @@ export default function Navbar() {
                    'Categories'}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {!loading && categories.map((category) => (
+                  {categories.map((category) => (
                     <Link
                       key={category.id}
                       href={`/${locale}/category/${category.slug}`}
