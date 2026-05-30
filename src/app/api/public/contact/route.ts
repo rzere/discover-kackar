@@ -5,14 +5,9 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const DEFAULT_CONTACT_TO = [
-  'nceylansensoy@gmail.com',
-  'ruzzfl@gmail.com',
-];
-
 function getContactRecipients(): string[] {
   const raw = process.env.CONTACT_TO_EMAIL;
-  if (!raw) return DEFAULT_CONTACT_TO;
+  if (!raw) return [];
   return raw.split(',').map((e) => e.trim()).filter(Boolean);
 }
 
@@ -44,8 +39,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const from = process.env.CONTACT_FROM_EMAIL || 'Discover Kaçkar <onboarding@resend.dev>';
     const to = getContactRecipients();
+    if (to.length === 0) {
+      console.error('[contact] CONTACT_TO_EMAIL is not configured');
+      return NextResponse.json(
+        { error: 'Contact form is temporarily unavailable' },
+        { status: 503 }
+      );
+    }
+
+    const from = process.env.CONTACT_FROM_EMAIL || 'Discover Kaçkar <onboarding@resend.dev>';
 
     const safeName = String(name).trim();
     const safeEmail = String(email).trim().toLowerCase();

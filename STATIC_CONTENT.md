@@ -50,8 +50,7 @@ Submissions are sent to your inbox via [Resend](https://resend.com) (`/api/publi
 Set in `.env.local` / Vercel:
 
 - `RESEND_API_KEY` — from Resend dashboard
-- `CONTACT_TO_EMAIL` — comma-separated recipients (default: `nceylansensoy@gmail.com`, `ruzzfl@gmail.com`)
-- `CONTACT_FROM_EMAIL` — verified sender (use `onboarding@resend.dev` for testing; use `@discoverkackar.com` after domain verification)
+- `CONTACT_TO_EMAIL` — comma-separated recipient(s), set in Vercel only
 
 ## Admin panel
 
