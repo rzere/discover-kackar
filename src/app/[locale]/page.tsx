@@ -1889,8 +1889,8 @@ export default function Home({
                       </div>
                       <div className="flex items-center space-x-3">
                         <Phone size={18} className="text-white flex-shrink-0" />
-                        <a href="tel:+90464XXXXXXX" className="text-gray-300 hover:text-white transition-colors text-sm">
-                          +90 464 XXX XX XX
+                        <a href="tel:+905332439348" className="text-gray-300 hover:text-white transition-colors text-sm">
+                          +90 (533) 243-9348
                         </a>
                       </div>
                     </>

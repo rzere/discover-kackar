@@ -142,7 +142,7 @@ export default function ContactPage({ params }: ContactPageProps) {
                 {getLocalizedText(contactPageData?.phone_title, isEnglish ? 'Call Us' : 'Bizi Arayın')}
               </h3>
               <p className="text-gray-600">
-                {contactPageData?.phone_value || '+90 (555) 123-4567'}
+                {contactPageData?.phone_value || '+90 (533) 243-9348'}
                 {/* Debug: {JSON.stringify(contactPageData?.phone_value)} */}
               </p>
               </div>

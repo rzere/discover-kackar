@@ -130,7 +130,7 @@ export default function SimpleFooter({ locale }: SimpleFooterProps) {
               </li>
               <li className="flex items-center">
                 <Phone size={18} className="text-primary mr-2 flex-shrink-0" />
-                <span className="text-gray-300 text-sm">+90 464 XXX XX XX</span>
+                <span className="text-gray-300 text-sm">+90 (533) 243-9348</span>
               </li>
               <li className="flex items-center">
                 <EnvelopeSimple size={18} className="text-primary mr-2 flex-shrink-0" />
